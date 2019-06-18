@@ -16,6 +16,9 @@ object Window {
 
 class Window { // The window handle
   private var window = 0L
+  var level: Array[Array[Int]] = Level.RandomLevel(500,500)
+  var levelSlice: Array[Array[Int]] = level
+  var p = PlayerState(0,0, 25)
 
   def run(): Unit = {
     init()
@@ -47,6 +50,10 @@ class Window { // The window handle
     glfwSetKeyCallback(window, (window: Long, key: Int, scancode: Int, action: Int, mods: Int) => {
       def foo(window: Long, key: Int, scancode: Int, action: Int, mods: Int) = {
         if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) glfwSetWindowShouldClose(window, true) // We will detect this in the rendering loop
+        else if (action == GLFW_PRESS || action == GLFW_REPEAT) {
+          println(key)
+          p = p.control(Input(key))
+        }
       }
 
       foo(window, key, scancode, action, mods)
@@ -90,7 +97,9 @@ class Window { // The window handle
     }) {
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) // clear the framebuffer
 
-      Render.renderArrayFill(Level.Test, Color.simpleMap)
+      levelSlice = Level.getSlice(level, p.zoom*2+1, p.zoom*2+1,(p.xPos,p.yPos))
+      Render.renderArrayFill(levelSlice, Color.simpleMap)
+      Render.centerDiamond()
 
       glfwSwapBuffers(window) // swap the color buffers
 
