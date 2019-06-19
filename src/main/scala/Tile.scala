@@ -51,28 +51,34 @@ object Tile {
     def BLM_Left1: Sprite = Sprite(FF1_Classes.id, 6.0f*36.0f/972.0f, 7.0f*36.0f/972.0f, 10.0f*36.0f/432.0f, 11.0f*36.0f/432.0f)
     def Blm_WalkSprite: Map[Input, Sprite] = {
       var spriteMap: Map[Input, Sprite] = Map.empty
-      var sprite = Tile.Sprite.BLM_Front1
+      var sprite = BLM_Front1
       spriteMap = spriteMap.updated(Down, sprite)
-      sprite = Tile.Sprite.BLM_Back1
+      sprite = BLM_Back1
       spriteMap = spriteMap.updated(Up, sprite)
-      sprite = Tile.Sprite.BLM_Right1
+      sprite = BLM_Right1
       spriteMap = spriteMap.updated(Left, sprite)
-      sprite = Tile.Sprite.BLM_Left1
+      sprite = BLM_Left1
       spriteMap = spriteMap.updated(Right, sprite)
       spriteMap
     }
 
     def Tileset: Texture = TextureLoad("src/resources/Tileset/basictiles.png")
-    def g1: Sprite = Sprite(Tileset.id, 3.0f*16.0f/128.0f, 4.0f*16.0f/128.0f, 1.0f*16.0f/240.0f, 2.0f*16.0f/240.0f)
-    def g2: Sprite = Sprite(Tileset.id, 4.0f*16.0f/128.0f, 5.0f*16.0f/128.0f, 1.0f*16.0f/240.0f, 2.0f*16.0f/240.0f)
-    def g3: Sprite = Sprite(Tileset.id, 0.0f*16.0f/128.0f, 1.0f*16.0f/128.0f, 8.0f*16.0f/240.0f, 9.0f*16.0f/240.0f)
-    def g4: Sprite = Sprite(Tileset.id, 1.0f*16.0f/128.0f, 2.0f*16.0f/128.0f, 8.0f*16.0f/240.0f, 9.0f*16.0f/240.0f)
-    def tileSetMap: Map[Int, Sprite] = Map(
-      0 -> g1,
-      1 -> g2,
-      2 -> g3,
-      3 -> g4
-    )
+    def g0: Sprite = Sprite(Tileset.id, 3.0f*16.0f/128.0f, 4.0f*16.0f/128.0f, 1.0f*16.0f/240.0f, 2.0f*16.0f/240.0f)
+    def g1: Sprite = Sprite(Tileset.id, 4.0f*16.0f/128.0f, 5.0f*16.0f/128.0f, 1.0f*16.0f/240.0f, 2.0f*16.0f/240.0f)
+    def g2: Sprite = Sprite(Tileset.id, 0.0f*16.0f/128.0f, 1.0f*16.0f/128.0f, 8.0f*16.0f/240.0f, 9.0f*16.0f/240.0f)
+    def g3: Sprite = Sprite(Tileset.id, 1.0f*16.0f/128.0f, 2.0f*16.0f/128.0f, 8.0f*16.0f/240.0f, 9.0f*16.0f/240.0f)
+    def tileSetMap: Map[Int, Sprite] = {
+      var spriteMap: Map[Int, Sprite] = Map.empty
+      var sprite = g0
+      spriteMap = spriteMap.updated(0, sprite)
+      sprite = g1
+      spriteMap = spriteMap.updated(1, sprite)
+      sprite = g2
+      spriteMap = spriteMap.updated(2, sprite)
+      sprite = g3
+      spriteMap = spriteMap.updated(3, sprite)
+      spriteMap
+    }
 
   }
 }

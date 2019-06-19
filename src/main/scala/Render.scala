@@ -89,7 +89,6 @@ object Render {
     glTexCoord2f(u2, v)
     glVertex3d(xPos-x, yPos+y, 0)
     glEnd()
-
     glDisable(GL_BLEND)
   }
 

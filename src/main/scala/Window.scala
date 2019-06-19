@@ -112,7 +112,7 @@ class Window { // The window handle
 
       levelSlice = Level.getSlice(level, p.zoom*2+1, p.zoom*2+1,(p.xPos,p.yPos))
       //Render.renderArrayFill(levelSlice, Tile.Color.simpleMap)
-      Render.renderArrayFill(levelSlice, textures)
+      Render.renderArrayFill(levelSlice, bgMap)
 
       Render.centerSprite(spriteMap(p.lastDirection))
 
