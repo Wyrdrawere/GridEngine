@@ -20,7 +20,7 @@ class Window { // The window handle
   var levelSlice: Array[Array[Int]] = level
   var p = PlayerState(50,50, 1)
   var textures: Map[Int, Tile.Texture] = Map.empty
-  var grassTexPath: String = "/home/taiki/Pictures/textures/grass03.png"
+  var grassTexPath: String = "src/resources/grass03.png"
 
   def run(): Unit = {
     init()

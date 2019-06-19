@@ -25,14 +25,14 @@ object Tile {
 
   object Texture {
     def OpenPathSet(): Map[Int, Texture] = Map(
-      0 -> TextureLoad("/home/taiki/Pictures/textures/OpenSquare/Open Square Path Cross.png"),
-      1 -> TextureLoad("/home/taiki/Pictures/textures/OpenSquare/Open Square Path Grass.png"),
-      2 -> TextureLoad("/home/taiki/Pictures/textures/OpenSquare/Open Square Path Horizontal.png"),
-      3 -> TextureLoad("/home/taiki/Pictures/textures/OpenSquare/Open Square Path Vertical.png"),
-      4 -> TextureLoad("/home/taiki/Pictures/textures/OpenSquare/Open Square Path Corner NW.png"),
-      5 -> TextureLoad("/home/taiki/Pictures/textures/OpenSquare/Open Square Path Corner NE.png"),
-      6 -> TextureLoad("/home/taiki/Pictures/textures/OpenSquare/Open Square Path Corner SW.png"),
-      7 -> TextureLoad("/home/taiki/Pictures/textures/OpenSquare/Open Square Path Corner SE.png"),
+      0 -> TextureLoad("src/resources/OpenSquare/Open Square Path Cross.png"),
+      1 -> TextureLoad("src/resources/OpenSquare/Open Square Path Grass.png"),
+      2 -> TextureLoad("src/resources/OpenSquare/Open Square Path Horizontal.png"),
+      3 -> TextureLoad("src/resources/OpenSquare/Open Square Path Vertical.png"),
+      4 -> TextureLoad("src/resources/OpenSquare/Open Square Path Corner NW.png"),
+      5 -> TextureLoad("src/resources/OpenSquare/Open Square Path Corner NE.png"),
+      6 -> TextureLoad("src/resources/OpenSquare/Open Square Path Corner SW.png"),
+      7 -> TextureLoad("src/resources/OpenSquare/Open Square Path Corner SE.png"),
     )
   }
 }
