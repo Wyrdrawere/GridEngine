@@ -1,3 +1,4 @@
+import Input._
 import org.lwjgl._
 import org.lwjgl.glfw._
 import org.lwjgl.opengl._
@@ -16,11 +17,12 @@ object Window {
 
 class Window { // The window handle
   private var window = 0L
-  var level: Array[Array[Int]] = Level.RandomLevel(100,100, 5)
+  var level: Array[Array[Int]] = Level.RandomLevel(100,100, 4)
   var levelSlice: Array[Array[Int]] = level
-  var p = PlayerState(50,50, false, 5)
+  var p = PlayerState(50,50, Input.Down, 5)
   var textures: Map[Int, Tile.Texture] = Map.empty
-  var sprite: Option[Tile.Texture] = None
+  var spriteSheetTexture: Option[Tile.Texture] = None
+  var spriteMap: Map[Input, Tile.Sprite] = Map.empty
   var grassTexPath: String = "src/resources/grass03.png"
 
   def run(): Unit = {
@@ -100,7 +102,8 @@ class Window { // The window handle
 
     val grassTex = TextureLoad(grassTexPath)
     textures = Tile.Texture.OpenPathSet()
-    sprite = Some(Tile.Texture.BlackMageSprite())
+    spriteMap = Tile.Sprite.Blm_WalkSprite
+    val bgMap = Tile.Sprite.tileSetMap
 
     while ( {
       !glfwWindowShouldClose(window)
@@ -110,10 +113,9 @@ class Window { // The window handle
       levelSlice = Level.getSlice(level, p.zoom*2+1, p.zoom*2+1,(p.xPos,p.yPos))
       //Render.renderArrayFill(levelSlice, Tile.Color.simpleMap)
       Render.renderArrayFill(levelSlice, textures)
-      sprite match {
-        case Some(s) => Render.centerSprite(s, p.direction)
-        case None => Render.centerDiamond()
-      }
+
+      Render.centerSprite(spriteMap(p.lastDirection))
+
 
       glfwSwapBuffers(window) // swap the color buffers
 

@@ -68,6 +68,31 @@ object Render {
     glEnd()
   }
 
+  def Rect(xPos: Float, yPos: Float, xSize: Float, ySize: Float, sprite: Sprite): Unit = {
+    val u = sprite.minX
+    val u2 = sprite.maxX
+    val v = sprite.minY
+    val v2 = sprite.maxY
+    glEnable(GL_BLEND)
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+    TextureLoad.bind(sprite.id)
+    glColor4f(1f,1f,1f,1f)
+    val x = gridXSize/width
+    val y = gridYSize/height
+    glBegin(GL_POLYGON)
+    glTexCoord2f(u2, v2)
+    glVertex3d(xPos-x, yPos-y, 0)
+    glTexCoord2f(u, v2)
+    glVertex3d(xPos+x, yPos-y, 0)
+    glTexCoord2f(u, v)
+    glVertex3d(yPos+x, yPos+y, 0)
+    glTexCoord2f(u2, v)
+    glVertex3d(xPos-x, yPos+y, 0)
+    glEnd()
+
+    glDisable(GL_BLEND)
+  }
+
   def RectG(gridX: Int, gridY: Int, gridXUnit: Float, gridYUnit: Float, tile: Tile): Unit = {
     val x = gridX.toFloat
     val y = gridY.toFloat
@@ -76,6 +101,7 @@ object Render {
     tile match {
       case c@Color(_, _, _) => Rect(x*xu, y*yu, xu, yu, c)
       case t@Texture(_) => Rect(x*xu, y*yu, xu, yu, t)
+      case s@Sprite(_, _, _, _, _) => Rect(x*xu, y*yu, xu, yu, s)
     }
   }
 
@@ -97,37 +123,8 @@ object Render {
     glEnd()
   }
 
-  def centerSprite(texture: Texture, direction: Boolean): Unit = { //todo: make direction a thing, again
-    glEnable(GL_BLEND)
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-    TextureLoad.bind(texture.id)
-    glColor4f(1f,1f,1f,1f)
-    val x = gridXSize/width
-    val y = gridYSize/height
-    if (direction) {
-      glBegin(GL_POLYGON)
-      glTexCoord2f(1, 1)
-      glVertex3d(-x, -y, 0)
-      glTexCoord2f(0, 1)
-      glVertex3d(x, -y, 0)
-      glTexCoord2f(0, 0)
-      glVertex3d(x, y, 0)
-      glTexCoord2f(1, 0)
-      glVertex3d(-x, y, 0)
-      glEnd()
-    } else {
-      glBegin(GL_POLYGON)
-      glTexCoord2f(0, 1)
-      glVertex3d(-x, -y, 0)
-      glTexCoord2f(1, 1)
-      glVertex3d(x, -y, 0)
-      glTexCoord2f(1, 0)
-      glVertex3d(x, y, 0)
-      glTexCoord2f(0, 0)
-      glVertex3d(-x, y, 0)
-      glEnd()
-    }
-    glDisable(GL_BLEND)
+  def centerSprite(sprite: Sprite): Unit = { //todo: make direction a thing, again. Use spritesheets.
+    Rect(0,0,gridXSize/width,gridYSize/height,sprite)
   }
 
   //for fun test stuff begins here
