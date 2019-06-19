@@ -1,6 +1,8 @@
 sealed trait Input
 
 object Input {
+  case object Space extends Input
+
   case object W extends Input
   case object S extends Input
 
@@ -10,6 +12,8 @@ object Input {
   case object Right extends Input
 
   def apply(key: Int): Input = key match {
+    case 32 => Space
+
     case 83 => S
     case 87 => W
 

@@ -16,9 +16,11 @@ object Window {
 
 class Window { // The window handle
   private var window = 0L
-  var level: Array[Array[Int]] = Level.RandomLevel(500,500)
+  var level: Array[Array[Int]] = Level.RandomLevel(100,100, 5)
   var levelSlice: Array[Array[Int]] = level
-  var p = PlayerState(0,0, 25)
+  var p = PlayerState(50,50, 1)
+  var textures: Map[Int, String] = Map.empty
+  var grassTexPath: String = "/home/taiki/Pictures/textures/grass03.png"
 
   def run(): Unit = {
     init()
@@ -44,7 +46,7 @@ class Window { // The window handle
     glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE) // the window will be resizable
 
     // Create the window
-    window = glfwCreateWindow(Render.width, Render.height, "Chessboard", NULL, NULL)
+    window = glfwCreateWindow(Render.width, Render.height, "GridEngine", NULL, NULL)
     if (window == NULL) throw new RuntimeException("Failed to create the GLFW window")
     // Setup a key callback. It will be called every time a key is pressed, repeated or released.
     glfwSetKeyCallback(window, (window: Long, key: Int, scancode: Int, action: Int, mods: Int) => {
@@ -80,6 +82,8 @@ class Window { // The window handle
     glfwSwapInterval(1)
     // Make the window visible
     glfwShowWindow(window)
+
+
   }
 
   private def loop(): Unit = { // This line is critical for LWJGL's interoperation with GLFW's
@@ -92,6 +96,9 @@ class Window { // The window handle
     glClearColor(1.0f, 1.0f, 1.0f, 0.0f)
     // Run the rendering loop until the user has attempted to close
     // the window or has pressed the ESCAPE key.
+
+    textures = Texture.OpenPathSet()
+
     while ( {
       !glfwWindowShouldClose(window)
     }) {
@@ -99,7 +106,10 @@ class Window { // The window handle
 
       levelSlice = Level.getSlice(level, p.zoom*2+1, p.zoom*2+1,(p.xPos,p.yPos))
       Render.renderArrayFill(levelSlice, Color.simpleMap)
+      //Render.renderArrayFillTex(levelSlice, textures)
       Render.centerDiamond()
+
+
 
       glfwSwapBuffers(window) // swap the color buffers
 

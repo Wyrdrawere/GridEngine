@@ -14,19 +14,19 @@ object Level {
     Array(1,1,1,1,1),
   )
 
-  def RandomLevel(xSize: Int, ySize: Int): Array[Array[Int]] = {
-    var level = Array.ofDim[Int](xSize, ySize)
+  def RandomLevel(xSize: Int, ySize: Int, max: Float): Array[Array[Int]] = {
+    val level = Array.ofDim[Int](xSize, ySize)
     for (x <- level.indices; y <- level(x).indices) {
-      level(x)(y) = (Math.random()*5).toInt
+      level(x)(y) = (Math.random()*max).toInt
     }
     level
   }
 
   def getSlice(level: LevelData, xSize: Int, ySize: Int, centerPos: (Int, Int)): Array[Array[Int]] = {
-    var slice = Array.ofDim[Int](xSize, ySize)
+    val slice = Array.ofDim[Int](xSize, ySize)
     for(x <- slice.indices; y <- slice(x).indices) {
-      var levelX = centerPos._1-(xSize/2)+x
-      var levelY = centerPos._2-(xSize/2)+y
+      val levelX = centerPos._1-(xSize/2)+x
+      val levelY = centerPos._2-(xSize/2)+y
       if (level.indices.contains(levelX) && level(0).indices.contains(levelY)) {
         slice(x)(y) = level(levelX)(levelY)
       } else {

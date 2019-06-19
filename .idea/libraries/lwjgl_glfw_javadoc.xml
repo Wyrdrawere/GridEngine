@@ -10,6 +10,8 @@
       <root url="jar://$PROJECT_DIR$/lwjgl-release-3.2.2-custom/lwjgl-opengl-natives-linux.jar!/" />
       <root url="jar://$PROJECT_DIR$/lwjgl-release-3.2.2-custom/lwjgl-opengl.jar!/" />
       <root url="jar://$PROJECT_DIR$/lwjgl-release-3.2.2-custom/lwjgl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lwjgl-release-3.2.2-custom/lwjgl-stb-natives-linux.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lwjgl-release-3.2.2-custom/lwjgl-stb.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/lwjgl-release-3.2.2-custom/lwjgl-glfw-javadoc.jar!/" />
@@ -17,6 +19,7 @@
       <root url="jar://$PROJECT_DIR$/lwjgl-release-3.2.2-custom/lwjgl-openal-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/lwjgl-release-3.2.2-custom/lwjgl-opencl-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/lwjgl-release-3.2.2-custom/lwjgl-opengl-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lwjgl-release-3.2.2-custom/lwjgl-stb-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/lwjgl-release-3.2.2-custom/lwjgl-glfw-sources.jar!/" />
@@ -24,6 +27,7 @@
       <root url="jar://$PROJECT_DIR$/lwjgl-release-3.2.2-custom/lwjgl-opencl-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/lwjgl-release-3.2.2-custom/lwjgl-opengl-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/lwjgl-release-3.2.2-custom/lwjgl-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lwjgl-release-3.2.2-custom/lwjgl-stb-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
