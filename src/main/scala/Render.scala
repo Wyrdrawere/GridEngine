@@ -97,6 +97,39 @@ object Render {
     glEnd()
   }
 
+  def centerSprite(texture: Texture, direction: Boolean): Unit = { //todo: make direction a thing, again
+    glEnable(GL_BLEND)
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+    TextureLoad.bind(texture.id)
+    glColor4f(1f,1f,1f,1f)
+    val x = gridXSize/width
+    val y = gridYSize/height
+    if (direction) {
+      glBegin(GL_POLYGON)
+      glTexCoord2f(1, 1)
+      glVertex3d(-x, -y, 0)
+      glTexCoord2f(0, 1)
+      glVertex3d(x, -y, 0)
+      glTexCoord2f(0, 0)
+      glVertex3d(x, y, 0)
+      glTexCoord2f(1, 0)
+      glVertex3d(-x, y, 0)
+      glEnd()
+    } else {
+      glBegin(GL_POLYGON)
+      glTexCoord2f(0, 1)
+      glVertex3d(-x, -y, 0)
+      glTexCoord2f(1, 1)
+      glVertex3d(x, -y, 0)
+      glTexCoord2f(1, 0)
+      glVertex3d(x, y, 0)
+      glTexCoord2f(0, 0)
+      glVertex3d(-x, y, 0)
+      glEnd()
+    }
+    glDisable(GL_BLEND)
+  }
+
   //for fun test stuff begins here
 
   def ChessBoard(): Unit = {

@@ -34,5 +34,7 @@ object Tile {
       6 -> TextureLoad("src/resources/OpenSquare/Open Square Path Corner SW.png"),
       7 -> TextureLoad("src/resources/OpenSquare/Open Square Path Corner SE.png"),
     )
+
+    def BlackMageSprite(): Texture = TextureLoad("src/resources/Sprite/blm.png")
   }
 }
