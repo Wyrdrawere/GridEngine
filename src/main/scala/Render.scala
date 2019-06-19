@@ -81,13 +81,13 @@ object Render {
     val y = gridYSize/height
     glBegin(GL_POLYGON)
     glTexCoord2f(u2, v2)
-    glVertex3d(xPos-x, yPos-y, 0)
+    glVertex3d(-1.0 + 2*xPos/width, -1.0 + 2*yPos/height, 0)
     glTexCoord2f(u, v2)
-    glVertex3d(xPos+x, yPos-y, 0)
+    glVertex3d(-1.0 + 2*xPos/width + 2*xSize/width, -1.0 + 2*yPos/height, 0)
     glTexCoord2f(u, v)
-    glVertex3d(yPos+x, yPos+y, 0)
+    glVertex3d(-1.0 + 2*xPos/width + 2*xSize/width, -1.0 + 2*yPos/height + 2*ySize/height, 0)
     glTexCoord2f(u2, v)
-    glVertex3d(xPos-x, yPos+y, 0)
+    glVertex3d(-1.0 + 2*xPos/width, -1.0 + 2*yPos/height + 2*ySize/height, 0)
     glEnd()
     glDisable(GL_BLEND)
   }
@@ -122,8 +122,8 @@ object Render {
     glEnd()
   }
 
-  def centerSprite(sprite: Sprite): Unit = { //todo: make direction a thing, again. Use spritesheets.
-    Rect(0,0,gridXSize/width,gridYSize/height,sprite)
+  def centerSprite(sprite: Sprite): Unit = {
+    Rect((width-gridXSize)/2,(height-gridYSize)/2,gridXSize,gridYSize,sprite)
   }
 
   //for fun test stuff begins here

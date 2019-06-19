@@ -69,9 +69,9 @@ object Tile {
     def g3: Sprite = Sprite(Tileset.id, 1.0f*16.0f/128.0f, 2.0f*16.0f/128.0f, 8.0f*16.0f/240.0f, 9.0f*16.0f/240.0f)
     def tileSetMap: Map[Int, Sprite] = {
       var spriteMap: Map[Int, Sprite] = Map.empty
-      var sprite = g0
+      var sprite = g1
       spriteMap = spriteMap.updated(0, sprite)
-      sprite = g1
+      sprite = g0
       spriteMap = spriteMap.updated(1, sprite)
       sprite = g2
       spriteMap = spriteMap.updated(2, sprite)
