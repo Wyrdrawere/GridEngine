@@ -19,7 +19,7 @@ class Window { // The window handle
   var level: Array[Array[Int]] = Level.RandomLevel(100,100, 5)
   var levelSlice: Array[Array[Int]] = level
   var p = PlayerState(50,50, 1)
-  var textures: Map[Int, String] = Map.empty
+  var textures: Map[Int, Tile.Texture] = Map.empty
   var grassTexPath: String = "/home/taiki/Pictures/textures/grass03.png"
 
   def run(): Unit = {
@@ -97,7 +97,8 @@ class Window { // The window handle
     // Run the rendering loop until the user has attempted to close
     // the window or has pressed the ESCAPE key.
 
-    textures = Texture.OpenPathSet()
+    val grassTex = TextureLoad(grassTexPath)
+    textures = Tile.Texture.OpenPathSet()
 
     while ( {
       !glfwWindowShouldClose(window)
@@ -105,11 +106,9 @@ class Window { // The window handle
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) // clear the framebuffer
 
       levelSlice = Level.getSlice(level, p.zoom*2+1, p.zoom*2+1,(p.xPos,p.yPos))
-      Render.renderArrayFill(levelSlice, Color.simpleMap)
-      //Render.renderArrayFillTex(levelSlice, textures)
+      //Render.renderArrayFill(levelSlice, Tile.Color.simpleMap)
+      Render.renderArrayFill(levelSlice, textures)
       Render.centerDiamond()
-
-
 
       glfwSwapBuffers(window) // swap the color buffers
 
