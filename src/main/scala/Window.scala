@@ -17,7 +17,7 @@ object Window {
 
 class Window { // The window handle
   private var window = 0L
-  var level: Array[Array[Int]] = Level.RandomLevel(100,100, 4)
+  var level: Array[Array[Int]] = Level.RandomLevel(100,100, 120)
   var levelSlice: Array[Array[Int]] = level
   var p = PlayerState(50,50, Input.Down, 5)
   var textures: Map[Int, Tile.Texture] = Map.empty
@@ -103,7 +103,8 @@ class Window { // The window handle
     val grassTex = TextureLoad(grassTexPath)
     textures = Tile.Texture.OpenPathSet()
     spriteMap = Tile.Sprite.Blm_WalkSprite
-    val bgMap = Tile.Sprite.tileSetMap
+    val bgMap = Tile.Sprite.TextureToTileSet(TextureLoad("src/resources/Tileset/basictiles.png"), 16,16,8,15)
+    val charMap = Tile.Sprite.TextureToTileSet(TextureLoad("src/resources/Sprite/ff1-classes.png"), 36,36,27,12)
 
     while ( {
       !glfwWindowShouldClose(window)
@@ -113,7 +114,6 @@ class Window { // The window handle
       levelSlice = Level.getSlice(level, p.zoom*2+1, p.zoom*2+1,(p.xPos,p.yPos))
       //Render.renderArrayFill(levelSlice, Tile.Color.simpleMap)
       Render.renderArrayFill(levelSlice, bgMap)
-
       Render.centerSprite(spriteMap(p.lastDirection))
 
 

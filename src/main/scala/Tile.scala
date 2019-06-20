@@ -80,5 +80,20 @@ object Tile {
       spriteMap
     }
 
+    def TextureToTileSet(texture: Texture, width: Int, height: Int, xAmount: Int, yAmount: Int): Map[Int, Sprite] = {
+      var spriteMap: Map[Int, Sprite] = Map.empty
+      for(x <- 0 to xAmount-1; y <- 0 to yAmount) {
+        spriteMap = spriteMap.updated(
+          x*yAmount+y,
+          Sprite(
+            texture.id,
+            x.toFloat/xAmount.toFloat,
+            (x+1).toFloat/xAmount.toFloat,
+            y.toFloat/yAmount.toFloat,
+            (y+1).toFloat/yAmount.toFloat,
+          ))
+      }
+      spriteMap
+    }
   }
 }
