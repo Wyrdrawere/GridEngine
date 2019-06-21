@@ -11,6 +11,8 @@ object Input {
   case object Left extends Input
   case object Right extends Input
 
+  case object None extends Input
+
   def apply(key: Int): Input = key match {
     case 32 => Space
 

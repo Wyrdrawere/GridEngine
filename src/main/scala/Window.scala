@@ -15,114 +15,95 @@ object Window {
   }
 }
 
-class Window { // The window handle
+class Window {
   private var window = 0L
-  var level: Array[Array[Int]] = Level.RandomLevel(100,100, 120)
-  var levelSlice: Array[Array[Int]] = level
-  var p = PlayerState(50,50, Input.Down, 5)
-  var textures: Map[Int, Tile.Texture] = Map.empty
-  var spriteSheetTexture: Option[Tile.Texture] = None
-  var spriteMap: Map[Input, Tile.Sprite] = Map.empty
-  var grassTexPath: String = "src/resources/grass03.png"
 
-
+  var lastInput: Input = None
+  var lastTime: Long = 0
 
   def run(): Unit = {
     init()
     loop()
-    // Free the window callbacks and destroy the window
+
     glfwFreeCallbacks(window)
     glfwDestroyWindow(window)
-    // Terminate GLFW and free the error callback
+
     glfwTerminate()
     glfwSetErrorCallback(null).free()
   }
 
-  private def init(): Unit = { // Setup an error callback. The default implementation
-    // will print the error message in System.err.
+  private def init(): Unit = {
     GLFWErrorCallback.createPrint(System.err).set
-    // Initialize GLFW. Most GLFW functions will not work before doing this.
+
     if (!glfwInit) throw new IllegalStateException("Unable to initialize GLFW")
-    // Configure GLFW
-    glfwDefaultWindowHints() // optional, the current window hints are already the default
 
-    glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE) // the window will stay hidden after creation
+    glfwDefaultWindowHints()
 
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE) // the window will be resizable
+    glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE)
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE)
 
-    // Create the window
-    window = glfwCreateWindow(Render.width, Render.height, "GridEngine", NULL, NULL)
+    window = glfwCreateWindow(Config.windowWidth, Config.windowHeight, Config.windowName, NULL, NULL)
     if (window == NULL) throw new RuntimeException("Failed to create the GLFW window")
-    // Setup a key callback. It will be called every time a key is pressed, repeated or released.
+
     glfwSetKeyCallback(window, (window: Long, key: Int, scancode: Int, action: Int, mods: Int) => {
-      def foo(window: Long, key: Int, scancode: Int, action: Int, mods: Int) = {
-        if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) glfwSetWindowShouldClose(window, true) // We will detect this in the rendering loop
-        else if (action == GLFW_PRESS || action == GLFW_REPEAT) {
-          println(key)
-          p = p.control(Input(key))
+      // todo: make better input
+      def foo(window: Long, key: Int, scancode: Int, action: Int, mods: Int): Unit = {
+        if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
+          glfwSetWindowShouldClose(window, true)
+        } else if(action == GLFW_PRESS || action == GLFW_REPEAT) {
+          lastInput = Input(key)
         }
       }
 
       foo(window, key, scancode, action, mods)
     })
-    // Get the thread stack and push a new frame
     try {
       val stack = stackPush
       try {
-        val pWidth = stack.mallocInt(1) // int*
+        val pWidth = stack.mallocInt(1)
         val pHeight = stack.mallocInt(1)
-        // Get the window size passed to glfwCreateWindow
+
         glfwGetWindowSize(window, pWidth, pHeight)
-        // Get the resolution of the primary monitor
         val vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor)
-        // Center the window
         glfwSetWindowPos(window, (vidmode.width - pWidth.get(0)) / 2, (vidmode.height - pHeight.get(0)) / 2)
-        // the stack frame is popped automatically} finally {
+      }
+      finally {
         if (stack != null) stack.close()
       }
     }
-    // Make the OpenGL context current
+
     glfwMakeContextCurrent(window)
-    // Enable v-sync
     glfwSwapInterval(1)
-    // Make the window visible
     glfwShowWindow(window)
-
-
   }
 
-  private def loop(): Unit = { // This line is critical for LWJGL's interoperation with GLFW's
-    // OpenGL context, or any context that is managed externally.
-    // LWJGL detects the context that is current in the current thread,
-    // creates the GLCapabilities instance and makes the OpenGL
-    // bindings available for use.
+  private def loop(): Unit = {
     GL.createCapabilities
-    // Set the clear color
     glClearColor(1.0f, 1.0f, 1.0f, 0.0f)
-    // Run the rendering loop until the user has attempted to close
-    // the window or has pressed the ESCAPE key.
 
-    val grassTex = TextureLoad(grassTexPath)
-    textures = Tile.Texture.OpenPathSet()
-    spriteMap = Tile.Sprite.Blm_WalkSprite
-    val bgMap = Tile.Sprite.TextureToTileSet(TextureLoad("src/resources/Tileset/basictiles.png"), 16,16,8,15)
-    val charMap = Tile.Sprite.TextureToTileSet(TextureLoad("src/resources/Sprite/ff1-classes.png"), 36,36,27,12)
-
-    var state = Overworld(level, bgMap,(0,0), 5, 8, Some(8), Overworld.Direction.Down)
+    val level = Level.RandomLevel(50,50,120)
+    val tileSet = Tile.Sprite.TextureToTileSet(TextureLoad("src/resources/Tileset/basictiles.png"),128,240,8,15)
+    var state = Overworld(level, tileSet, (0,0), 5)
 
     while ( {
       !glfwWindowShouldClose(window)
     }) {
-      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) // clear the framebuffer
+      val thisTime = System.currentTimeMillis()
+      val deltaTime = thisTime-lastTime
 
-      state = state.simulate()
-      state.render()
+      if (deltaTime*1000 > 1/Config.fps) {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        state = state.simulate(deltaTime, lastInput)
+        state.render()
+
+        lastTime = thisTime
+        lastInput = None
+      }
 
 
-      glfwSwapBuffers(window) // swap the color buffers
 
-      // Poll for window events. The key callback above will only be
-      // invoked during this call.
+      glfwSwapBuffers(window)
+
       glfwPollEvents()
     }
   }

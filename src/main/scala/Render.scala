@@ -1,56 +1,19 @@
+import Config.{windowWidth, windowHeight}
 import org.lwjgl.opengl.GL11._
 import Tile._
 
 object Render {
 
-  val width = 800
-  val height = 800
-
   var gridXSize: Float = 0
   var gridYSize: Float = 0
-
-  def Square(xPos: Float, yPos: Float, size: Float, color: Color): Unit = {
-    glColor3f(color.red, color.green, color.blue)
-    glBegin(GL_POLYGON)
-    glVertex3d(-1.0 + 2*xPos/width, -1.0 + 2*yPos/height, 0)
-    glVertex3d(-1.0 + 2*xPos/width + 2*size/width, -1.0 + 2*yPos/height, 0)
-    glVertex3d(-1.0 + 2*xPos/width + 2*size/width, -1.0 + 2*yPos/height + 2*size/height, 0)
-    glVertex3d(-1.0 + 2*xPos/width, -1.0 + 2*yPos/height + 2*size/height, 0)
-    glEnd()
-  }
-
-  def Square(xPos: Float, yPos: Float, size: Float, texture: Texture): Unit = {
-    glColor3f(1f,1f,1f)
-    glBegin(GL_POLYGON)
-    glTexCoord2f(0, 0)
-    glVertex3d(-1.0 + 2*xPos/width, -1.0 + 2*yPos/height, 0)
-    glTexCoord2f(1, 0)
-    glVertex3d(-1.0 + 2*xPos/width + 2*size/width, -1.0 + 2*yPos/height, 0)
-    glTexCoord2f(1, 1)
-    glVertex3d(-1.0 + 2*xPos/width + 2*size/width, -1.0 + 2*yPos/height + 2*size/height, 0)
-    glTexCoord2f(0, 1)
-    glVertex3d(-1.0 + 2*xPos/width, -1.0 + 2*yPos/height + 2*size/height, 0)
-    glEnd()
-  }
-
-  def SquareG(gridX: Int, gridY: Int, gridUnit: Int, tile: Tile): Unit = {
-    val x = gridX.toFloat
-    val y = gridY.toFloat
-    val u = gridUnit.toFloat
-    tile match {
-      case c@Color(_, _, _) => Square(x*u, y*u, u, c)
-      case t@Texture(_) => Square(x*u, y*u, u, t)
-      case _ =>
-    }
-  }
 
   def Rect(xPos: Float, yPos: Float, xSize: Float, ySize: Float, color: Color): Unit = {
     glColor3f(color.red, color.green, color.blue)
     glBegin(GL_POLYGON)
-    glVertex3d(-1.0 + 2*xPos/width, -1.0 + 2*yPos/height, 0)
-    glVertex3d(-1.0 + 2*xPos/width + 2*xSize/width, -1.0 + 2*yPos/height, 0)
-    glVertex3d(-1.0 + 2*xPos/width + 2*xSize/width, -1.0 + 2*yPos/height + 2*ySize/height, 0)
-    glVertex3d(-1.0 + 2*xPos/width, -1.0 + 2*yPos/height + 2*ySize/height, 0)
+    glVertex3d(-1.0 + 2*xPos/windowWidth, -1.0 + 2*yPos/windowHeight, 0)
+    glVertex3d(-1.0 + 2*xPos/windowWidth + 2*xSize/windowWidth, -1.0 + 2*yPos/windowHeight, 0)
+    glVertex3d(-1.0 + 2*xPos/windowWidth + 2*xSize/windowWidth, -1.0 + 2*yPos/windowHeight + 2*ySize/windowHeight, 0)
+    glVertex3d(-1.0 + 2*xPos/windowWidth, -1.0 + 2*yPos/windowHeight + 2*ySize/windowHeight, 0)
     glEnd()
   }
 
@@ -59,13 +22,13 @@ object Render {
     glColor3f(1f,1f,1f)
     glBegin(GL_POLYGON)
     glTexCoord2f(0, 0)
-    glVertex3d(-1.0 + 2*xPos/width, -1.0 + 2*yPos/height, 0)
+    glVertex3d(-1.0 + 2*xPos/windowWidth, -1.0 + 2*yPos/windowHeight, 0)
     glTexCoord2f(1, 0)
-    glVertex3d(-1.0 + 2*xPos/width + 2*xSize/width, -1.0 + 2*yPos/height, 0)
+    glVertex3d(-1.0 + 2*xPos/windowWidth + 2*xSize/windowWidth, -1.0 + 2*yPos/windowHeight, 0)
     glTexCoord2f(1, 1)
-    glVertex3d(-1.0 + 2*xPos/width + 2*xSize/width, -1.0 + 2*yPos/height + 2*ySize/height, 0)
+    glVertex3d(-1.0 + 2*xPos/windowWidth + 2*xSize/windowWidth, -1.0 + 2*yPos/windowHeight + 2*ySize/windowHeight, 0)
     glTexCoord2f(0, 1)
-    glVertex3d(-1.0 + 2*xPos/width, -1.0 + 2*yPos/height + 2*ySize/height, 0)
+    glVertex3d(-1.0 + 2*xPos/windowWidth, -1.0 + 2*yPos/windowHeight + 2*ySize/windowHeight, 0)
     glEnd()
   }
 
@@ -78,17 +41,17 @@ object Render {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
     TextureLoad.bind(sprite.id)
     glColor4f(1f,1f,1f,1f)
-    val x = gridXSize/width
-    val y = gridYSize/height
+    val x = gridXSize/windowWidth
+    val y = gridYSize/windowHeight
     glBegin(GL_POLYGON)
     glTexCoord2f(u2, v2)
-    glVertex3d(-1.0 + 2*xPos/width, -1.0 + 2*yPos/height, 0)
+    glVertex3d(-1.0 + 2*xPos/windowWidth, -1.0 + 2*yPos/windowHeight, 0)
     glTexCoord2f(u, v2)
-    glVertex3d(-1.0 + 2*xPos/width + 2*xSize/width, -1.0 + 2*yPos/height, 0)
+    glVertex3d(-1.0 + 2*xPos/windowWidth + 2*xSize/windowWidth, -1.0 + 2*yPos/windowHeight, 0)
     glTexCoord2f(u, v)
-    glVertex3d(-1.0 + 2*xPos/width + 2*xSize/width, -1.0 + 2*yPos/height + 2*ySize/height, 0)
+    glVertex3d(-1.0 + 2*xPos/windowWidth + 2*xSize/windowWidth, -1.0 + 2*yPos/windowHeight + 2*ySize/windowHeight, 0)
     glTexCoord2f(u2, v)
-    glVertex3d(-1.0 + 2*xPos/width, -1.0 + 2*yPos/height + 2*ySize/height, 0)
+    glVertex3d(-1.0 + 2*xPos/windowWidth, -1.0 + 2*yPos/windowHeight + 2*ySize/windowHeight, 0)
     glEnd()
     glDisable(GL_BLEND)
   }
@@ -106,16 +69,16 @@ object Render {
   }
 
   def renderArrayFill(array: Array[Array[Int]], f: Map[Int, Tile]): Unit = { //todo: inner arrays have to all be the same length
-    gridXSize = width.toFloat/array.length
-    gridYSize = height.toFloat/array(0).length
+    gridXSize = windowWidth.toFloat/array.length
+    gridYSize = windowHeight.toFloat/array(0).length
     for (x <- array.indices; y <- array(x).indices) {
       RectG(x,y,gridXSize, gridYSize, f(array(x)(y)))
     }
   }
 
   def renderArrayFill(array: Array[Array[Int]], f: Map[Int, Tile], xOffset: Float, yOffset: Float): Unit = {
-    gridXSize = width.toFloat/array.length
-    gridYSize = height.toFloat/array(0).length
+    gridXSize = windowWidth.toFloat/array.length
+    gridYSize = windowHeight.toFloat/array(0).length
     for (x <- array.indices; y <- array(x).indices) {
       RectG(x+xOffset,y+yOffset,gridXSize, gridYSize, f(array(x)(y)))
     }
@@ -124,62 +87,14 @@ object Render {
   def centerDiamond(): Unit = {
     glColor3f(1,0,1)
     glBegin(GL_POLYGON)
-    glVertex3d(0, -gridYSize/height, 0)
-    glVertex3d(-gridXSize/width, 0, 0)
-    glVertex3d(0, gridYSize/height, 0)
-    glVertex3d(gridXSize/width, 0, 0)
+    glVertex3d(0, -gridYSize/windowHeight, 0)
+    glVertex3d(-gridXSize/windowWidth, 0, 0)
+    glVertex3d(0, gridYSize/windowHeight, 0)
+    glVertex3d(gridXSize/windowWidth, 0, 0)
     glEnd()
   }
 
   def centerSprite(sprite: Sprite): Unit = {
-    Rect((width-gridXSize)/2,(height-gridYSize)/2,gridXSize,gridYSize,sprite)
+    Rect((windowWidth-gridXSize)/2,(windowHeight-gridYSize)/2,gridXSize,gridYSize,sprite)
   }
-
-  //for fun test stuff begins here
-
-  def ChessBoard(): Unit = {
-    for (x <- Range(0,8); y <- Range(0,8)) {
-      if ((x+y) % 2 == 0) {
-        Render.SquareG(x, y, width/8, Color.Black)
-      }
-    }
-  }
-
-  def textureChessBoard(tex: Texture): Unit = {
-    for (x <- Range(0,8); y <- Range(0,8)) {
-      if ((x+y) % 2 == 0) {
-        Render.RectG(x, y, Render.width/8, Render.height/8, tex)
-      }
-    }
-  }
-
-  def Epilepsy(): Unit = {
-    var color: Color = Color.White
-    for (x <- Range(0,8); y <- Range(0,8)) {
-      color = Color.simpleMap((Math.random()*5).toInt)
-      Render.SquareG(x, y, width/8, color)
-    }
-  }
-
-  def textureFill(tex: Texture): Unit = {
-    TextureLoad.bind(tex.id)
-    glColor3f(1,1,1)
-    glBegin(GL_POLYGON)
-    glTexCoord2f(0, 0)
-    glVertex2f(-1, -1)
-    glTexCoord2f(0, 1)
-    glVertex2f(-1, 1)
-    glTexCoord2f(1, 1)
-    glVertex2f(1, 1)
-    glTexCoord2f(1, 0)
-    glVertex2f(1, -1)
-    glEnd()
-  }
-
-  def tileTexture(tex: Texture): Unit = {
-    for (x <- Range(0,8); y <- Range(0,8)) {
-      Render.RectG(x, y, Render.width/8, Render.height/8, tex)
-    }
-  }
-
 }
