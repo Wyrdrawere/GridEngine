@@ -1,22 +1,39 @@
 import Overworld.Direction
-import Overworld.Direction.Neutral
+import Overworld.Direction.{Down, Neutral, Up, Right, Left}
 import Tile.Sprite
 
-class Overworld(val level: Array[Array[Int]], val tileset: Map[Int, Sprite]) extends State {
+case class Overworld
+(
+  level: Array[Array[Int]],
+  tileset: Map[Int, Sprite],
+  position: (Int, Int),
+  zoom: Int,
+  transition: Int,
+  inTransition: Option[Int],
+  direction: Direction,
+) extends State {
 
-  val position: (Int, Int) = (0,0)
-  val zoom: Int = 5
-
-  val transition: Int = 8
-  val inTransition: Option[Int] = None
-  val direction: Direction = Neutral
-
-  override def simulate(): State = this
+  override def simulate(): Overworld = {
+    val newTransition = inTransition match {
+      case Some(value) if value > 0 => Some(value-1)
+      case Some(value) if value <= 0 => Some(transition)
+    }
+    this.copy(inTransition = newTransition)
+  }
 
   override def render(): Unit = {
     val drawLevel = Level.getSlice(level, zoom, zoom, position)
+    val offsetUnit = 1f/transition.toFloat
+    val offset: (Float,Float) = direction match {
+      case Up => (0,offsetUnit)
+      case Down => (0,-offsetUnit)
+      case Right => (offsetUnit,0)
+      case Left => (-offsetUnit, 0)
+      case Neutral => (0,0)
+    }
     inTransition match {
-      case Some(value) => Render.renderArrayFill(drawLevel, tileset, )
+      case Some(value) => Render.renderArrayFill(drawLevel, tileset, offset._1*value, offset._2*value)
+      case None => Render.renderArrayFill(drawLevel, tileset)
     }
   }
 

@@ -25,6 +25,8 @@ class Window { // The window handle
   var spriteMap: Map[Input, Tile.Sprite] = Map.empty
   var grassTexPath: String = "src/resources/grass03.png"
 
+
+
   def run(): Unit = {
     init()
     loop()
@@ -106,15 +108,15 @@ class Window { // The window handle
     val bgMap = Tile.Sprite.TextureToTileSet(TextureLoad("src/resources/Tileset/basictiles.png"), 16,16,8,15)
     val charMap = Tile.Sprite.TextureToTileSet(TextureLoad("src/resources/Sprite/ff1-classes.png"), 36,36,27,12)
 
+    var state = Overworld(level, bgMap,(0,0), 5, 8, Some(8), Overworld.Direction.Down)
+
     while ( {
       !glfwWindowShouldClose(window)
     }) {
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) // clear the framebuffer
 
-      levelSlice = Level.getSlice(level, p.zoom*2+1, p.zoom*2+1,(p.xPos,p.yPos))
-      //Render.renderArrayFill(levelSlice, Tile.Color.simpleMap)
-      Render.renderArrayFill(levelSlice, bgMap)
-      Render.centerSprite(spriteMap(p.lastDirection))
+      state = state.simulate()
+      state.render()
 
 
       glfwSwapBuffers(window) // swap the color buffers
