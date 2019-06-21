@@ -16,7 +16,7 @@ case class Overworld
   }
 
   override def render(): Unit = {
-    val slice = level.getSlice(zoom, zoom, pos)
+    val slice = level.getSlice(zoom*2+1, zoom*2+1, pos)
     Render.renderArrayFill(slice, tileSet)
   }
 }
