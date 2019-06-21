@@ -40,6 +40,7 @@ object Render {
     tile match {
       case c@Color(_, _, _) => Square(x*u, y*u, u, c)
       case t@Texture(_) => Square(x*u, y*u, u, t)
+      case _ =>
     }
   }
 
@@ -92,7 +93,7 @@ object Render {
     glDisable(GL_BLEND)
   }
 
-  def RectG(gridX: Int, gridY: Int, gridXUnit: Float, gridYUnit: Float, tile: Tile): Unit = {
+  def RectG(gridX: Float, gridY: Float, gridXUnit: Float, gridYUnit: Float, tile: Tile): Unit = {
     val x = gridX.toFloat
     val y = gridY.toFloat
     val xu = gridXUnit.toFloat
@@ -109,6 +110,14 @@ object Render {
     gridYSize = height.toFloat/array(0).length
     for (x <- array.indices; y <- array(x).indices) {
       RectG(x,y,gridXSize, gridYSize, f(array(x)(y)))
+    }
+  }
+
+  def renderArrayFill(array: Array[Array[Int]], f: Map[Int, Tile], xOffset: Float, yOffset: Float): Unit = {
+    gridXSize = width.toFloat/array.length
+    gridYSize = height.toFloat/array(0).length
+    for (x <- array.indices; y <- array(x).indices) {
+      RectG(x+xOffset,y+yOffset,gridXSize, gridYSize, f(array(x)(y)))
     }
   }
 
