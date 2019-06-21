@@ -69,18 +69,18 @@ object Render {
   }
 
   def renderArrayFill(array: Array[Array[Int]], f: Map[Int, Tile]): Unit = { //todo: inner arrays have to all be the same length
-    gridXSize = windowWidth.toFloat/array.length
-    gridYSize = windowHeight.toFloat/array(0).length
-    for (x <- array.indices; y <- array(x).indices) {
-      RectG(x,y,gridXSize, gridYSize, f(array(x)(y)))
+    gridXSize = windowWidth.toFloat/(array.length-2)
+    gridYSize = windowHeight.toFloat/(array(0).length-2)
+    for (x <- 0 until array.length-1; y <- 1 until array(x).length-1) {
+      RectG(x-1,y-1,gridXSize, gridYSize, f(array(x)(y)))
     }
   }
 
   def renderArrayFill(array: Array[Array[Int]], f: Map[Int, Tile], xOffset: Float, yOffset: Float): Unit = {
-    gridXSize = windowWidth.toFloat/array.length
-    gridYSize = windowHeight.toFloat/array(0).length
-    for (x <- array.indices; y <- array(x).indices) {
-      RectG(x+xOffset,y+yOffset,gridXSize, gridYSize, f(array(x)(y)))
+    gridXSize = windowWidth.toFloat/(array.length-2)
+    gridYSize = windowHeight.toFloat/(array(0).length-2)
+    for (x <- 0 until array.length; y <- 0 until array(x).length) {
+      RectG(x-1+xOffset,y-1+yOffset,gridXSize, gridYSize, f(array(x)(y)))
     }
   }
 

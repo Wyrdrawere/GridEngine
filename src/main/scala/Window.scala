@@ -8,7 +8,6 @@ import org.lwjgl.opengl.GL11._
 import org.lwjgl.system.MemoryStack._
 import org.lwjgl.system.MemoryUtil._
 
-
 object Window {
   def main(args: Array[String]): Unit = {
     new Window().run()
@@ -81,9 +80,7 @@ class Window {
     GL.createCapabilities
     glClearColor(1.0f, 1.0f, 1.0f, 0.0f)
 
-    val level = Level.RandomLevel(50,50,120)
-    val tileSet = Tile.Sprite.TextureToTileSet(TextureLoad("src/resources/Tileset/basictiles.png"),128,240,8,15)
-    var state = Overworld(level, tileSet, (0,0), 5)
+    var state = Overworld.testWorld
 
     while ( {
       !glfwWindowShouldClose(window)
