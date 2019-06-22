@@ -20,7 +20,7 @@ case class Overworld
     if(inputReady) {
       val nextSprite: PlayerSprite = playerSprite.simulate(deltaTime, input)
       input match {
-        case W if zoom >= 1 => newState.copy(zoom = zoom-1)
+        case W if zoom >= 2 => newState.copy(zoom = zoom-1)
         case S => newState.copy(zoom = zoom +1)
         case Up => newState.copy(playerSprite = nextSprite, scroll = ScrollY(-1), inputReady = false)
         case Down => newState.copy(playerSprite = nextSprite, scroll = ScrollY(1), inputReady = false)
