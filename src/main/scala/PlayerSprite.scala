@@ -34,15 +34,15 @@ case class PlayerSprite
 }
 
 object PlayerSprite {
-  val FF1_Sprites = PlayerSprite(
+  def FF1_PlayerSprite(job: Int) = PlayerSprite(
     Tile.Sprite.TextureToTileSet(TextureLoad("src/resources/Sprite/ff1-classes.png"), 972, 432, 27, 12),
     Map(
-      WalkUp -> List(34, 46),
-      WalkDown -> List(10, 22),
-      WalkLeft -> List(58, 70),
-      WalkRight -> List(82, 94)
+      WalkUp -> List(27*job+2, 27*job+3),
+      WalkDown -> List(27*job, 27*job+1),
+      WalkLeft -> List(27*job+4, 27*job+5),
+      WalkRight -> List(27*job+6, 27*job+7)
     ),
-    10
+    27*job
   )
 
   sealed trait SpriteMode

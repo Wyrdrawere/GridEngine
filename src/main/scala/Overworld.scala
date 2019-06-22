@@ -68,10 +68,10 @@ case class Overworld
 
 object Overworld {
 
-  def testWorld = Overworld(
-    Level.RandomLevel(50,50,120),
+  def testWorld(level: Level) = Overworld(
+    level,
     Tile.Sprite.TextureToTileSet(TextureLoad("src/resources/Tileset/basictiles.png"),128,240,8,15),
-    PlayerSprite.FF1_Sprites,
+    PlayerSprite.FF1_PlayerSprite(10),
     (0,0),
     5,
     Stay,

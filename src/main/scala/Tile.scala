@@ -84,7 +84,7 @@ object Tile {
       var spriteMap: Map[Int, Sprite] = Map.empty
       for(x <- 0 until xAmount; y <- 0 until yAmount) {
         spriteMap = spriteMap.updated(
-          x*yAmount+y,
+          y*xAmount+x,
           Sprite(
             texture.id,
             x.toFloat/xAmount.toFloat,

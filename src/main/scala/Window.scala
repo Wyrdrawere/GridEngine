@@ -80,7 +80,7 @@ class Window {
     GL.createCapabilities
     glClearColor(1.0f, 1.0f, 1.0f, 0.0f)
 
-    var state = Overworld.testWorld
+    var state = Overworld.testWorld(Level.TestDungeon)
 
     while ( {
       !glfwWindowShouldClose(window)
