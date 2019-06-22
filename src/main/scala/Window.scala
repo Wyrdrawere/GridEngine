@@ -90,6 +90,7 @@ class Window {
 
       if (deltaTime > 1000f/Config.fps) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+
         state = state.simulate(deltaTime, lastInput)
         state.render()
 
