@@ -62,25 +62,8 @@ object Tile {
       spriteMap
     }
 
-    def Tileset: Texture = TextureLoad("src/resources/Tileset/basictiles.png")
-    def g0: Sprite = Sprite(Tileset.id, 3.0f*16.0f/128.0f, 4.0f*16.0f/128.0f, 1.0f*16.0f/240.0f, 2.0f*16.0f/240.0f)
-    def g1: Sprite = Sprite(Tileset.id, 4.0f*16.0f/128.0f, 5.0f*16.0f/128.0f, 1.0f*16.0f/240.0f, 2.0f*16.0f/240.0f)
-    def g2: Sprite = Sprite(Tileset.id, 0.0f*16.0f/128.0f, 1.0f*16.0f/128.0f, 8.0f*16.0f/240.0f, 9.0f*16.0f/240.0f)
-    def g3: Sprite = Sprite(Tileset.id, 1.0f*16.0f/128.0f, 2.0f*16.0f/128.0f, 8.0f*16.0f/240.0f, 9.0f*16.0f/240.0f)
-    def tileSetMap: Map[Int, Sprite] = {
-      var spriteMap: Map[Int, Sprite] = Map.empty
-      var sprite = g1
-      spriteMap = spriteMap.updated(0, sprite)
-      sprite = g0
-      spriteMap = spriteMap.updated(1, sprite)
-      sprite = g2
-      spriteMap = spriteMap.updated(2, sprite)
-      sprite = g3
-      spriteMap = spriteMap.updated(3, sprite)
-      spriteMap
-    }
-
     def TextureToTileSet(texture: Texture, width: Int, height: Int, xAmount: Int, yAmount: Int): Map[Int, Sprite] = {
+      //todo: amount -> width
       var spriteMap: Map[Int, Sprite] = Map.empty
       for(x <- 0 until xAmount; y <- 0 until yAmount) {
         spriteMap = spriteMap.updated(

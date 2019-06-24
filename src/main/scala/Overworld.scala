@@ -10,7 +10,7 @@ case class Overworld
   pos: (Int,Int),
   zoom: Int,
   scroll: Scroll,
-  inputReady: Boolean
+  inputReady: Boolean //todo: stateful def?
 ) extends Stateful {
 
   override def simulate(deltaTime: Long, input: Input): Overworld = {
@@ -71,7 +71,7 @@ object Overworld {
   def testWorld(level: Level) = Overworld(
     level,
     Tile.Sprite.TextureToTileSet(TextureLoad("src/resources/Tileset/basictiles.png"),128,240,8,15),
-    PlayerSprite.FF1_PlayerSprite(10),
+    PlayerSprite.FF1_PlayerSprite(6),
     (0,0),
     5,
     Stay,

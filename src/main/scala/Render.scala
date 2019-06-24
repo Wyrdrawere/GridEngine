@@ -33,34 +33,28 @@ object Render {
   }
 
   def Rect(xPos: Float, yPos: Float, xSize: Float, ySize: Float, sprite: Sprite): Unit = {
-    val u = sprite.minX
-    val u2 = sprite.maxX
-    val v = sprite.minY
-    val v2 = sprite.maxY
     glEnable(GL_BLEND)
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
     TextureLoad.bind(sprite.id)
-    glColor4f(1f,1f,1f,1f)
-    val x = gridXSize/windowWidth
-    val y = gridYSize/windowHeight
+    glColor3f(1f,1f,1f)
     glBegin(GL_POLYGON)
-    glTexCoord2f(u2, v2)
+    glTexCoord2f(sprite.maxX, sprite.maxY)
     glVertex3d(-1.0 + 2*xPos/windowWidth, -1.0 + 2*yPos/windowHeight, 0)
-    glTexCoord2f(u, v2)
+    glTexCoord2f(sprite.minX, sprite.maxY)
     glVertex3d(-1.0 + 2*xPos/windowWidth + 2*xSize/windowWidth, -1.0 + 2*yPos/windowHeight, 0)
-    glTexCoord2f(u, v)
+    glTexCoord2f(sprite.minX, sprite.minY)
     glVertex3d(-1.0 + 2*xPos/windowWidth + 2*xSize/windowWidth, -1.0 + 2*yPos/windowHeight + 2*ySize/windowHeight, 0)
-    glTexCoord2f(u2, v)
+    glTexCoord2f(sprite.maxX, sprite.minY)
     glVertex3d(-1.0 + 2*xPos/windowWidth, -1.0 + 2*yPos/windowHeight + 2*ySize/windowHeight, 0)
     glEnd()
     glDisable(GL_BLEND)
   }
 
   def RectG(gridX: Float, gridY: Float, gridXUnit: Float, gridYUnit: Float, tile: Tile): Unit = {
-    val x = gridX.toFloat
-    val y = gridY.toFloat
-    val xu = gridXUnit.toFloat
-    val yu = gridYUnit.toFloat
+    val x = gridX
+    val y = gridY
+    val xu = gridXUnit
+    val yu = gridYUnit
     tile match {
       case c@Color(_, _, _) => Rect(x*xu, y*yu, xu, yu, c)
       case t@Texture(_) => Rect(x*xu, y*yu, xu, yu, t)
