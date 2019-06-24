@@ -2,7 +2,6 @@ case class Sprite(id: Int, minX: Float, maxX: Float, minY: Float, maxY: Float) e
 
 object Sprite {
   def TextureToTileSet(texture: Texture, width: Int, height: Int, tileWidth: Int, tileHeight: Int): Map[Int, Sprite] = {
-    //todo: amount -> width
     var xAmount = width/tileWidth
     var yAmount = height/tileHeight
     var spriteMap: Map[Int, Sprite] = Map.empty
