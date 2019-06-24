@@ -5,12 +5,13 @@ import org.lwjgl.opengl.GL12._
 import org.lwjgl.BufferUtils
 import java.io.FileInputStream
 
-import Tile.Texture
 import Util.PNGDecoder
 
-object TextureLoad {
+case class Texture(id: Int) extends Drawable
 
-  def apply(path: String): Texture = {
+object Texture {
+
+  def load(path: String): Texture = {
 
     val img = new FileInputStream(new File(path))
     val dec = new PNGDecoder(img)

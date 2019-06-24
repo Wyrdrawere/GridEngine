@@ -1,6 +1,5 @@
 import Input.{Down, Left, Right, Up}
 import PlayerSprite.{SpriteMode, WalkDown, WalkLeft, WalkRight, WalkUp}
-import Tile.Sprite
 
 case class PlayerSprite
 (
@@ -35,7 +34,7 @@ case class PlayerSprite
 
 object PlayerSprite {
   def FF1_PlayerSprite(job: Int) = PlayerSprite(
-    Tile.Sprite.TextureToTileSet(TextureLoad("src/resources/Sprite/ff1-classes.png"), 972, 432, 27, 12),
+    Sprite.TextureToTileSet(Texture.load("src/resources/Sprite/ff1-classes.png"), 972, 432, 36, 36),
     Map(
       WalkUp -> List(27*job+2, 27*job+3),
       WalkDown -> List(27*job, 27*job+1),

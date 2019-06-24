@@ -1,6 +1,5 @@
 import Input.{Down, Left, Right, S, Up, W}
 import Scroll.{ScrollX, ScrollY, Stay}
-import Tile.Sprite
 
 case class Overworld
 (
@@ -70,7 +69,7 @@ object Overworld {
 
   def testWorld(level: Level) = Overworld(
     level,
-    Tile.Sprite.TextureToTileSet(TextureLoad("src/resources/Tileset/basictiles.png"),128,240,8,15),
+    Sprite.TextureToTileSet(Texture.load("src/resources/Tileset/basictiles.png"),128,240,16,16),
     PlayerSprite.FF1_PlayerSprite(6),
     (0,0),
     5,

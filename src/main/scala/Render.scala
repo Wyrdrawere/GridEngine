@@ -1,6 +1,5 @@
 import Config.{windowWidth, windowHeight}
 import org.lwjgl.opengl.GL11._
-import Tile._
 
 object Render {
 
@@ -8,7 +7,7 @@ object Render {
   var gridYSize: Float = 0
 
   def Rect(xPos: Float, yPos: Float, xSize: Float, ySize: Float, color: Color): Unit = {
-    glColor3f(color.red, color.green, color.blue)
+    glColor4f(color.red, color.green, color.blue, color.alpha)
     glBegin(GL_POLYGON)
     glVertex3d(-1.0 + 2*xPos/windowWidth, -1.0 + 2*yPos/windowHeight, 0)
     glVertex3d(-1.0 + 2*xPos/windowWidth + 2*xSize/windowWidth, -1.0 + 2*yPos/windowHeight, 0)
@@ -18,7 +17,7 @@ object Render {
   }
 
   def Rect(xPos: Float, yPos: Float, xSize: Float, ySize: Float, tex: Texture): Unit = {
-    TextureLoad.bind(tex.id)
+    Texture.bind(tex.id)
     glColor3f(1f,1f,1f)
     glBegin(GL_POLYGON)
     glTexCoord2f(0, 0)
@@ -35,7 +34,7 @@ object Render {
   def Rect(xPos: Float, yPos: Float, xSize: Float, ySize: Float, sprite: Sprite): Unit = {
     glEnable(GL_BLEND)
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-    TextureLoad.bind(sprite.id)
+    Texture.bind(sprite.id)
     glColor3f(1f,1f,1f)
     glBegin(GL_POLYGON)
     glTexCoord2f(sprite.maxX, sprite.maxY)
@@ -50,19 +49,20 @@ object Render {
     glDisable(GL_BLEND)
   }
 
-  def RectG(gridX: Float, gridY: Float, gridXUnit: Float, gridYUnit: Float, tile: Tile): Unit = {
+  def RectG(gridX: Float, gridY: Float, gridXUnit: Float, gridYUnit: Float, tile: Drawable): Unit = {
     val x = gridX
     val y = gridY
     val xu = gridXUnit
     val yu = gridYUnit
     tile match {
-      case c@Color(_, _, _) => Rect(x*xu, y*yu, xu, yu, c)
+      case c@Color(_, _, _, _) => Rect(x*xu, y*yu, xu, yu, c)
       case t@Texture(_) => Rect(x*xu, y*yu, xu, yu, t)
       case s@Sprite(_, _, _, _, _) => Rect(x*xu, y*yu, xu, yu, s)
+      case _ =>
     }
   }
 
-  def renderArrayFill(array: Array[Array[Int]], f: Map[Int, Tile]): Unit = { //todo: inner arrays have to all be the same length
+  def renderArrayFill(array: Array[Array[Int]], f: Map[Int, Drawable]): Unit = { //todo: inner arrays have to all be the same length
     gridXSize = windowWidth.toFloat/(array.length-2)
     gridYSize = windowHeight.toFloat/(array(0).length-2)
     for (x <- 0 until array.length-1; y <- 1 until array(x).length-1) {
@@ -70,7 +70,7 @@ object Render {
     }
   }
 
-  def renderArrayFill(array: Array[Array[Int]], f: Map[Int, Tile], xOffset: Float, yOffset: Float): Unit = {
+  def renderArrayFill(array: Array[Array[Int]], f: Map[Int, Drawable], xOffset: Float, yOffset: Float): Unit = {
     gridXSize = windowWidth.toFloat/(array.length-2)
     gridYSize = windowHeight.toFloat/(array(0).length-2)
     for (x <- 0 until array.length; y <- 0 until array(x).length) {
