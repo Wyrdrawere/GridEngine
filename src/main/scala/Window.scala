@@ -41,7 +41,7 @@ class Window {
     glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE)
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE)
 
-    window = glfwCreateWindow(Config.windowWidth, Config.windowHeight, Config.windowName, NULL, NULL)
+    window = glfwCreateWindow(Config.windowSize.xi, Config.windowSize.yi, Config.windowName, NULL, NULL)
     if (window == NULL) throw new RuntimeException("Failed to create the GLFW window")
 
     glfwSetKeyCallback(window, (window: Long, key: Int, scancode: Int, action: Int, mods: Int) => {
@@ -80,16 +80,29 @@ class Window {
     GL.createCapabilities
     glClearColor(1.0f, 1.0f, 1.0f, 0.0f)
 
-    var state = Overworld.testWorld(Level.TestDungeon)
+    //var state = Overworld.testWorld(Level.TestDungeon)
+
+    val test = Array.ofDim[Int](50,50)
+    for(x <- test.indices; y <- test(x).indices) {
+      test(x)(y) = 0
+    }
+
+    val testMap = Sprite.TextureToTileSet(Texture.load("src/resources/Tileset/basictiles.png"),128,240,16,16)
 
     while ( {
       !glfwWindowShouldClose(window)
     }) {
-      val thisTime = System.currentTimeMillis()
+
+      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+      Render.renderArrayFill(test, testMap)
+      Render.centerDiamond()
+
+      /*
+      val thisTime = System.currentTimeMillis() //todo: wrap this in a function or something
       val deltaTime = thisTime-lastTime
 
       if (deltaTime > 1000f/Config.fps) {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+
 
         state = state.simulate(deltaTime, lastInput)
         state.render()
@@ -97,7 +110,7 @@ class Window {
         lastTime = thisTime
         lastInput = None
       }
-
+      */
 
 
       glfwSwapBuffers(window)
