@@ -39,7 +39,7 @@ object Texture {
     Texture(id)
   }
 
-  def bind(tex: Int): Unit = {
-    glBindTexture(GL_TEXTURE_2D, tex)
+  def bind(id: Int): Unit = {
+    glBindTexture(GL_TEXTURE_2D, id)
   }
 }

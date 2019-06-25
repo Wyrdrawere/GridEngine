@@ -42,7 +42,7 @@ case class Overworld
 
   private def everyFrame(deltaTime: Long): Overworld = {
 
-    //todo: better, but still not enough
+    //todo: better, but still not enough. Might not belong here
     scroll match {
       case ScrollX(x) => {
         val nextScroll = scroll.increment
