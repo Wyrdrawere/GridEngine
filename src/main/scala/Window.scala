@@ -82,19 +82,21 @@ class Window {
 
     //var state = Overworld.testWorld(Level.TestDungeon)
 
-    val test = Array.ofDim[Int](50,50)
+    val test = Array.ofDim[Int](5,5)
     for(x <- test.indices; y <- test(x).indices) {
       test(x)(y) = 0
     }
 
     val testMap = Sprite.TextureToTileSet(Texture.load("src/resources/Tileset/basictiles.png"),128,240,16,16)
 
+    val testGrid = Grid(test, testMap)
+
     while ( {
       !glfwWindowShouldClose(window)
     }) {
 
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-      Render.renderArrayFill(test, testMap)
+      testGrid.drawRectangle(Vector2(0,0), Vector2(400,400))
       Render.centerDiamond()
 
       /*

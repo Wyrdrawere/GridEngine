@@ -7,19 +7,20 @@ import java.io.FileInputStream
 
 import Util.PNGDecoder
 
-case class Texture(id: Int) extends Drawable {
-  override def drawRectRelative(position: Vector2, size: Vector2, windowSize: Vector2): Unit = {
+case class Texture(id: Int) extends Drawable
+{
+  override def drawRectangle(position: Vector2, size: Vector2, parentSize: Vector2): Unit = {
     Texture.bind(id)
     glColor3f(1f,1f,1f)
     glBegin(GL_POLYGON)
     glTexCoord2f(0, 0)
-    glVertex3d(-1.0 + 2*position.x/windowSize.x, -1.0 + 2*position.y/windowSize.y, 0)
+    glVertex3d(-1.0 + 2*position.x/parentSize.x, -1.0 + 2*position.y/parentSize.y, 0)
     glTexCoord2f(1, 0)
-    glVertex3d(-1.0 + 2*(position.x+size.x)/windowSize.x, -1.0 + 2*position.y/windowSize.y, 0)
+    glVertex3d(-1.0 + 2*(position.x+size.x)/parentSize.x, -1.0 + 2*position.y/parentSize.y, 0)
     glTexCoord2f(1, 1)
-    glVertex3d(-1.0 + 2*(position.x+size.x)/windowSize.x, -1.0 + 2*(position.y+size.y)/windowSize.y, 0)
+    glVertex3d(-1.0 + 2*(position.x+size.x)/parentSize.x, -1.0 + 2*(position.y+size.y)/parentSize.y, 0)
     glTexCoord2f(0, 1)
-    glVertex3d(-1.0 + 2*position.x/windowSize.x, -1.0 + 2*(position.y+size.y)/windowSize.y, 0)
+    glVertex3d(-1.0 + 2*position.x/parentSize.x, -1.0 + 2*(position.y+size.y)/parentSize.y, 0)
     glEnd()
   }
 }

@@ -1,20 +1,28 @@
 import org.lwjgl.opengl.GL11.{GL_BLEND, GL_ONE_MINUS_SRC_ALPHA, GL_POLYGON, GL_SRC_ALPHA, glBegin, glBlendFunc, glColor3f, glDisable, glEnable, glEnd, glTexCoord2f, glVertex3d}
 
-case class Sprite(id: Int, minX: Float, maxX: Float, minY: Float, maxY: Float) extends Drawable {
-  override def drawRectRelative(position: Vector2, size: Vector2, windowSize: Vector2): Unit = {
+case class Sprite
+(
+  id: Int,
+  minX: Float,
+  maxX: Float,
+  minY: Float,
+  maxY: Float
+) extends Drawable
+{
+  override def drawRectangle(position: Vector2, size: Vector2, parentSize: Vector2): Unit = {
     glEnable(GL_BLEND)
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
     Texture.bind(id)
     glColor3f(1f,1f,1f)
     glBegin(GL_POLYGON)
     glTexCoord2f(maxX, maxY)
-    glVertex3d(-1.0 + 2*position.x/windowSize.x, -1.0 + 2*position.y/windowSize.y, 0)
+    glVertex3d(-1.0 + 2*position.x/parentSize.x, -1.0 + 2*position.y/parentSize.y, 0)
     glTexCoord2f(minX, maxY)
-    glVertex3d(-1.0 + 2*(position.x+size.x)/windowSize.x, -1.0 + 2*position.y/windowSize.y, 0)
+    glVertex3d(-1.0 + 2*(position.x+size.x)/parentSize.x, -1.0 + 2*position.y/parentSize.y, 0)
     glTexCoord2f(minX, minY)
-    glVertex3d(-1.0 + 2*(position.x+size.x)/windowSize.x, -1.0 + 2*(position.y+size.y)/windowSize.y, 0)
+    glVertex3d(-1.0 + 2*(position.x+size.x)/parentSize.x, -1.0 + 2*(position.y+size.y)/parentSize.y, 0)
     glTexCoord2f(maxX, minY)
-    glVertex3d(-1.0 + 2*position.x/windowSize.x, -1.0 + 2*(position.y+size.y)/windowSize.y, 0)
+    glVertex3d(-1.0 + 2*position.x/parentSize.x, -1.0 + 2*(position.y+size.y)/parentSize.y, 0)
     glEnd()
     glDisable(GL_BLEND)
   }

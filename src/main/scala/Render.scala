@@ -13,7 +13,7 @@ object Render {
     val y = gridY
     val xu = gridXUnit
     val yu = gridYUnit
-    tile.drawRectRelative(Vector2(x*xu, y*yu), Vector2(xu, yu), Vector2(windowWidth.toFloat*2f, windowHeight.toFloat*2f))
+    tile.drawRectangle(Vector2(x*xu, y*yu), Vector2(xu, yu), Vector2(windowWidth.toFloat*2f, windowHeight.toFloat*2f))
   }
 
   def renderArrayFill(array: Array[Array[Int]], f: Map[Int, Drawable]): Unit = { //todo: inner arrays have to all be the same length
@@ -44,6 +44,6 @@ object Render {
   }
 
   def centerSprite(sprite: Sprite): Unit = {
-    sprite.drawRectRelative(Vector2((windowWidth-gridXSize)/2,(windowHeight-gridYSize)/2),Vector2(gridXSize,gridYSize))
+    sprite.drawRectangle(Vector2((windowWidth-gridXSize)/2,(windowHeight-gridYSize)/2),Vector2(gridXSize,gridYSize))
   }
 }
