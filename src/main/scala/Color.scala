@@ -1,4 +1,7 @@
+import org.lwjgl.opengl.GL11.{GL_POLYGON, glBegin, glColor4f, glEnd, glVertex3d}
+
 case class Color(red: Float, green: Float, blue: Float, alpha: Float) extends Drawable {
+
   def translucent(a: Float): Color = this.copy(alpha = a)
 }
 

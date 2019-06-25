@@ -3,6 +3,7 @@ import org.lwjgl.opengl.GL11._
 
 object Render {
 
+  //todo: put this somewhere else, cant be global
   var gridXSize: Float = 0
   var gridYSize: Float = 0
 
