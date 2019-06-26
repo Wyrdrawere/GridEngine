@@ -33,6 +33,7 @@ case class PlayerSprite
 }
 
 object PlayerSprite {
+  /*
   def FF1_PlayerSprite(job: Int) = PlayerSprite(
     Sprite.TextureToTileSet(Texture.load("src/resources/Sprite/ff1-classes.png"), 972, 432, 36, 36),
     Map(
@@ -43,6 +44,8 @@ object PlayerSprite {
     ),
     27*job
   )
+
+   */
 
   sealed trait SpriteMode
   case object WalkUp extends SpriteMode

@@ -9,27 +9,27 @@ case class Sprite
   maxY: Float
 ) extends Drawable
 {
-  override def drawRectangle(position: Vector2, size: Vector2, parentSize: Vector2): Unit = {
+  override def drawRectangle(size: Vector2, position: Vector2): Unit = {
     glEnable(GL_BLEND)
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
     Texture.bind(id)
     glColor3f(1f,1f,1f)
     glBegin(GL_POLYGON)
     glTexCoord2f(maxX, maxY)
-    glVertex3d(-1.0 + 2*position.x/parentSize.x, -1.0 + 2*position.y/parentSize.y, 0)
+    glVertex3d(-1.0 + 2*position.x, -1.0 + 2*position.y, 0)
     glTexCoord2f(minX, maxY)
-    glVertex3d(-1.0 + 2*(position.x+size.x)/parentSize.x, -1.0 + 2*position.y/parentSize.y, 0)
+    glVertex3d(-1.0 + 2*(position.x+size.x), -1.0 + 2*position.y, 0)
     glTexCoord2f(minX, minY)
-    glVertex3d(-1.0 + 2*(position.x+size.x)/parentSize.x, -1.0 + 2*(position.y+size.y)/parentSize.y, 0)
+    glVertex3d(-1.0 + 2*(position.x+size.x), -1.0 + 2*(position.y+size.y), 0)
     glTexCoord2f(maxX, minY)
-    glVertex3d(-1.0 + 2*position.x/parentSize.x, -1.0 + 2*(position.y+size.y)/parentSize.y, 0)
+    glVertex3d(-1.0 + 2*position.x, -1.0 + 2*(position.y+size.y), 0)
     glEnd()
     glDisable(GL_BLEND)
   }
 }
 
 object Sprite {
-  def TextureToTileSet(texture: Texture, width: Int, height: Int, tileWidth: Int, tileHeight: Int): Map[Int, Sprite] = {
+  def TextureToTileSet(texture: Texture, width: Int, height: Int, tileWidth: Int, tileHeight: Int): Map[Int, Drawable] = {
     var xAmount = width/tileWidth
     var yAmount = height/tileHeight
     var spriteMap: Map[Int, Sprite] = Map.empty

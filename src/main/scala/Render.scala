@@ -13,7 +13,7 @@ object Render {
     val y = gridY
     val xu = gridXUnit
     val yu = gridYUnit
-    tile.drawRectangle(Vector2(x*xu, y*yu), Vector2(xu, yu), Vector2(windowWidth.toFloat*2f, windowHeight.toFloat*2f))
+    tile.drawRectangle(Vector2(xu, yu), Vector2(x*xu, y*yu))
   }
 
   def renderArrayFill(array: Array[Array[Int]], f: Map[Int, Drawable]): Unit = { //todo: inner arrays have to all be the same length
@@ -40,10 +40,9 @@ object Render {
     glVertex3d(0, gridYSize/windowHeight, 0)
     glVertex3d(gridXSize/windowWidth, 0, 0)
     glEnd()
-    println(gridXSize)
   }
 
   def centerSprite(sprite: Sprite): Unit = {
-    sprite.drawRectangle(Vector2((windowWidth-gridXSize)/2,(windowHeight-gridYSize)/2),Vector2(gridXSize,gridYSize))
+    sprite.drawRectangle(Vector2(gridXSize,gridYSize), Vector2((windowWidth-gridXSize)/2,(windowHeight-gridYSize)/2))
   }
 }

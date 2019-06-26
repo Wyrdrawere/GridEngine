@@ -82,22 +82,23 @@ class Window {
 
     //var state = Overworld.testWorld(Level.TestDungeon)
 
-    val test = Array.ofDim[Int](5,5)
+    val test = Array.ofDim[Int](11,11)
     for(x <- test.indices; y <- test(x).indices) {
-      test(x)(y) = 0
+      test(x)(y) = (x+y)%2
     }
 
-    val testMap = Sprite.TextureToTileSet(Texture.load("src/resources/Tileset/basictiles.png"),128,240,16,16)
+    var testMap = Sprite.TextureToTileSet(Texture.load("src/resources/Tileset/basictiles.png"),128,240,16,16)
 
-    val testGrid = Grid(test, testMap)
+
+
 
     while ( {
       !glfwWindowShouldClose(window)
     }) {
 
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-      testGrid.drawRectangle(Vector2(0,0), Vector2(400,400))
-      Render.centerDiamond()
+      Drawable.drawGrid(test, testMap)
+      Drawable.drawOnGrid(Color.Red, Vector2(5f,5f), Vector2(test.length-2, test(0).length-2))
 
       /*
       val thisTime = System.currentTimeMillis() //todo: wrap this in a function or something

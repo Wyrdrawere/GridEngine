@@ -10,13 +10,13 @@ case class Color
 {
   def translucent(a: Float): Color = this.copy(alpha = a)
 
-  override def drawRectangle(position: Vector2, size: Vector2, parentSize: Vector2): Unit = {
+  override def drawRectangle(size: Vector2, position: Vector2): Unit = {
     glColor4f(red, green, blue, alpha)
     glBegin(GL_POLYGON)
-    glVertex3d(-1.0 + 2*position.x/parentSize.x, -1.0 + 2*position.y/parentSize.y, 0)
-    glVertex3d(-1.0 + 2*(position.x+size.x)/parentSize.x, -1.0 + 2*position.y/parentSize.y, 0)
-    glVertex3d(-1.0 + 2*(position.x+size.x)/parentSize.x, -1.0 + 2*(position.y+size.y)/parentSize.y, 0)
-    glVertex3d(-1.0 + 2*position.x/parentSize.x, -1.0 + 2*(position.y+size.y)/parentSize.y, 0)
+    glVertex3d(-1.0 + 2*position.x, -1.0 + 2*position.y, 0)
+    glVertex3d(-1.0 + 2*(position.x+size.x), -1.0 + 2*position.y, 0)
+    glVertex3d(-1.0 + 2*(position.x+size.x), -1.0 + 2*(position.y+size.y), 0)
+    glVertex3d(-1.0 + 2*position.x, -1.0 + 2*(position.y+size.y), 0)
     glEnd()
   }
 }

@@ -67,6 +67,7 @@ case class Overworld
 
 object Overworld {
 
+  /*
   def testWorld(level: Level) = Overworld(
     level,
     Sprite.TextureToTileSet(Texture.load("src/resources/Tileset/basictiles.png"),128,240,16,16),
@@ -75,5 +76,7 @@ object Overworld {
     5,
     Stay,
     true)
+
+   */
 
 }
