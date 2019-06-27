@@ -1,7 +1,7 @@
 class Grid
 (
-  val size: Vector2 = Config.windowSize,
-  val position: Vector2 = Vector2(0,0),
+  val relativeSize: Vector2 = Vector2(1,1),
+  val relativePosition: Vector2 = Vector2(0,0),
 
 ) {
   private var dimensions: Vector2 = Vector2(0,0)
@@ -10,8 +10,8 @@ class Grid
 
   val windowSize: Vector2 = Config.windowSize
 
-  def gridUnit: Vector2 = size/:(dimensions*:windowSize)
-  def gridTranslation: Vector2 = position/:size
+  def gridUnit: Vector2 = relativeSize/:dimensions
+  def gridTranslation: Vector2 = relativePosition/:gridUnit
 
   def drawGrid(content: Array[Array[Int]], tileSet: Map[Int,Drawable], offset: Vector2 = Vector2(0,0)): Unit = {
     dimensions = Vector2(content.length-2, content(0).length-2)

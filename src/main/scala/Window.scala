@@ -94,7 +94,8 @@ class Window {
 
     var testMap = Sprite.TextureToTileSet(Texture.load("src/resources/Tileset/basictiles.png"),128,240,16,16)
 
-    val g = new Grid
+    val g = new Grid(relativeSize = Vector2(0.5f),relativePosition = Vector2(0.5f))
+    val g2 = new Grid
 
     var c = 0
 
@@ -104,11 +105,10 @@ class Window {
 
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-      if(c < 1000) {
-        g.drawGrid(test, testMap)
-      } else {
-        g.drawGrid(test2, testMap)
-      }
+      g2.drawGrid(test2, testMap)
+      g.drawGrid(test, testMap)
+
+      g2.drawOnGrid(Color.Black, Vector2(0,0))
       g.drawOnGrid(Color.White, Vector2(5,5))
       g.drawOnCenter(Color.Pink)
 

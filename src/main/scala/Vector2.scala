@@ -12,3 +12,7 @@ case class Vector2(x: Float, y: Float) { //todo: refactor everything to use this
   def xi: Int = x.toInt
   def yi: Int = y.toInt
 }
+
+object Vector2 {
+  def apply(f: Float): Vector2 = Vector2(f,f)
+}
