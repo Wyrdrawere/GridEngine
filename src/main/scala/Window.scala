@@ -84,21 +84,38 @@ class Window {
 
     val test = Array.ofDim[Int](11,11)
     for(x <- test.indices; y <- test(x).indices) {
-      test(x)(y) = (x+y)%2
+      test(x)(y) = if((x+y)%2 == 0) 9 else 11
+    }
+
+    val test2 = Array.ofDim[Int](21,11)
+    for(x <- test2.indices; y <- test2(x).indices) {
+      test2(x)(y) = if((x+y)%2 == 0) 9 else 11
     }
 
     var testMap = Sprite.TextureToTileSet(Texture.load("src/resources/Tileset/basictiles.png"),128,240,16,16)
 
+    val g = new Grid
 
-
+    var c = 0
 
     while ( {
       !glfwWindowShouldClose(window)
     }) {
 
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-      Drawable.drawGrid(test, testMap)
-      Drawable.drawOnGrid(Color.Red, Vector2(5f,5f), Vector2(test.length-2, test(0).length-2))
+
+      if(c < 1000) {
+        g.drawGrid(test, testMap)
+      } else {
+        g.drawGrid(test2, testMap)
+      }
+      g.drawOnGrid(Color.White, Vector2(5,5))
+      g.drawOnCenter(Color.Pink)
+
+
+      c = c+1
+
+
 
       /*
       val thisTime = System.currentTimeMillis() //todo: wrap this in a function or something
