@@ -11,8 +11,14 @@ case class Vector2(x: Float, y: Float) { //todo: refactor everything to use this
 
   def xi: Int = x.toInt
   def yi: Int = y.toInt
+  def abs: Vector2 = Vector2(this.x.abs, this.y.abs)
 }
 
 object Vector2 {
   def apply(f: Float): Vector2 = Vector2(f,f)
+
+  val Up = Vector2(0,1)
+  val Down = Vector2(0,-1)
+  val Left = Vector2(-1,0)
+  val Right = Vector2(1,0)
 }

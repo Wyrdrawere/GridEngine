@@ -85,19 +85,30 @@ class Window {
     val test = Array.ofDim[Int](11,11)
     for(x <- test.indices; y <- test(x).indices) {
       test(x)(y) = if((x+y)%2 == 0) 9 else 11
+      if (x == 5 && y == 5) {
+        test(x)(y) = 22
+      }
+      if (x == 0) test(x)(y) = 21
     }
 
     val test2 = Array.ofDim[Int](21,11)
     for(x <- test2.indices; y <- test2(x).indices) {
       test2(x)(y) = if((x+y)%2 == 0) 9 else 11
+
+    }
+
+    val test3 = Array.ofDim[Int](21,11)
+    for(x <- test3.indices; y <- test3(x).indices) {
+      test3(x)(y) = 13
     }
 
     var testMap = Sprite.TextureToTileSet(Texture.load("src/resources/Tileset/basictiles.png"),128,240,16,16)
+    var testMap2 = Sprite.TextureToTileSet(Texture.load("src/resources/Sprite/ff1-classes.png"), 672, 432, 36, 36)
 
-    val g = new Grid(relativeSize = Vector2(0.5f),relativePosition = Vector2(0.5f))
-    val g2 = new Grid
+    val g = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0.25f))
+    val g2 = new Grid(relativeSize = Vector2(0.25f,1), relativePosition = Vector2(0.75f,0))
+    val g3 = new Grid(relativeSize = Vector2(1, 0.25f))
 
-    var c = 0
 
     while ( {
       !glfwWindowShouldClose(window)
@@ -105,16 +116,8 @@ class Window {
 
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-      g2.drawGrid(test2, testMap)
-      g.drawGrid(test, testMap)
-
-      g2.drawOnGrid(Color.Black, Vector2(0,0))
-      g.drawOnGrid(Color.White, Vector2(5,5))
-      g.drawOnCenter(Color.Pink)
-
-
-      c = c+1
-
+      g.drawGrid(test, testMap, offset = Vector2(+0.5f, -0.5f))
+      g.drawOnCenter(Color.White)
 
 
       /*
