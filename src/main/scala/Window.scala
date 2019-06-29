@@ -88,7 +88,7 @@ class Window {
       if (x == 5 && y == 5) {
         test(x)(y) = 22
       }
-      if (x == 0) test(x)(y) = 21
+      if (x == 10) test(x)(y) = 27
     }
 
     val test2 = Array.ofDim[Int](21,11)
@@ -116,7 +116,7 @@ class Window {
 
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-      g.drawGrid(test, testMap, offset = Vector2(+0.5f, -0.5f))
+      g.drawGrid(test, testMap, offset = Vector2(-0.5f, -0.5f))
       g.drawOnCenter(Color.White)
 
 

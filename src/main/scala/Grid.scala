@@ -18,48 +18,57 @@ class Grid
   def drawGrid(content: Array[Array[Int]], tileSet: Map[Int, Drawable], offset: Vector2 = Vector2(0,0)): Unit = {
     dimensions = Vector2(content.length, content(0).length)
     for (x <- indicesX; y <- indicesY) {
-      var shouldDraw = true
       var size = gridUnit
       var position = gridTranslation + offset + Vector2(x,y)
       if(isAlwaysViewable(x,y)) {
-
+        tileSet(content(x)(y)).drawRectangle(size, gridUnit*:position)
       }
       else {
+        var edge = (false, false)
+        var shouldDraw = false
         size = size *: (Vector2(1)-(Vector2(if (x > 0 && x < indicesX.max) 0 else 1, if (y > 0 && y < indicesY.max) 0 else 1)*:offset.abs))
         (x, y) match {
           case (0, 0) => {
-            shouldDraw = offset.x > 0 && offset.y > 0
+            edge = (true, true)
             position = position + offset.abs
+            shouldDraw = offset.x > 0 && offset.y > 0
           }
           case (u, 0) if u == indicesX.max => {
-            shouldDraw = offset.x < 0 && offset.y > 0
+            edge = (true, true)
             position = position + (offset.abs*:Vector2.Up)
+            shouldDraw = offset.x < 0 && offset.y > 0
           }
           case (0, v) if v == indicesY.max => {
-            shouldDraw = offset.x > 0 && offset.y < 0
+            edge = (true, true)
             position = position + (offset.abs*:Vector2.Right)
+            shouldDraw = offset.x > 0 && offset.y < 0
           }
           case (u, v) if u == indicesX.max && v == indicesY.max => {
+            edge = (true, true)
             shouldDraw = offset.x < 0 && offset.y < 0
           }
           case (0, _) => {
-            shouldDraw = offset.x > 0
+            edge = (true, false)
             position = position + (offset.abs*:Vector2.Right)
+            shouldDraw = offset.x > 0
           }
           case (_, 0) => {
-            shouldDraw = offset.y > 0
+            edge = (false, true)
             position = position + (offset.abs*:Vector2.Up)
+            shouldDraw = offset.y > 0
           }
           case (u, _) if u == indicesX.max => {
+            edge = (true, false)
             shouldDraw = offset.x < 0
           }
           case (_, v) if v == indicesY.max => {
+            edge = (false, true)
             shouldDraw = offset.y < 0
           }
         }
-      }
-      if (shouldDraw) {
-        tileSet(content(x)(y)).drawRectangle(size, gridUnit*:position)
+        if (shouldDraw) {
+          tileSet(content(x)(y)).drawRectanglePartial(size, gridUnit*:position, offset, edge)
+        }
       }
     }
   }

@@ -1,4 +1,5 @@
 trait Drawable {
   def drawRectangle(size: Vector2, position: Vector2): Unit
-  def drawOnGridPartial(gridUnit: Vector2, gridPosition: Vector2, offset: Vector2, cutoff: Vector2): Unit = drawRectangle(gridUnit, gridPosition)
+  def drawRectanglePartial(size: Vector2, position: Vector2, offset: Vector2, edge: (Boolean, Boolean)): Unit = drawRectangle(size, position)
+  //todo: edge is ugly, need better way
 }
