@@ -130,7 +130,7 @@ class Grid
       case OuterNW => if (offset.x < 0 && offset.y > 0)
         Partial(
           offset.abs,
-          offset.abs,
+          Vector2(offset.abs.x, 0),
           (true, true))
         else Not
       case OuterNE => if (offset.x > 0 && offset.y > 0)
@@ -142,7 +142,7 @@ class Grid
       case OuterSW => if (offset.x < 0 && offset.y < 0)
         Partial(
           offset.abs,
-          Vector2(offset.x.abs, 0),
+          offset.abs,
           (true, true))
         else Not
       case OuterSE => if (offset.x > 0 && offset.y < 0)
@@ -171,22 +171,74 @@ class Grid
           Vector2(0, offset.y.abs),
           Vector2(0, offset.y.abs),
           (false, true))
-      case InnerNW => if (offset.x <= 0 && offset.y >= 0) Full else
+      case InnerNW => if (offset.x <= 0 && offset.y >= 0) Full
+      else if (offset.x <= 0)
+        Partial(
+          Vector2(0, offset.abs.y),
+          Vector2(0),
+          (true,true)
+        )
+      else if (offset.y >= 0)
+        Partial(
+          Vector2(offset.abs.x, 0),
+          Vector2(offset.abs.x, 0),
+          (true,true)
+        )
+      else
         Partial(
           offset.abs,
           Vector2(offset.abs.x,0),
           (true, true))
-      case InnerNE => if (offset.x >= 0 && offset.y >= 0) Full else
+      case InnerNE => if (offset.x >= 0 && offset.y >= 0) Full
+      else if (offset.x >= 0)
+        Partial(
+          Vector2(0,offset.y.abs),
+          Vector2(0),
+          (true,true)
+        )
+      else if (offset.y >= 0)
+        Partial(
+          Vector2(offset.x.abs, 0),
+          Vector2(0),
+          (true,true)
+        )
+        else
         Partial(
           offset.abs,
           Vector2(0),
           (true, true))
-      case InnerSW => if (offset.x <= 0 && offset.y <= 0) Full else
+      case InnerSW => if (offset.x <= 0 && offset.y <= 0) Full
+        else if (offset.y <= 0)
+        Partial(
+          Vector2(offset.abs.x, 0),
+          Vector2(offset.abs.x,0),
+          (true,true)
+        )
+        else if (offset.x <= 0)
+        Partial(
+          Vector2(0, offset.abs.y),
+          Vector2(0, offset.abs.y),
+          (true,true)
+        )
+        else
         Partial(
           offset.abs,
           offset.abs,
           (true, true))
-      case InnerSE =>if (offset.x >= 0 && offset.y <= 0) Full else
+      case InnerSE =>if (offset.x >= 0 && offset.y <= 0) Full
+        else if (offset.x >= 0)
+        Partial(
+          Vector2(0, offset.y.abs),
+          Vector2(0, offset.y.abs),
+          (true, true)
+        )
+        else if (offset.y <= 0)
+        Partial(
+          Vector2(offset.x.abs, 0),
+          Vector2(0),
+          (true,true)
+        )
+        else
         Partial(
           offset.abs,
           Vector2(0, offset.y.abs),

@@ -112,16 +112,17 @@ class Window {
     }) {
 
 
+      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+      g.drawGrid(test, testMap, offset = Vector2(-0.5f,-0.5f))
 
 
-
-
+/*
       val thisTime = System.currentTimeMillis() //todo: wrap this in a function or something
       val deltaTime = thisTime-lastTime
 
       if (deltaTime > 1000f/Config.fps) {
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+
         state = state.simulate(deltaTime, lastInput)
         state.render(g)
 
@@ -130,7 +131,7 @@ class Window {
       }
 
 
-
+ */
 
 
       glfwSwapBuffers(window)
