@@ -7,7 +7,6 @@ class Grid
 
 ) {
 
-  //todo: make offset work without breaking bounds
   private var dimensions: Vector2 = Vector2(0, 0)
 
   val windowSize: Vector2 = Config.windowSize
@@ -55,7 +54,7 @@ object Grid {
   sealed trait DrawMode
   case object Full extends DrawMode
   case object Not extends DrawMode
-  case class Partial(relSize: Vector2, positionShift: Vector2, edge: (Boolean, Boolean)) extends DrawMode
+  case class Partial(relSize: Vector2, positionShift: Vector2, edge: (Boolean, Boolean, Boolean)) extends DrawMode
 
   def positionToPositional(position: Vector2, maxIndices: Vector2): Positional = {
     (position.x, position.y) match {
@@ -80,47 +79,47 @@ object Grid {
     positional match {
       case CornerNW(outer) =>
         if (!outer)
-          if (offset.x > 0 || offset.y < 0) Partial(offset.abs, Vector2(offset.x.abs, 0), (true, true))
+          if (offset.x > 0 || offset.y < 0) Partial(offset.abs, Vector2(offset.x.abs, 0), (true, true, false))
           else Full
         else Not
       case CornerSW(outer) =>
         if (!outer)
-          if (offset.x > 0 || offset.y > 0) Partial(offset.abs, offset.abs, (true, true))
+          if (offset.x > 0 || offset.y > 0) Partial(offset.abs, offset.abs, (true, true, false))
           else Full
         else Not
       case CornerSE(outer) =>
         if (!outer)
-          if (offset.x < 0 || offset.y > 0) Partial(offset.abs, Vector2(0, offset.y.abs), (true, true))
+          if (offset.x < 0 || offset.y > 0) Partial(offset.abs, Vector2(0, offset.y.abs), (true, true, false))
           else Full
         else Not
       case CornerNE(outer) =>
         if (!outer)
-          if (offset.x < 0 || offset.y < 0) Partial(offset.abs, Vector2(0), (true, true))
+          if (offset.x < 0 || offset.y < 0) Partial(offset.abs, Vector2(0), (true, true, false))
           else Full
         else Not
       case Left(outer) =>
         if (!outer)
           if (offset.x < 0) Full
-          else Partial(Vector2(offset.x.abs, 0), Vector2(offset.x.abs, 0), (true, false))
-        else if (offset.x < 0) Partial(Vector2(1-offset.x.abs, 0), Vector2(1-offset.x.abs, 0), (true, false))
+          else Partial(Vector2(offset.x.abs, 0), Vector2(offset.x.abs, 0), (true, false, false))
+        else if (offset.x < 0) Partial(Vector2(1-offset.x.abs, 0), Vector2(1-offset.x.abs, 0), (true, false, true))
         else Not
       case Right(outer) =>
         if (!outer)
           if (offset.x > 0) Full
-          else Partial(Vector2(offset.x.abs, 0), Vector2(0), (true, false))
-        else if (offset.x > 0) Partial(Vector2(1-offset.x.abs, 0), Vector2(0), (true, false))
+          else Partial(Vector2(offset.x.abs, 0), Vector2(0), (true, false, false))
+        else if (offset.x > 0) Partial(Vector2(1-offset.x.abs, 0), Vector2(0), (true, false, true))
         else Not
       case Top(outer) =>
         if (!outer)
           if (offset.y > 0) Full
-          else Partial(Vector2(0, offset.y.abs), Vector2(0), (false, true))
-        else if (offset.y > 0) Partial(Vector2(0, 1-offset.y.abs), Vector2(0), (false, true))
+          else Partial(Vector2(0, offset.y.abs), Vector2(0), (false, true, false))
+        else if (offset.y > 0) Partial(Vector2(0, 1-offset.y.abs), Vector2(0), (false, true, true))
         else Not
       case Bot(outer) =>
         if (!outer)
           if (offset.y < 0) Full
-          else Partial(Vector2(0, offset.x.abs), Vector2(0, offset.y.abs), (false, true))
-        else if (offset.y < 0) Partial(Vector2(0, 1-offset.y.abs), Vector2(0, 1-offset.y.abs), (false, true))
+          else Partial(Vector2(0, offset.y.abs), Vector2(0, offset.y.abs), (false, true, false))
+        else if (offset.y < 0) Partial(Vector2(0, 1-offset.y.abs), Vector2(0, 1-offset.y.abs), (false, true, true))
         else Not
       case Center => Full
       case Else => Not

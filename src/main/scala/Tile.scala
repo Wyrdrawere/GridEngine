@@ -9,7 +9,7 @@ case class Tile
     }
   }
 
-  override def drawRectanglePartial(size: Vector2, position: Vector2, offset: Vector2, edge: (Boolean, Boolean)): Unit = {
+  override def drawRectanglePartial(size: Vector2, position: Vector2, offset: Vector2, edge: (Boolean, Boolean, Boolean)): Unit = {
     for (d <- content) {
       tileSet(d).drawRectanglePartial(size, position, offset, edge)
     }

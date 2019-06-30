@@ -84,7 +84,7 @@ class Window {
 
     val test = Array.ofDim[Int](11,11)
     for(x <- test.indices; y <- test(x).indices) {
-      test(x)(y) = if((x+y)%2 == 0) 9 else 11
+      test(x)(y) = (Math.random()*16).toInt
     }
 
     val test2 = Array.ofDim[Int](21,11)
@@ -101,30 +101,41 @@ class Window {
     var testMap = Sprite.TextureToTileSet(Texture.load("src/resources/Tileset/basictiles.png"),128,240,16,16)
     var testMap2 = Sprite.TextureToTileSet(Texture.load("src/resources/Sprite/ff1-classes.png"), 672, 432, 36, 36)
 
-    val g = new Grid(relativeSize = Vector2(0.25f), relativePosition = Vector2(0.375f,0.625f))
+    val g = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0.25f,0.25f))
     val g2 = new Grid
-    val g3 = new Grid(relativeSize = Vector2(0.25f), relativePosition = Vector2(0.375f,0.125f))
+    val g3 = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0))
+    val g4 = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0, 0.5f))
+    val g5 = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0.5f))
+    val g6 = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0.5f, 0))
 
     var state = Overworld.testWorld(Level.TestDungeon)
+
+    var counter: Float = 0
+
+    val scrollSpeed:Float=128
 
     while ( {
       !glfwWindowShouldClose(window)
     }) {
 
 
-
-
-
       val thisTime = System.currentTimeMillis() //todo: wrap this in a function or something
       val deltaTime = thisTime-lastTime
+
 
       if (deltaTime > 1000f/Config.fps) {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         state = state.simulate(deltaTime, lastInput)
-        //g.drawGrid(test,testMap)
-        //g3.drawGrid(test,testMap, offset = Vector2(0,0.7f))
-        state.render(g2)
+        println(counter)
+        if (counter < scrollSpeed) (counter = counter + 1) else (counter = 0)
+
+        g3.drawGrid(test,testMap, offset = Vector2(0,+counter/scrollSpeed))
+        g4.drawGrid(test,testMap, offset = Vector2(0,-counter/scrollSpeed))
+        g5.drawGrid(test,testMap, offset = Vector2(+counter/scrollSpeed,0))
+        g6.drawGrid(test,testMap, offset = Vector2(-counter/scrollSpeed,0))
+
+        if (counter < scrollSpeed) (counter = counter + 1) else counter = 0
 
         lastTime = thisTime
         lastInput = None

@@ -27,7 +27,7 @@ case class Sprite
     glDisable(GL_BLEND)
   }
 
-  override def drawRectanglePartial(size: Vector2, position: Vector2, offset: Vector2, edge: (Boolean, Boolean)): Unit = {
+  override def drawRectanglePartial(size: Vector2, position: Vector2, offset: Vector2, edge: (Boolean, Boolean, Boolean)): Unit = {
     var newMinX = minX
     var newMaxX = maxX
     var newMinY = minY
@@ -36,13 +36,13 @@ case class Sprite
     val yUnit = maxY - minY
 
     if (edge._1) offset.x match {
-      case x if x < 0 => newMinX = minX - xUnit * x
-      case x if x > 0 => newMaxX = maxX - xUnit * x
+      case x if x < 0 => if(edge._3) newMaxX = minX - xUnit * x else newMinX = minX - xUnit * x
+      case x if x > 0 => if(edge._3) newMinX = maxX - xUnit * x else newMaxX = maxX - xUnit * x
       case 0 =>
     }
     if (edge._2) offset.y match {
-      case y if y < 0 => newMinY = minY - yUnit * y
-      case y if y > 0 => newMaxY = maxY - yUnit * y
+      case y if y < 0 => if(edge._3) newMaxY = minY - yUnit * y else newMinY = minY - yUnit * y
+      case y if y > 0 => if(edge._3) newMinY = maxY - yUnit * y else newMaxY = maxY - yUnit * y
       case 0 =>
     }
     Sprite(id, newMinX, newMaxX, newMinY, newMaxY).drawRectangle(size, position)
