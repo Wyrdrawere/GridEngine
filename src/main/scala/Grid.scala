@@ -76,7 +76,6 @@ object Grid {
     }
   }
 
-  //todo: outer/inner case need to handle offset in opposite ways
   def shouldDraw(positional: Positional, offset: Vector2): DrawMode = {
     positional match {
       case CornerNW(outer) =>
@@ -100,17 +99,29 @@ object Grid {
           else Full
         else Not
       case Left(outer) =>
-        if ((offset.x < 0) == outer) Partial(Vector2(offset.x.abs, 0), Vector2(offset.x.abs, 0), (true, false))
-        else if (outer) Not else Full
+        if (!outer)
+          if (offset.x < 0) Full
+          else Partial(Vector2(offset.x.abs, 0), Vector2(offset.x.abs, 0), (true, false))
+        else if (offset.x < 0) Partial(Vector2(1-offset.x.abs, 0), Vector2(1-offset.x.abs, 0), (true, false))
+        else Not
       case Right(outer) =>
-        if ((offset.x > 0) == outer) Partial(Vector2(offset.x.abs, 0), Vector2(0), (true, false))
-        else if (outer) Not else Full
+        if (!outer)
+          if (offset.x > 0) Full
+          else Partial(Vector2(offset.x.abs, 0), Vector2(0), (true, false))
+        else if (offset.x > 0) Partial(Vector2(1-offset.x.abs, 0), Vector2(0), (true, false))
+        else Not
       case Top(outer) =>
-        if ((offset.y > 0) == outer) Partial(Vector2(0, offset.y.abs), Vector2(0), (false, true))
-        else if (outer) Not else Full
+        if (!outer)
+          if (offset.y > 0) Full
+          else Partial(Vector2(0, offset.y.abs), Vector2(0), (false, true))
+        else if (offset.y > 0) Partial(Vector2(0, 1-offset.y.abs), Vector2(0), (false, true))
+        else Not
       case Bot(outer) =>
-        if ((offset.y < 0) == outer) Partial(Vector2(0, offset.y.abs), Vector2(0, offset.y.abs), (false, true))
-        else if (outer) Not else Full
+        if (!outer)
+          if (offset.y < 0) Full
+          else Partial(Vector2(0, offset.x.abs), Vector2(0, offset.y.abs), (false, true))
+        else if (offset.y < 0) Partial(Vector2(0, 1-offset.y.abs), Vector2(0, 1-offset.y.abs), (false, true))
+        else Not
       case Center => Full
       case Else => Not
     }

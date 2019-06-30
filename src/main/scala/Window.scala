@@ -122,9 +122,9 @@ class Window {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         state = state.simulate(deltaTime, lastInput)
-        g.drawGrid(test,testMap)
-        g3.drawGrid(test,testMap, offset = Vector2(0.8f,0))
-        //state.render(g2)
+        //g.drawGrid(test,testMap)
+        //g3.drawGrid(test,testMap, offset = Vector2(0,0.7f))
+        state.render(g2)
 
         lastTime = thisTime
         lastInput = None
