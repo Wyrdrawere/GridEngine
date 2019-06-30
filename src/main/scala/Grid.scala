@@ -76,6 +76,7 @@ object Grid {
     }
   }
 
+  //todo: outer/inner case need to handle offset in opposite ways
   def shouldDraw(positional: Positional, offset: Vector2): DrawMode = {
     positional match {
       case CornerNW(outer) =>
