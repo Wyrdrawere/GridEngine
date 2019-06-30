@@ -1,3 +1,5 @@
+import Grid.{Full, Not, Partial, shouldDraw, positionToPositional}
+
 class Grid
 (
   val relativeSize: Vector2 = Vector2(1, 1),
@@ -8,14 +10,8 @@ class Grid
   //todo: make offset work without breaking bounds
   private var dimensions: Vector2 = Vector2(0, 0)
 
-  def indicesX: Range = 1 until dimensions.xi
-
-  def indicesY: Range = 1 until dimensions.yi
-
   val windowSize: Vector2 = Config.windowSize
-
   def gridUnit: Vector2 = relativeSize /: dimensions
-
   def gridTranslation: Vector2 = relativePosition /: gridUnit
 
   def drawGrid(content: Array[Array[Int]], tileSet: Map[Int, Drawable], offset: Vector2 = Vector2(0, 0)): Unit = {
@@ -29,7 +25,6 @@ class Grid
         case Partial(rel, shift, edge) => tileSet(content(x)(y)).drawRectanglePartial(size *: (Vector2(1) - rel), gridUnit *: (position + shift), offset, edge)
         case Not =>
       }
-
     }
   }
 
@@ -39,6 +34,12 @@ class Grid
 
   def drawOnCenter(drawable: Drawable): Unit = drawOnGrid(drawable, dimensions / 2)
 
+
+
+
+}
+
+object Grid {
   sealed trait Positional
   case class Left(outer: Boolean) extends Positional
   case class Right(outer: Boolean) extends Positional
@@ -51,32 +52,29 @@ class Grid
   case object Center extends Positional
   case object Else extends Positional
 
+  sealed trait DrawMode
+  case object Full extends DrawMode
+  case object Not extends DrawMode
+  case class Partial(relSize: Vector2, positionShift: Vector2, edge: (Boolean, Boolean)) extends DrawMode
+
   def positionToPositional(position: Vector2, maxIndices: Vector2): Positional = {
     (position.x, position.y) match {
       case (1, 1) => CornerSW(false)
       case (1, v) if v == maxIndices.y - 1 => CornerNW(false)
       case (u, 1) if u == maxIndices.x - 1 => CornerSE(false)
       case (u, v) if u == maxIndices.x - 1 && v == maxIndices.y - 1 => CornerNE(false)
-
       case (0, v) if v > 0 && v < maxIndices.y => Left(true)
       case (maxIndices.x, v) if v > 0 && v < maxIndices.y => Right(true)
       case (u, maxIndices.y) if u > 0 && u < maxIndices.x => Top(true)
       case (u, 0) if u > 0 && u < maxIndices.x => Bot(true)
-
       case (1, _) => Left(false)
       case (u, _) if u == maxIndices.x - 1 => Right(false)
       case (_, v) if v == maxIndices.y - 1 => Top(false)
       case (_, 1) => Bot(false)
-
       case (u, v) if u > 0 && u < maxIndices.x - 1 && v > 0 && v < maxIndices.y - 1 => Center
       case _ => Else
     }
   }
-
-  sealed trait DrawMode
-  case object Full extends DrawMode
-  case object Not extends DrawMode
-  case class Partial(relSize: Vector2, positionShift: Vector2, edge: (Boolean, Boolean)) extends DrawMode
 
   def shouldDraw(positional: Positional, offset: Vector2): DrawMode = {
     positional match {
@@ -116,5 +114,4 @@ class Grid
       case Else => Not
     }
   }
-
 }
