@@ -3,7 +3,7 @@ import PlayerSprite.{SpriteMode, WalkDown, WalkLeft, WalkRight, WalkUp}
 
 case class PlayerSprite
 (
-  spriteSheet: Map[Int, Sprite],
+  spriteSheet: Map[Int, Drawable],
   modeMap: Map[SpriteMode, List[Int]],
   currentSprite: Int,
 
@@ -17,7 +17,7 @@ case class PlayerSprite
     case _ => this
   }
 
-  override def render(): Unit = Render.centerSprite(spriteSheet(currentSprite))
+  override def render(grid: Grid): Unit = grid.drawOnCenter(spriteSheet(currentSprite))
 
   private def switchSprite(mode: SpriteMode): PlayerSprite = {
     val nextMode = modeMap(mode)
@@ -33,7 +33,6 @@ case class PlayerSprite
 }
 
 object PlayerSprite {
-  /*
   def FF1_PlayerSprite(job: Int) = PlayerSprite(
     Sprite.TextureToTileSet(Texture.load("src/resources/Sprite/ff1-classes.png"), 972, 432, 36, 36),
     Map(
@@ -44,8 +43,6 @@ object PlayerSprite {
     ),
     27*job
   )
-
-   */
 
   sealed trait SpriteMode
   case object WalkUp extends SpriteMode

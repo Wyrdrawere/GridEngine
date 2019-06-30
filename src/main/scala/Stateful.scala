@@ -1,4 +1,4 @@
 trait Stateful {
   def simulate(deltaTime: Long, input: Input): Stateful
-  def render(): Unit
+  def render(grid: Grid): Unit
 }

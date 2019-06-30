@@ -4,7 +4,7 @@ import Scroll.{ScrollX, ScrollY, Stay}
 case class Overworld
 (
   level: Level,
-  tileSet: Map[Int,Sprite],
+  tileSet: Map[Int,Drawable],
   playerSprite: PlayerSprite,
   pos: (Int,Int),
   zoom: Int,
@@ -30,14 +30,14 @@ case class Overworld
     } else newState
   }
 
-  override def render(): Unit = {
+  override def render(grid: Grid): Unit = {
     val slice = level.getSlice(zoom*2+1, zoom*2+1, pos)
     scroll match {
-      case ScrollX(x) => Render.renderArrayFill(slice, tileSet, x.toFloat/Config.scrollUnit, 0f)
-      case ScrollY(y) => Render.renderArrayFill(slice, tileSet, 0f, y.toFloat/Config.scrollUnit)
-      case Stay => Render.renderArrayFill(slice, tileSet)
+      case ScrollX(x) => grid.drawGrid(slice, tileSet, Vector2(x.toFloat/Config.scrollUnit, 0f))
+      case ScrollY(y) => grid.drawGrid(slice, tileSet, Vector2(0f, y.toFloat/Config.scrollUnit))
+      case Stay => grid.drawGrid(slice, tileSet)
     }
-    playerSprite.render()
+    playerSprite.render(grid)
   }
 
   private def everyFrame(deltaTime: Long): Overworld = {
@@ -67,7 +67,6 @@ case class Overworld
 
 object Overworld {
 
-  /*
   def testWorld(level: Level) = Overworld(
     level,
     Sprite.TextureToTileSet(Texture.load("src/resources/Tileset/basictiles.png"),128,240,16,16),
@@ -76,7 +75,4 @@ object Overworld {
     5,
     Stay,
     true)
-
-   */
-
 }

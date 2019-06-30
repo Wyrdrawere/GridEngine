@@ -85,10 +85,6 @@ class Window {
     val test = Array.ofDim[Int](11,11)
     for(x <- test.indices; y <- test(x).indices) {
       test(x)(y) = if((x+y)%2 == 0) 9 else 11
-      if (x == 5 && y == 5) {
-        test(x)(y) = 22
-      }
-      if (x == 10) test(x)(y) = 27
     }
 
     val test2 = Array.ofDim[Int](21,11)
@@ -106,21 +102,21 @@ class Window {
     var testMap2 = Sprite.TextureToTileSet(Texture.load("src/resources/Sprite/ff1-classes.png"), 672, 432, 36, 36)
 
     val g = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0.25f))
-    val g2 = new Grid(relativeSize = Vector2(0.25f,1), relativePosition = Vector2(0.75f,0))
+    val g2 = new Grid
     val g3 = new Grid(relativeSize = Vector2(1, 0.25f))
 
+    var state = Overworld.testWorld(Level.TestDungeon)
 
     while ( {
       !glfwWindowShouldClose(window)
     }) {
 
+
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-
-      g.drawGrid(test, testMap, offset = Vector2(-0.5f, -0.5f))
-      g.drawOnCenter(Color.White)
+      g.drawGrid2(test, testMap, offset = Vector2(0.5f,0))
 
 
-      /*
+/*
       val thisTime = System.currentTimeMillis() //todo: wrap this in a function or something
       val deltaTime = thisTime-lastTime
 
@@ -128,12 +124,14 @@ class Window {
 
 
         state = state.simulate(deltaTime, lastInput)
-        state.render()
+        state.render(g)
 
         lastTime = thisTime
         lastInput = None
       }
-      */
+
+
+ */
 
 
       glfwSwapBuffers(window)
