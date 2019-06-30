@@ -101,9 +101,9 @@ class Window {
     var testMap = Sprite.TextureToTileSet(Texture.load("src/resources/Tileset/basictiles.png"),128,240,16,16)
     var testMap2 = Sprite.TextureToTileSet(Texture.load("src/resources/Sprite/ff1-classes.png"), 672, 432, 36, 36)
 
-    val g = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0.25f))
+    val g = new Grid(relativeSize = Vector2(0.25f), relativePosition = Vector2(0.375f,0.625f))
     val g2 = new Grid
-    val g3 = new Grid(relativeSize = Vector2(1, 0.25f))
+    val g3 = new Grid(relativeSize = Vector2(0.25f), relativePosition = Vector2(0.375f,0.125f))
 
     var state = Overworld.testWorld(Level.TestDungeon)
 
@@ -112,26 +112,28 @@ class Window {
     }) {
 
 
-      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-      g.drawGrid(test, testMap, offset = Vector2(-0.5f,-0.5f))
 
 
-/*
+
       val thisTime = System.currentTimeMillis() //todo: wrap this in a function or something
       val deltaTime = thisTime-lastTime
 
       if (deltaTime > 1000f/Config.fps) {
 
-
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         state = state.simulate(deltaTime, lastInput)
-        state.render(g)
+        g.drawGrid(test,testMap)
+        g3.drawGrid(test,testMap, offset = Vector2(0,0.5f))
+        state.render(g2)
 
         lastTime = thisTime
         lastInput = None
       }
 
 
- */
+
+
+
 
 
       glfwSwapBuffers(window)
