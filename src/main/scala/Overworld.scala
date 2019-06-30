@@ -32,9 +32,9 @@ case class Overworld
 
   override def render(grid: Grid): Unit = {
     val slice = level.getSlice(zoom*2+1, zoom*2+1, pos)
-    scroll match {
-      case ScrollX(x) => grid.drawGrid(slice, tileSet, Vector2(1-(x.toFloat/Config.scrollUnit), 0f))
-      case ScrollY(y) => grid.drawGrid(slice, tileSet, Vector2(0f, 1-(y.toFloat/Config.scrollUnit)))
+    scroll match {//fixme: scrolllogic broke with grid (should be easier now). Keep this around for Moonwalking
+      case ScrollX(x) => grid.drawGrid(slice, tileSet, Vector2((x.toFloat/Config.scrollUnit), 0f))
+      case ScrollY(y) => grid.drawGrid(slice, tileSet, Vector2(0f, (y.toFloat/Config.scrollUnit)))
       case Stay => grid.drawGrid(slice, tileSet)
     }
     playerSprite.render(grid)

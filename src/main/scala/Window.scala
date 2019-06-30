@@ -137,6 +137,8 @@ class Window {
 
         if (counter < scrollSpeed) (counter = counter + 1) else counter = 0
 
+        state.render(g2)
+
         lastTime = thisTime
         lastInput = None
       }
