@@ -15,135 +15,18 @@ class Grid
   def gridUnit: Vector2 = relativeSize/:dimensions
   def gridTranslation: Vector2 = relativePosition/:gridUnit
 
-  def drawGrid2(content: Array[Array[Int]], tileSet: Map[Int, Drawable], offset: Vector2 = Vector2(0,0)): Unit = {
-    dimensions = Vector2(content.length-2, content(0).length-2)
-    for (x <- content.indices; y <- content(x).indices) {
-      var size = gridUnit
-      var position = gridTranslation + offset + Vector2(x-1,y-1)
-      var positional = coordsToPositional(Vector2(x,y), Vector2(content.indices.max, content(x).indices.max))
-
-      if (positional != Center) {
-
-        var edge = (false, false)
-        positional match {
-          case OuterLeft => if (offset.x > 0) {
-            size = size*:(Vector2(1)-offset.abs)
-            position = position + offset.abs
-            tileSet(content(x)(y)).drawRectanglePartial(size, gridUnit*:position, offset, positionalToEdge(positional))
-          } else {
-            tileSet(content(x)(y)).drawRectangle(size, gridUnit*:position)
-          }
-          case OuterRight => if (offset.x > 0) {
-            tileSet(content(x)(y)).drawRectangle(size, gridUnit*:position)
-          } else {
-            size = size*:(Vector2(1)-offset.abs)
-            position = position + offset.abs
-            tileSet(content(x)(y)).drawRectanglePartial(size, gridUnit*:position, offset, positionalToEdge(positional))
-          }
-          case OuterTop => if (offset.y > 0) {
-            tileSet(content(x)(y)).drawRectangle(size, gridUnit*:position)
-          } else {
-            size = size*:(Vector2(1)-offset.abs)
-            position = position + offset.abs
-            tileSet(content(x)(y)).drawRectanglePartial(size, gridUnit*:position, offset, positionalToEdge(positional))
-          }
-          case OuterBot =>
-          case OuterNW =>
-          case OuterNE =>
-          case OuterSW =>
-          case OuterSE =>
-          case InnerLeft => if (offset.x > 0) {
-            tileSet(content(x)(y)).drawRectangle(size, gridUnit*:position)
-          } else {
-            size = size*:(Vector2(1)-offset.abs)
-            position = position
-            tileSet(content(x)(y)).drawRectanglePartial(size, gridUnit*:position, offset, positionalToEdge(positional))
-          }
-          case InnerRight => if (offset.x > 0) {
-            size = size*:(Vector2(1)-offset.abs)
-            position = position
-            tileSet(content(x)(y)).drawRectanglePartial(size, gridUnit*:position, offset, positionalToEdge(positional))
-          } else {
-            tileSet(content(x)(y)).drawRectangle(size, gridUnit*:position)
-          }
-          case InnerTop =>
-          case InnerBot => if (offset.y > 0) {
-            tileSet(content(x)(y)).drawRectangle(size, gridUnit*:position)
-          } else {
-            size = size*:(Vector2(1)-offset.abs)
-            position = position + offset.abs
-            tileSet(content(x)(y)).drawRectanglePartial(size, gridUnit*:position, offset, positionalToEdge(positional))
-          }
-          case InnerNW =>
-          case InnerNE =>
-          case InnerSW =>
-          case InnerSE =>
-          case _ =>
-        }
-
-
-      } else {
-        tileSet(content(x)(y)).drawRectangle(size, gridUnit*:position)
-      }
-    }
-  }
-
   def drawGrid(content: Array[Array[Int]], tileSet: Map[Int, Drawable], offset: Vector2 = Vector2(0,0)): Unit = {
     dimensions = Vector2(content.length-2, content(0).length-2)
     for (x <- content.indices; y <- content(x).indices) {
       var size = gridUnit
       var position = gridTranslation + offset + Vector2(x-1,y-1)
-      if(isAlwaysVisible(x,y)) {
-        tileSet(content(x)(y)).drawRectangle(size, gridUnit*:position)
+      var positional = coordsToPositional(Vector2(x,y), Vector2(content.indices.max, content(x).indices.max))
+      shouldDraw(positional, offset) match {
+        case Full => tileSet(content(x)(y)).drawRectangle(size, gridUnit*:position)
+        case Partial(rel, shift, edge) => tileSet(content(x)(y)).drawRectanglePartial(size*:(Vector2(1)-rel), gridUnit*:(position+shift), offset, edge)
+        case Not =>
       }
-      else {
-        var edge = (false, false)
-        var shouldDraw = false
-        size = size *: (Vector2(1)-(Vector2(if (x > 0 && x < indicesX.max) 0 else 1, if (y > 0 && y < indicesY.max) 0 else 1)*:offset.abs))
-        (x, y) match {
-          case (0, 0) => {
-            edge = (true, true)
-            position = position + offset.abs
-            shouldDraw = offset.x > 0 && offset.y > 0
-          }
-          case (u, 0) if u == indicesX.max => {
-            edge = (true, true)
-            position = position + (offset.abs*:Vector2.Up)
-            shouldDraw = offset.x < 0 && offset.y > 0
-          }
-          case (0, v) if v == indicesY.max => {
-            edge = (true, true)
-            position = position + (offset.abs*:Vector2.Right)
-            shouldDraw = offset.x > 0 && offset.y < 0
-          }
-          case (u, v) if u == indicesX.max && v == indicesY.max => {
-            edge = (true, true)
-            shouldDraw = offset.x < 0 && offset.y < 0
-          }
-          case (0, _) => {
-            edge = (true, false)
-            position = position + (offset.abs*:Vector2.Right)
-            shouldDraw = offset.x > 0
-          }
-          case (_, 0) => {
-            edge = (false, true)
-            position = position + (offset.abs*:Vector2.Up)
-            shouldDraw = offset.y > 0
-          }
-          case (u, _) if u == indicesX.max => {
-            edge = (true, false)
-            shouldDraw = offset.x < 0
-          }
-          case (_, v) if v == indicesY.max => {
-            edge = (false, true)
-            shouldDraw = offset.y < 0
-          }
-          case _ =>
-        }
-        if (true) {
-          tileSet(content(x)(y)).drawRectanglePartial(size, gridUnit*:position, offset, edge)
-        }
-      }
+
     }
   }
 
@@ -153,11 +36,6 @@ class Grid
 
   def drawOnCenter(drawable: Drawable): Unit = drawOnGrid(drawable, dimensions/2)
 
-  def isAlwaysVisible(x: Int, y: Int): Boolean = x > 0 && x < indicesX.max && y > 0 && y < indicesY.max
-
-  def isVisible(position: Vector2, maxIndex: Vector2, offset: Vector2): Boolean = {
-    false
-  }
 
   sealed trait Positional
   case object OuterLeft extends Positional
@@ -218,25 +96,102 @@ class Grid
     }
   }
 
-  def positionalToEdge(positional: Positional): (Boolean, Boolean) = {
+  sealed trait DrawMode
+  case object Full extends DrawMode
+  case object Not extends DrawMode
+  case class Partial(relSize: Vector2, positionShift: Vector2, edge: (Boolean, Boolean)) extends DrawMode
+
+  def shouldDraw(positional: Positional, offset: Vector2): DrawMode = {
     positional match {
-      case OuterLeft => (true, false)
-      case OuterRight => (true, false)
-      case OuterTop => (false, true)
-      case OuterBot => (false, true)
-      case OuterNW => (true,true)
-      case OuterNE => (true,true)
-      case OuterSW => (true,true)
-      case OuterSE => (true,true)
-      case InnerLeft => (true, false)
-      case InnerRight => (true, false)
-      case InnerTop => (false, true)
-      case InnerBot => (false, true)
-      case InnerNW => (true,true)
-      case InnerNE => (true,true)
-      case InnerSW => (true,true)
-      case InnerSE => (true,true)
-      case Center => (false, false)
+      case OuterLeft => if (offset.x < 0)
+        Partial(
+          Vector2(offset.x.abs,0),
+          Vector2(offset.x.abs,0),
+          (true, false))
+        else Not
+      case OuterRight => if (offset.x > 0)
+        Partial(
+          Vector2(offset.x.abs, 0),
+          Vector2(0),
+          (true, false))
+        else Not
+      case OuterTop => if (offset.y > 0)
+        Partial(
+          Vector2(0, offset.y.abs),
+          Vector2(0),
+          (false, true))
+        else Not
+      case OuterBot => if (offset.y < 0)
+        Partial(
+          Vector2(0, offset.y.abs),
+          Vector2(0, offset.y.abs),
+          (false, true))
+        else Not
+      case OuterNW => if (offset.x < 0 && offset.y > 0)
+        Partial(
+          offset.abs,
+          offset.abs,
+          (true, true))
+        else Not
+      case OuterNE => if (offset.x > 0 && offset.y > 0)
+        Partial(
+          offset.abs,
+          Vector2(0),
+          (true, true))
+        else Not
+      case OuterSW => if (offset.x < 0 && offset.y < 0)
+        Partial(
+          offset.abs,
+          Vector2(offset.x.abs, 0),
+          (true, true))
+        else Not
+      case OuterSE => if (offset.x > 0 && offset.y < 0)
+        Partial(
+          offset.abs,
+          Vector2(0, offset.y.abs),
+          (true, true))
+        else Not
+      case InnerLeft => if (offset.x < 0) Full else
+        Partial(
+          Vector2(offset.x.abs,0),
+          Vector2(offset.x.abs,0),
+          (true, false))
+      case InnerRight => if (offset.x > 0) Full else
+        Partial(
+          Vector2(offset.x.abs, 0),
+          Vector2(0),
+          (true, false))
+      case InnerTop => if (offset.y > 0) Full else
+        Partial(
+          Vector2(0, offset.y.abs),
+          Vector2(0),
+          (false, true))
+      case InnerBot => if (offset.y < 0) Full else
+        Partial(
+          Vector2(0, offset.y.abs),
+          Vector2(0, offset.y.abs),
+          (false, true))
+      case InnerNW => if (offset.x <= 0 && offset.y >= 0) Full else
+        Partial(
+          offset.abs,
+          Vector2(offset.abs.x,0),
+          (true, true))
+      case InnerNE => if (offset.x >= 0 && offset.y >= 0) Full else
+        Partial(
+          offset.abs,
+          Vector2(0),
+          (true, true))
+      case InnerSW => if (offset.x <= 0 && offset.y <= 0) Full else
+        Partial(
+          offset.abs,
+          offset.abs,
+          (true, true))
+      case InnerSE =>if (offset.x >= 0 && offset.y <= 0) Full else
+        Partial(
+          offset.abs,
+          Vector2(0, offset.y.abs),
+          (true, true))
+      case Center => Full
     }
   }
 
