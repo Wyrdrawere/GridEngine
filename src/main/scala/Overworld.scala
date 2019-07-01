@@ -1,4 +1,4 @@
-import Input.{Down, Left, Right, S, Up, W}
+import Input.{DownArrow, LeftArrow, RightArrow, S, UpArrow, W}
 import Scroll.{ScrollX, ScrollY, Stay}
 
 case class Overworld
@@ -21,10 +21,10 @@ case class Overworld
       input match {
         case W if zoom >= 2 => newState.copy(zoom = zoom-1)
         case S => newState.copy(zoom = zoom +1)
-        case Up => newState.copy(playerSprite = nextSprite, scroll = ScrollY(-1), inputReady = false)
-        case Down => newState.copy(playerSprite = nextSprite, scroll = ScrollY(1), inputReady = false)
-        case Left => newState.copy(playerSprite = nextSprite, scroll = ScrollX(1), inputReady = false)
-        case Right => newState.copy(playerSprite = nextSprite, scroll = ScrollX(-1), inputReady = false)
+        case UpArrow => newState.copy(playerSprite = nextSprite, scroll = ScrollY(-1), inputReady = false)
+        case DownArrow => newState.copy(playerSprite = nextSprite, scroll = ScrollY(1), inputReady = false)
+        case LeftArrow => newState.copy(playerSprite = nextSprite, scroll = ScrollX(1), inputReady = false)
+        case RightArrow => newState.copy(playerSprite = nextSprite, scroll = ScrollX(-1), inputReady = false)
         case _ => newState
       }
     } else newState

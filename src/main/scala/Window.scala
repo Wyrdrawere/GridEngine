@@ -79,7 +79,18 @@ class Window {
     GL.createCapabilities
     glClearColor(1.0f, 1.0f, 1.0f, 0.0f)
 
-    val g = new Grid
+    val test = Array.ofDim[Int](21,21)
+    for (x <- test.indices; y <- test(x).indices) {
+      test(x)(y) = (Math.random()*16).toInt
+    }
+    val testMap = Sprite.TextureToTileSet(Texture.load("src/resources/Tileset/basictiles.png"), 128, 240, 16, 16)
+    var counter: Float = 0
+    var scrollSpeed: Float = 128
+    val g = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0.25f))
+    val g1 = new Grid(relativeSize = Vector2(0.5f))
+    val g2 = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0.5f,0))
+    val g3 = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0,0.5f))
+    val g4 = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0.5f))
     var state = Overworld.testWorld(Level.TestDungeon)
 
     while ( {
@@ -92,7 +103,16 @@ class Window {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         state = state.simulate(deltaTime, lastInput)
+
+        g1.drawGrid(test, testMap, offset = Vector2(counter/scrollSpeed, 0))
+        g2.drawGrid(test, testMap, offset = Vector2(-counter/scrollSpeed, 0))
+        g3.drawGrid(test, testMap, offset = Vector2(0, counter/scrollSpeed))
+        g4.drawGrid(test, testMap, offset = Vector2(0, -counter/scrollSpeed))
+
         state.render(g)
+
+
+        counter = if (counter < scrollSpeed) counter + 1 else 0
 
         lastTime = thisTime
         lastInput = None

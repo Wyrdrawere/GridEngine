@@ -1,4 +1,4 @@
-import Input.{Down, Left, Right, Up}
+import Input.{DownArrow, LeftArrow, RightArrow, UpArrow}
 import PlayerSprite.{SpriteMode, WalkDown, WalkLeft, WalkRight, WalkUp}
 
 case class PlayerSprite
@@ -10,10 +10,10 @@ case class PlayerSprite
 ) extends Stateful {
 
   override def simulate(deltaTime: Long, input: Input): PlayerSprite = input match {
-    case Up => switchSprite(WalkUp)
-    case Down => switchSprite(WalkDown)
-    case Left => switchSprite(WalkLeft)
-    case Right => switchSprite(WalkRight)
+    case UpArrow => switchSprite(WalkUp)
+    case DownArrow => switchSprite(WalkDown)
+    case LeftArrow => switchSprite(WalkLeft)
+    case RightArrow => switchSprite(WalkRight)
     case _ => this
   }
 

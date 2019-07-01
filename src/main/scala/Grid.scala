@@ -7,6 +7,7 @@ class Grid
 ) {
 
   private var dimensions: Vector2 = Vector2(0, 0)
+  def getDimensions: Vector2 = dimensions
 
   val windowSize: Vector2 = Config.windowSize
   def gridUnit: Vector2 = relativeSize /: dimensions
@@ -15,22 +16,22 @@ class Grid
   def drawGrid(content: Array[Array[Int]], tileSet: Map[Int, Drawable], offset: Vector2 = Vector2(0, 0)): Unit = {
     dimensions = Vector2(content.length - 2, content(0).length - 2)
     for (x <- content.indices; y <- content(x).indices) {
-      val size = gridUnit
-      val position = gridTranslation - offset + Vector2(x - 1, y - 1)
-      val positional = positionToPositional(Vector2(x, y), Vector2(content.indices.max, content(x).indices.max))
-      shouldDraw(positional, offset) match {
-        case Full => tileSet(content(x)(y)).drawRectangle(size, gridUnit *: position)
-        case Partial(rel, shift, edge) => tileSet(content(x)(y)).drawRectanglePartial(size *: (Vector2(1) - rel), gridUnit *: (position + shift), offset, edge)
-        case Not =>
-      }
+      drawOnGrid(tileSet(content(x)(y)), Vector2(x,y), offset = offset)
     }
   }
 
-  def drawOnGrid(drawable: Drawable, gridPosition: Vector2, offset: Vector2 = Vector2(0, 0)): Unit = {
-    drawable.drawRectangle(gridUnit, gridUnit *: (gridTranslation + offset + Vector2(gridPosition.xi, gridPosition.yi)))
+  def drawOnGrid(drawable: Drawable, gridPosition: Vector2, relSize: Vector2 = Vector2(1, 1), offset: Vector2 = Vector2(0, 0)): Unit = {
+    val size = relSize*:gridUnit
+    val position = gridTranslation - offset + Vector2(gridPosition.x - 1, gridPosition.y - 1)
+    val positional = positionToPositional(gridPosition, Vector2(dimensions.x+1, dimensions.y+1))
+    shouldDraw(positional, offset) match {
+      case Full => drawable.drawRectangle(size, gridUnit *: position)
+      case Partial(rel, shift, edge) => drawable.drawRectanglePartial(size *: (Vector2(1) - rel), gridUnit *: (position + shift), offset, edge)
+      case Not =>
+    }
   }
 
-  def drawOnCenter(drawable: Drawable): Unit = drawOnGrid(drawable, dimensions / 2)
+  def drawOnCenter(drawable: Drawable): Unit = drawOnGrid(drawable, dimensions.map(v => v+1)/2)
 
 }
 
