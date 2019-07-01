@@ -14,5 +14,4 @@ case class Tile
       tileSet(d).drawRectanglePartial(size, position, offset, edge)
     }
   }
-
 }

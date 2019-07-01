@@ -67,7 +67,7 @@ object Input {
     case 86 => V
     case 87 => W
     case 88 => X
-    case 89 => Z
+    case 89 => Z //qwertz/qwerty weirdness?
     case 90 => Y
 
     case 257 => Enter
