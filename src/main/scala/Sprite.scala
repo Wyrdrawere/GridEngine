@@ -1,6 +1,6 @@
 import org.lwjgl.opengl.GL11.{GL_BLEND, GL_ONE_MINUS_SRC_ALPHA, GL_POLYGON, GL_SRC_ALPHA, glBegin, glBlendFunc, glColor3f, glDisable, glEnable, glEnd, glTexCoord2f, glVertex3d}
 
-case class Sprite
+case class Sprite //todo: find out if this can be used for fonts too. needs better name then
 (
   id: Int,
   minX: Float,
@@ -34,7 +34,6 @@ case class Sprite
     var newMaxY = maxY
     val xUnit = maxX - minX
     val yUnit = maxY - minY
-
     if (edge._1) offset.x match {
       case x if x < 0 => if(edge._3) newMaxX = minX - xUnit * x else newMinX = minX - xUnit * x
       case x if x > 0 => if(edge._3) newMinX = maxX - xUnit * x else newMaxX = maxX - xUnit * x
@@ -51,8 +50,8 @@ case class Sprite
 
 object Sprite {
   def TextureToTileSet(texture: Texture, width: Int, height: Int, tileWidth: Int, tileHeight: Int): Map[Int, Drawable] = {
-    var xAmount = width / tileWidth
-    var yAmount = height / tileHeight
+    val xAmount = width / tileWidth
+    val yAmount = height / tileHeight
     var spriteMap: Map[Int, Sprite] = Map.empty
     for (x <- 0 until xAmount; y <- 0 until yAmount) {
       spriteMap = spriteMap.updated(

@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL12._
 import org.lwjgl.BufferUtils
 import java.io.FileInputStream
 
-import Util.PNGDecoder
+import Util.PNGDecoder //todo: attempt to translate to scala
 
 case class Texture(id: Int) extends Drawable
 {
@@ -44,6 +44,7 @@ object Texture {
     glEnable(GL_TEXTURE_2D)
     bind(id)
 
+    //todo: figure out what all this shit actually does
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)

@@ -1,6 +1,6 @@
 import Scroll.{ScrollX, ScrollY, Stay}
 
-sealed trait Scroll {
+sealed trait Scroll { //todo: find better home for this. Overworld companion might might be it.
   def increment: Scroll = this match {
     case ScrollX(x) => if (x.abs < Config.scrollUnit-1) {ScrollX(x.sign * (x.abs+1))} else Stay
     case ScrollY(y) => if (y.abs < Config.scrollUnit-1) {ScrollY(y.sign * (y.abs+1))} else Stay

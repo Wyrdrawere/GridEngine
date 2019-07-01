@@ -4,7 +4,6 @@ class Grid
 (
   val relativeSize: Vector2 = Vector2(1, 1),
   val relativePosition: Vector2 = Vector2(0, 0),
-
 ) {
 
   private var dimensions: Vector2 = Vector2(0, 0)
@@ -16,9 +15,9 @@ class Grid
   def drawGrid(content: Array[Array[Int]], tileSet: Map[Int, Drawable], offset: Vector2 = Vector2(0, 0)): Unit = {
     dimensions = Vector2(content.length - 2, content(0).length - 2)
     for (x <- content.indices; y <- content(x).indices) {
-      var size = gridUnit
-      var position = gridTranslation - offset + Vector2(x - 1, y - 1)
-      var positional = positionToPositional(Vector2(x, y), Vector2(content.indices.max, content(x).indices.max))
+      val size = gridUnit
+      val position = gridTranslation - offset + Vector2(x - 1, y - 1)
+      val positional = positionToPositional(Vector2(x, y), Vector2(content.indices.max, content(x).indices.max))
       shouldDraw(positional, offset) match {
         case Full => tileSet(content(x)(y)).drawRectangle(size, gridUnit *: position)
         case Partial(rel, shift, edge) => tileSet(content(x)(y)).drawRectanglePartial(size *: (Vector2(1) - rel), gridUnit *: (position + shift), offset, edge)
@@ -33,13 +32,10 @@ class Grid
 
   def drawOnCenter(drawable: Drawable): Unit = drawOnGrid(drawable, dimensions / 2)
 
-
-
-
 }
 
 object Grid {
-  sealed trait Positional
+  sealed trait Positional //todo: the other cases and their implementations (can wait. FUCK diagonals)
   case class Left(outer: Boolean) extends Positional
   case class Right(outer: Boolean) extends Positional
   case class Top(outer: Boolean) extends Positional

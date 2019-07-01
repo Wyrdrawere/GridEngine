@@ -14,6 +14,7 @@ object Input {
   case object None extends Input
 
   def apply(key: Int): Input = key match {
+      //todo: completely map this through
     case 32 => Space
 
     case 83 => S

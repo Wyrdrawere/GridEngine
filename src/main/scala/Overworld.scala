@@ -14,7 +14,7 @@ case class Overworld
 
   override def simulate(deltaTime: Long, input: Input): Overworld = {
 
-    var newState: Overworld = everyFrame(deltaTime)
+    val newState: Overworld = everyFrame(deltaTime)
 
     if(inputReady) {
       val nextSprite: PlayerSprite = playerSprite.simulate(deltaTime, input)
@@ -42,24 +42,22 @@ case class Overworld
 
   private def everyFrame(deltaTime: Long): Overworld = {
 
-    //todo: better, but still not enough. Might not belong here
+    //todo: better, but still not enough. Might not belong here. (Maybe like ugly casedefinitions in grid: companion object)
     scroll match {
-      case ScrollX(x) => {
+      case ScrollX(x) =>
         val nextScroll = scroll.increment
         val ready = nextScroll == Stay
         this.copy(
           pos = if(ready) (pos._1-x.sign, pos._2) else pos,
           scroll = nextScroll,
           inputReady = ready)
-      }
-      case ScrollY(y) => {
+      case ScrollY(y) =>
         val nextScroll = scroll.increment
         val ready = nextScroll == Stay
         this.copy(
           pos = if(ready) (pos._1, pos._2-y.sign) else pos,
           scroll = nextScroll,
           inputReady = ready)
-      }
       case Stay => this
     }
   }
@@ -74,5 +72,5 @@ object Overworld {
     (0,0),
     5,
     Stay,
-    true)
+    inputReady = true)
 }

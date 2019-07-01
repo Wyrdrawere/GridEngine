@@ -10,7 +10,7 @@ class Level(levelData: Array[Array[Int]]) {
       if (levelData.indices.contains(levelX) && levelData(0).indices.contains(levelY)) {
         slice(x)(y) = levelData(levelX)(levelY)
       } else {
-        slice(x)(y) = 22 //todo: make blank Element adjustable. Possibly make tileSet part of Level
+        slice(x)(y) = 22 //todo: make blank Element adjustable. Possibly make tileSet part of Level (full redefinition coming soon)
       }
     }
     slice
