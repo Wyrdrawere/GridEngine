@@ -15,13 +15,13 @@ case class Sprite //todo: find out if this can be used for fonts too. needs bett
     Texture.bind(id)
     glColor3f(1f, 1f, 1f)
     glBegin(GL_POLYGON)
-    glTexCoord2f(maxX, maxY)
-    glVertex3d(-1.0 + 2 * position.x, -1.0 + 2 * position.y, 0)
     glTexCoord2f(minX, maxY)
+    glVertex3d(-1.0 + 2 * position.x, -1.0 + 2 * position.y, 0)
+    glTexCoord2f(maxX, maxY)
     glVertex3d(-1.0 + 2 * (position.x + size.x), -1.0 + 2 * position.y, 0)
-    glTexCoord2f(minX, minY)
-    glVertex3d(-1.0 + 2 * (position.x + size.x), -1.0 + 2 * (position.y + size.y), 0)
     glTexCoord2f(maxX, minY)
+    glVertex3d(-1.0 + 2 * (position.x + size.x), -1.0 + 2 * (position.y + size.y), 0)
+    glTexCoord2f(minX, minY)
     glVertex3d(-1.0 + 2 * position.x, -1.0 + 2 * (position.y + size.y), 0)
     glEnd()
     glDisable(GL_BLEND)
@@ -35,8 +35,8 @@ case class Sprite //todo: find out if this can be used for fonts too. needs bett
     val xUnit = maxX - minX
     val yUnit = maxY - minY
     if (edge._1) offset.x match {
-      case x if x < 0 => if(edge._3) newMaxX = minX - xUnit * x else newMinX = minX - xUnit * x
-      case x if x > 0 => if(edge._3) newMinX = maxX - xUnit * x else newMaxX = maxX - xUnit * x
+      case x if x > 0 => if(edge._3) newMaxX = minX + xUnit * x else newMinX = minX + xUnit * x
+      case x if x < 0 => if(edge._3) newMinX = maxX + xUnit * x else newMaxX = maxX + xUnit * x
       case 0 =>
     }
     if (edge._2) offset.y match {
@@ -49,9 +49,9 @@ case class Sprite //todo: find out if this can be used for fonts too. needs bett
 }
 
 object Sprite {
-  def TextureToTileSet(texture: Texture, width: Int, height: Int, tileWidth: Int, tileHeight: Int): Map[Int, Drawable] = {
-    val xAmount = width / tileWidth
-    val yAmount = height / tileHeight
+  def TextureToTileSet(texture: Texture, size: Vector2, tileSize: Vector2): Map[Int, Sprite] = {
+    val xAmount = (size.x / tileSize.x).toInt
+    val yAmount = (size.y / tileSize.y).toInt
     var spriteMap: Map[Int, Sprite] = Map.empty
     for (x <- 0 until xAmount; y <- 0 until yAmount) {
       spriteMap = spriteMap.updated(

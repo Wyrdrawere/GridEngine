@@ -35,7 +35,7 @@ case class Overworld
     scroll match {
       case ScrollX(x) => grid.drawGrid(slice, tileSet, Vector2((1-x.toFloat)/Config.scrollUnit, 0f))
       case ScrollY(y) => grid.drawGrid(slice, tileSet, Vector2(0f, (1-y.toFloat)/Config.scrollUnit))
-      case Stay => grid.drawGrid(slice, tileSet)
+      case Stay => grid.drawGrid(slice, tileSet, Vector2(0))
     }
     playerSprite.render(grid)
   }
@@ -65,9 +65,10 @@ case class Overworld
 
 object Overworld {
 
+
   def testWorld(level: Level) = Overworld(
     level,
-    Sprite.TextureToTileSet(Texture.load("src/resources/Tileset/basictiles.png"),128,240,16,16),
+    DrawableStorage.spriteSheet("src/resources/Tileset/basictiles.png",Vector2(128,240),Vector2(16,16)),
     PlayerSprite.FF1_PlayerSprite(6),
     (0,0),
     5,

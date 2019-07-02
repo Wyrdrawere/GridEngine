@@ -83,9 +83,19 @@ class Window {
     for (x <- test.indices; y <- test(x).indices) {
       test(x)(y) = (Math.random()*16).toInt
     }
-    val testMap = Sprite.TextureToTileSet(Texture.load("src/resources/Tileset/basictiles.png"), 128, 240, 16, 16)
+
+    val testMap = DrawableStorage.spriteSheet("src/resources/Tileset/basictiles.png", Vector2(128, 240), Vector2(16, 16))
+
+    val testTile = Tile(List(testMap(11), testMap(56), testMap(24), testMap(29)))
+
+    val tiles = Array.ofDim[Tile](11,11)
+    for (x <- tiles.indices; y <- tiles(x).indices) {
+      tiles(x)(y) = testTile
+    }
+
     var counter: Float = 0
     var scrollSpeed: Float = 128
+    var up = true
     val g = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0.25f))
     val g1 = new Grid(relativeSize = Vector2(0.5f))
     val g2 = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0.5f,0))
@@ -104,15 +114,29 @@ class Window {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         state = state.simulate(deltaTime, lastInput)
 
-        g1.drawGrid(test, testMap, offset = Vector2(counter/scrollSpeed, 0))
-        g2.drawGrid(test, testMap, offset = Vector2(-counter/scrollSpeed, 0))
-        g3.drawGrid(test, testMap, offset = Vector2(0, counter/scrollSpeed))
-        g4.drawGrid(test, testMap, offset = Vector2(0, -counter/scrollSpeed))
+        g3.drawGrid(test, testMap, offset = Vector2(counter/scrollSpeed, 0))
+        g4.drawGrid(test, testMap, offset = Vector2(0, counter/scrollSpeed))
 
-        state.render(g)
+        g1.drawGrid(tiles, Vector2(counter/scrollSpeed,0))
+        state.render(g2)
 
 
-        counter = if (counter < scrollSpeed) counter + 1 else 0
+
+        counter = if (up) {
+          if (counter < scrollSpeed) {
+            counter + 1
+          } else {
+            up = false
+            scrollSpeed
+          }
+        } else {
+          if (counter > -scrollSpeed) {
+            counter - 1
+          } else {
+            up = true
+            -scrollSpeed
+          }
+        }
 
         lastTime = thisTime
         lastInput = None

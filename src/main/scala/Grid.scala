@@ -13,14 +13,21 @@ class Grid
   def gridUnit: Vector2 = relativeSize /: dimensions
   def gridTranslation: Vector2 = relativePosition /: gridUnit
 
-  def drawGrid(content: Array[Array[Int]], tileSet: Map[Int, Drawable], offset: Vector2 = Vector2(0, 0)): Unit = {
+  def drawGrid(content: Array[Array[Int]], tileSet: Map[Int, Drawable], offset: Vector2): Unit = {
     dimensions = Vector2(content.length - 2, content(0).length - 2)
     for (x <- content.indices; y <- content(x).indices) {
       drawOnGrid(tileSet(content(x)(y)), Vector2(x,y), offset = offset)
     }
   }
 
-  def drawOnGrid(drawable: Drawable, gridPosition: Vector2, relSize: Vector2 = Vector2(1, 1), offset: Vector2 = Vector2(0, 0)): Unit = {
+  def drawGrid(content: Array[Array[Tile]], offset: Vector2): Unit = {
+    dimensions = Vector2(content.length - 2, content(0).length -2)
+    for (x <- content.indices; y <- content(x).indices) {
+      drawOnGrid(content(x)(y), Vector2(x,y), offset = offset)
+    }
+  }
+
+  def drawOnGrid(drawable: Drawable, gridPosition: Vector2, offset: Vector2, relSize: Vector2 = Vector2(1, 1)): Unit = {
     val size = relSize*:gridUnit
     val position = gridTranslation - offset + Vector2(gridPosition.x - 1, gridPosition.y - 1)
     val positional = positionToPositional(gridPosition, Vector2(dimensions.x+1, dimensions.y+1))
@@ -31,7 +38,7 @@ class Grid
     }
   }
 
-  def drawOnCenter(drawable: Drawable): Unit = drawOnGrid(drawable, dimensions.map(v => v+1)/2)
+  def drawOnCenter(drawable: Drawable): Unit = drawOnGrid(drawable, dimensions.map(v => v+1)/2, Vector2(0))
 
 }
 

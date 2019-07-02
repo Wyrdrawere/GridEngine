@@ -4,5 +4,5 @@ object Config {
   val fps: Int = 60
   val scrollUnit = 15 //todo: find better name and better place (if scroll becomes part of Overworld, that might be the place)
 
-  type LevelData = Array[Array[List[(Int,Int)]]]
+
 }

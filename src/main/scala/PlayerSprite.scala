@@ -34,12 +34,12 @@ case class PlayerSprite
 
 object PlayerSprite {
   def FF1_PlayerSprite(job: Int) = PlayerSprite(
-    Sprite.TextureToTileSet(Texture.load("src/resources/Sprite/ff1-classes.png"), 972, 432, 36, 36),
+    DrawableStorage.spriteSheet("src/resources/Sprite/ff1-classes.png", Vector2(972, 432), Vector2(36, 36)),
     Map(
       WalkUp -> List(27*job+2, 27*job+3),
       WalkDown -> List(27*job, 27*job+1),
-      WalkLeft -> List(27*job+4, 27*job+5),
-      WalkRight -> List(27*job+6, 27*job+7)
+      WalkRight -> List(27*job+4, 27*job+5),
+      WalkLeft -> List(27*job+6, 27*job+7)
     ),
     27*job
   )
