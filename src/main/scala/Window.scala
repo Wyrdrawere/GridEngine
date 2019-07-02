@@ -96,12 +96,14 @@ class Window {
     var counter: Float = 0
     var scrollSpeed: Float = 128
     var up = true
-    val g = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0.25f))
+    val g = new Grid
     val g1 = new Grid(relativeSize = Vector2(0.5f))
     val g2 = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0.5f,0))
     val g3 = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0,0.5f))
     val g4 = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0.5f))
     var state = Overworld.testWorld(Level.TestDungeon)
+
+    val formatTest = LevelFormat.pureToDraw(LevelFormat.testPure)
 
     while ( {
       !glfwWindowShouldClose(window)
@@ -114,11 +116,14 @@ class Window {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         state = state.simulate(deltaTime, lastInput)
 
-        g3.drawGrid(test, testMap, offset = Vector2(counter/scrollSpeed, 0))
-        g4.drawGrid(test, testMap, offset = Vector2(0, counter/scrollSpeed))
+        g1.drawGrid(test, testMap, Vector2(-counter/scrollSpeed, 0))
+        g2.drawGrid(test, testMap, Vector2(0, -counter/scrollSpeed))
+        g3.drawGrid(test, testMap, Vector2(counter/scrollSpeed, 0))
+        g4.drawGrid(test, testMap, Vector2(0, counter/scrollSpeed))
 
         g1.drawGrid(tiles, Vector2(counter/scrollSpeed,0))
         state.render(g2)
+        g3.drawGrid(formatTest, Vector2(0))
 
 
 
