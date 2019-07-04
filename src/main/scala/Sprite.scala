@@ -83,4 +83,10 @@ object Sprite {
 
     (keys zip values).toMap
   }
+
+  val GrayFont: Map[Char, Sprite] = {
+    val sheet = DrawableStorage.spriteSheet("src/resources/Font/8x8Text/8x8text_whiteShadow.png", Vector2(96,112), Vector2(8))
+    CharToInt.toList.map(a => (a._1, sheet(a._2))).toMap
+  }
+
 }

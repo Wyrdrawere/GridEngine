@@ -92,6 +92,8 @@ class Window {
 
     val testTile = Tile(List(testMap(11), testMap(56), testMap(24), testMap(29)))
 
+
+
     val tiles = Array.ofDim[Tile](11,11)
     for (x <- tiles.indices; y <- tiles(x).indices) {
       tiles(x)(y) = testTile
@@ -112,6 +114,12 @@ class Window {
       println(formatTest(x)(y) + " " + LevelFormat.testDraw(x)(y))
     }
 
+    val text = Text("HELLO WORLD!", Sprite.GrayFont)
+    val t1 = Text("Trait Drawable", Sprite.GrayFont)
+    val t2 = Text("hat sich bewiesen!", Sprite.GrayFont)
+    val t3 = Text("40min fuer volle Kontrolle", Sprite.GrayFont)
+    val t4 = Text("und Integration mit Grid!", Sprite.GrayFont)
+
     while ( {
       !glfwWindowShouldClose(window)
     }) {
@@ -129,8 +137,15 @@ class Window {
         //g4.drawGrid(test, testMap, Vector2(0, counter/scrollSpeed))
 
         g.drawGrid(test, testMap, Vector2(0))
+        g.drawOnGrid(t1, Vector2(8,15), Vector2(0), Vector2(t1.string.length))
+        g.drawOnGrid(t2, Vector2(4,14), Vector2(0), Vector2(t2.string.length))
+        g.drawOnGrid(t3, Vector2(4,11), Vector2(0.5f,0), Vector2(t3.string.length/2))
+        g.drawOnGrid(t4, Vector2(2,8), Vector2(0, -0.5f), Vector2(t4.string.length/2))
 
-        g.drawGrid(testText, testFont, Vector2(0))
+        //text.drawRectangle(Vector2(0.5f), Vector2(0.25f, 0.5f))
+        //testMap(0).drawRectangle(Vector2(0.5f, 0.5f), Vector2(0.5f, 0.5f))
+
+        //g.drawGrid(testText, testFont, Vector2(0))
 
         //g1.drawGridScrollable(tiles, Vector2(counter/scrollSpeed,0))
         //state.render(g2)
