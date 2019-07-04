@@ -104,7 +104,9 @@ class Window {
     var state = Overworld.testWorld(Level.TestDungeon)
 
     val formatTest = LevelFormat.pureToDraw(LevelFormat.testPure)
-    println(formatTest(1)(0))
+    for(x <- 0 until 3; y <- 0 until 3) {
+      println(formatTest(x)(y) + " " + LevelFormat.testDraw(x)(y))
+    }
 
     while ( {
       !glfwWindowShouldClose(window)
@@ -125,6 +127,7 @@ class Window {
         g1.drawGrid(tiles, Vector2(counter/scrollSpeed,0))
         state.render(g2)
         g3.drawGrid(formatTest, Vector2(0))
+        g4.drawGrid(LevelFormat.testDraw, Vector2(0))
 
 
 
