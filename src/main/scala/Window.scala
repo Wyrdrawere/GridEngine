@@ -79,12 +79,16 @@ class Window {
     GL.createCapabilities
     glClearColor(1.0f, 1.0f, 1.0f, 0.0f)
 
-    val test = Array.ofDim[Int](21,21)
+    var test = Array.ofDim[Int](21,21)
     for (x <- test.indices; y <- test(x).indices) {
       test(x)(y) = (Math.random()*16).toInt
     }
+    test = new Level(test).getSlice(test.length+2, test(0).length+2, (10,10))
 
     val testMap = DrawableStorage.spriteSheet("src/resources/Tileset/basictiles.png", Vector2(128, 240), Vector2(16, 16))
+    val testFont = DrawableStorage.spriteSheet("src/resources/Font/8x8Text/8x8text_darkGrayShadow.png", Vector2(96, 112), Vector2(8))
+
+    val testText = "  HELLO WORLD!  ".toCharArray.map(Sprite.CharToInt(_)).map(x => Array(167,167,167,167,167,167,167,167, x, 167,167,167,167,167,167,167,167))
 
     val testTile = Tile(List(testMap(11), testMap(56), testMap(24), testMap(29)))
 
@@ -119,15 +123,19 @@ class Window {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         state = state.simulate(deltaTime, lastInput)
 
-        g1.drawGrid(test, testMap, Vector2(-counter/scrollSpeed, 0))
-        g2.drawGrid(test, testMap, Vector2(0, -counter/scrollSpeed))
-        g3.drawGrid(test, testMap, Vector2(counter/scrollSpeed, 0))
-        g4.drawGrid(test, testMap, Vector2(0, counter/scrollSpeed))
+        //g1.drawGrid(testText, testFont, Vector2(0))
+        //g2.drawGrid(test, testMap, Vector2(0))
+        //g3.drawGrid(test, testMap, Vector2(counter/scrollSpeed, 0))
+        //g4.drawGrid(test, testMap, Vector2(0, counter/scrollSpeed))
 
-        g1.drawGrid(tiles, Vector2(counter/scrollSpeed,0))
-        state.render(g2)
-        g3.drawGrid(formatTest, Vector2(0))
-        g4.drawGrid(LevelFormat.testDraw, Vector2(0))
+        g.drawGrid(test, testMap, Vector2(0))
+
+        g.drawGrid(testText, testFont, Vector2(0))
+
+        //g1.drawGridScrollable(tiles, Vector2(counter/scrollSpeed,0))
+        //state.render(g2)
+        //g3.drawGridScrollable(formatTest, Vector2(0))
+        //g4.drawGridScrollable(test, testFont, Vector2(0))
 
 
 

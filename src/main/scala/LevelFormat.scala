@@ -30,10 +30,6 @@ object LevelFormat {
     draw
   }
 
-  val testEdit: LevelDataEdit = {
-
-  }
-
   assert(testDraw.flatten.toList sameElements pureToDraw(testPure).flatten.toList)
 
 }

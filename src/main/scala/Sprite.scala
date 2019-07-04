@@ -1,6 +1,6 @@
 import org.lwjgl.opengl.GL11.{GL_BLEND, GL_ONE_MINUS_SRC_ALPHA, GL_POLYGON, GL_SRC_ALPHA, glBegin, glBlendFunc, glColor3f, glDisable, glEnable, glEnd, glTexCoord2f, glVertex3d}
 
-case class Sprite //todo: find out if this can be used for fonts too. needs better name then
+case class Sprite //todo: new name because font
 (
   id: Int,
   minX: Float,
@@ -65,5 +65,22 @@ object Sprite {
         ))
     }
     spriteMap
+  }
+
+  val CharToInt: Map[Char,Int] = { //todo: dont even know, needs to be better
+    val values = List.range(0,96) :+ 167
+    val keys = List(
+      '~', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-',
+      '+', '!', '@', '#', '$', '%', '°', '&', '*', '(', ')', '_',
+      '=', '{', '}', '[', ']', '|', '„', ':', ';', '”', '“', '<',
+      ',', '>', '.', '?', '/', 'A', 'B', 'C', 'D', 'E', 'F', 'G',
+      'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+      'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e',
+      'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
+      'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '¢', '€', '–',
+      ' '
+    )
+
+    (keys zip values).toMap
   }
 }
