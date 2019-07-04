@@ -67,6 +67,8 @@ object Sprite {
     spriteMap
   }
 
+  //todo: move these to Text companion
+
   val CharToInt: Map[Char,Int] = { //todo: dont even know, needs to be better
     val values = List.range(0,96) :+ 167
     val keys = List(

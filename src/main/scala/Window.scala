@@ -120,7 +120,7 @@ class Window {
     val t3 = Text("40min fuer volle Kontrolle", Sprite.GrayFont)
     val t4 = Text("und Integration mit Grid!", Sprite.GrayFont)
 
-    while ( {
+    while ( { //todo: cleanup in preparation for menu neccessary
       !glfwWindowShouldClose(window)
     }) {
       val thisTime = System.currentTimeMillis() //todo: wrap this in a function or something
