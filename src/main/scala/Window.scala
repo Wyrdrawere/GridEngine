@@ -104,6 +104,7 @@ class Window {
     var state = Overworld.testWorld(Level.TestDungeon)
 
     val formatTest = LevelFormat.pureToDraw(LevelFormat.testPure)
+    println(formatTest(1)(0))
 
     while ( {
       !glfwWindowShouldClose(window)

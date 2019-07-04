@@ -1,5 +1,7 @@
 object DrawableStorage {
 
+  // todo: might both belong in respective companion
+
   def texture(path: String): Texture = {
     if (textures.keys.toList.contains(path)) {
       textures(path)
