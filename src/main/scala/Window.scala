@@ -90,6 +90,10 @@ class Window {
 
     val testText = "  HELLO WORLD!  ".toCharArray.map(Text.CharToInt(_)).map(x => Array(167,167,167,167,167,167,167,167, x, 167,167,167,167,167,167,167,167))
 
+
+    val testColor = Color.Red
+    val testText2 = Text("MENU", Text.DarkGrayFont)
+    val testSprite = testMap(2)
     val testTile = Tile(List(testMap(11), testMap(56), testMap(24), testMap(29)))
 
 
@@ -114,11 +118,16 @@ class Window {
       println(formatTest(x)(y) + " " + LevelFormat.testDraw(x)(y))
     }
 
-    val text = Text("HELLO WORLD!", Text.GrayFont)
-    val t1 = Text("Trait Drawable", Text.GrayFont)
-    val t2 = Text("hat sich bewiesen!", Text.GrayFont)
-    val t3 = Text("40min fuer volle Kontrolle", Text.GrayFont)
-    val t4 = Text("und Integration mit Grid!", Text.GrayFont)
+    val text = Text("HELLO WORLD!", Text.DarkGrayFont)
+    val t1 = Text("STATUS", Text.DarkGrayFont)
+    val t2 = Text("SKILLS", Text.DarkGrayFont)
+    val t3 = Text("EQUIPMENT", Text.DarkGrayFont)
+    val t4 = Text("JOBS", Text.DarkGrayFont)
+
+    val testList: List[Drawable] = List(t1,t2,t3,t4)
+
+    val testMenu = Menu(testList, 4)
+
 
     while ( { //todo: cleanup in preparation for menu neccessary
       !glfwWindowShouldClose(window)
@@ -131,19 +140,23 @@ class Window {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         state = state.simulate(deltaTime, lastInput)
 
-        //g1.drawGrid(testText, testFont, Vector2(0))
-        //g2.drawGrid(test, testMap, Vector2(0))
-        g3.drawGrid(test, testMap, Vector2(counter/scrollSpeed, 0))
-        //g4.drawGrid(test, testMap, Vector2(0, counter/scrollSpeed))
 
-        g.drawGrid(test, testMap, Vector2(0))
-        g.drawOnGrid(t1, Vector2(8,15), Vector2(0), Vector2(t1.string.length))
-        g.drawOnGrid(t2, Vector2(4,14), Vector2(0), Vector2(t2.string.length))
-        g.drawOnGrid(t3, Vector2(4,11), Vector2(0.5f,0), Vector2(t3.string.length/2))
-        g.drawOnGrid(t4, Vector2(2,8), Vector2(0, -0.5f), Vector2(t4.string.length/2))
-        g.drawOnGrid(Color.White, Vector2(2), Vector2(0))
+        state.render(g2)
+        //g3.drawGrid(test, testMap, Vector2(counter/scrollSpeed, 0))
+        g4.drawGrid(test, testMap, Vector2(0, counter/scrollSpeed))
+        g1.drawGrid(testText, testFont, Vector2(0))
+        g1.drawOnGrid(Color.Black, Vector2(15,5), Vector2(0.5f))
 
-        state.render(g)
+        testMenu.render(g3)
+
+        //g.drawGrid(test, testMap, Vector2(0))
+        //g.drawOnGrid(t1, Vector2(8,15), Vector2(0), Vector2(t1.string.length))
+        //g.drawOnGrid(t2, Vector2(4,14), Vector2(0), Vector2(t2.string.length))
+        //g.drawOnGrid(t3, Vector2(4,11), Vector2(0.5f,0), Vector2(t3.string.length/2))
+        //g.drawOnGrid(t4, Vector2(2,8), Vector2(0, -0.5f), Vector2(t4.string.length/2))
+
+        //state.render(g)
+        //g.drawOnGrid(Color.White, Vector2(2), Vector2(0))
 
 
         //text.drawRectangle(Vector2(0.5f), Vector2(0.25f, 0.5f))

@@ -8,6 +8,9 @@ class Grid
 
   private var dimensions: Vector2 = Vector2(0, 0)
   def getDimensions: Vector2 = dimensions
+  def setDimensions(dim: Vector2): Unit = {
+    dimensions = dim
+  }
 
   val windowSize: Vector2 = Config.windowSize
   def gridUnit: Vector2 = relativeSize /: dimensions
