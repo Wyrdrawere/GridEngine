@@ -85,10 +85,10 @@ class Window {
     }
     test = new Level(test).getSlice(test.length+2, test(0).length+2, (10,10))
 
-    val testMap = DrawableStorage.spriteSheet("src/resources/Tileset/basictiles.png", Vector2(128, 240), Vector2(16, 16))
-    val testFont = DrawableStorage.spriteSheet("src/resources/Font/8x8Text/8x8text_darkGrayShadow.png", Vector2(96, 112), Vector2(8))
+    val testMap = Sprite.get("src/resources/Tileset/basictiles.png", Vector2(128, 240), Vector2(16, 16))
+    val testFont = Sprite.get("src/resources/Font/8x8Text/8x8text_darkGrayShadow.png", Vector2(96, 112), Vector2(8))
 
-    val testText = "  HELLO WORLD!  ".toCharArray.map(Sprite.CharToInt(_)).map(x => Array(167,167,167,167,167,167,167,167, x, 167,167,167,167,167,167,167,167))
+    val testText = "  HELLO WORLD!  ".toCharArray.map(Text.CharToInt(_)).map(x => Array(167,167,167,167,167,167,167,167, x, 167,167,167,167,167,167,167,167))
 
     val testTile = Tile(List(testMap(11), testMap(56), testMap(24), testMap(29)))
 
@@ -114,11 +114,11 @@ class Window {
       println(formatTest(x)(y) + " " + LevelFormat.testDraw(x)(y))
     }
 
-    val text = Text("HELLO WORLD!", Sprite.GrayFont)
-    val t1 = Text("Trait Drawable", Sprite.GrayFont)
-    val t2 = Text("hat sich bewiesen!", Sprite.GrayFont)
-    val t3 = Text("40min fuer volle Kontrolle", Sprite.GrayFont)
-    val t4 = Text("und Integration mit Grid!", Sprite.GrayFont)
+    val text = Text("HELLO WORLD!", Text.GrayFont)
+    val t1 = Text("Trait Drawable", Text.GrayFont)
+    val t2 = Text("hat sich bewiesen!", Text.GrayFont)
+    val t3 = Text("40min fuer volle Kontrolle", Text.GrayFont)
+    val t4 = Text("und Integration mit Grid!", Text.GrayFont)
 
     while ( { //todo: cleanup in preparation for menu neccessary
       !glfwWindowShouldClose(window)
@@ -133,7 +133,7 @@ class Window {
 
         //g1.drawGrid(testText, testFont, Vector2(0))
         //g2.drawGrid(test, testMap, Vector2(0))
-        //g3.drawGrid(test, testMap, Vector2(counter/scrollSpeed, 0))
+        g3.drawGrid(test, testMap, Vector2(counter/scrollSpeed, 0))
         //g4.drawGrid(test, testMap, Vector2(0, counter/scrollSpeed))
 
         g.drawGrid(test, testMap, Vector2(0))
@@ -141,6 +141,10 @@ class Window {
         g.drawOnGrid(t2, Vector2(4,14), Vector2(0), Vector2(t2.string.length))
         g.drawOnGrid(t3, Vector2(4,11), Vector2(0.5f,0), Vector2(t3.string.length/2))
         g.drawOnGrid(t4, Vector2(2,8), Vector2(0, -0.5f), Vector2(t4.string.length/2))
+        g.drawOnGrid(Color.White, Vector2(2), Vector2(0))
+
+        state.render(g)
+
 
         //text.drawRectangle(Vector2(0.5f), Vector2(0.25f, 0.5f))
         //testMap(0).drawRectangle(Vector2(0.5f, 0.5f), Vector2(0.5f, 0.5f))

@@ -1,4 +1,4 @@
-import org.lwjgl.opengl.GL11.{GL_BLEND, GL_ONE_MINUS_SRC_ALPHA, GL_POLYGON, GL_SRC_ALPHA, glBegin, glBlendFunc, glColor3f, glDisable, glEnable, glEnd, glTexCoord2f, glVertex3d}
+import org.lwjgl.opengl.GL11.{GL_BLEND, GL_ONE_MINUS_SRC_ALPHA, GL_POLYGON, GL_SRC_ALPHA, GL_TEXTURE_2D, glBegin, glBlendFunc, glColor3f, glDisable, glEnable, glEnd, glTexCoord2f, glVertex3d}
 
 case class Sprite //todo: new name because font
 (
@@ -10,6 +10,7 @@ case class Sprite //todo: new name because font
 ) extends Drawable {
 
   override def drawRectangle(size: Vector2, position: Vector2): Unit = {
+    glEnable(GL_TEXTURE_2D)
     glEnable(GL_BLEND)
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
     Texture.bind(id)
@@ -25,6 +26,7 @@ case class Sprite //todo: new name because font
     glVertex3d(-1.0 + 2 * position.x, -1.0 + 2 * (position.y + size.y), 0)
     glEnd()
     glDisable(GL_BLEND)
+    glDisable(GL_TEXTURE_2D)
   }
 
   override def drawRectanglePartial(size: Vector2, position: Vector2, offset: Vector2, edge: (Boolean, Boolean, Boolean)): Unit = {
@@ -49,6 +51,21 @@ case class Sprite //todo: new name because font
 }
 
 object Sprite {
+
+  private var spriteSheetCache: Map[String, Map[Int, Sprite]] = Map.empty
+
+  def get(path: String, size: Vector2, tileSize: Vector2): Map[Int, Sprite] = {
+    if (spriteSheetCache.keys.toList.contains(path)) {
+      println("loaded store: " + path)
+      spriteSheetCache(path)
+    } else {
+      println("loaded fresh: " + path)
+      val s = Sprite.TextureToTileSet(Texture.get(path), size, tileSize)
+      spriteSheetCache = spriteSheetCache.updated(path, s)
+      s
+    }
+  }
+
   def TextureToTileSet(texture: Texture, size: Vector2, tileSize: Vector2): Map[Int, Sprite] = {
     val xAmount = (size.x / tileSize.x).toInt
     val yAmount = (size.y / tileSize.y).toInt
@@ -66,29 +83,4 @@ object Sprite {
     }
     spriteMap
   }
-
-  //todo: move these to Text companion
-
-  val CharToInt: Map[Char,Int] = { //todo: dont even know, needs to be better
-    val values = List.range(0,96) :+ 167
-    val keys = List(
-      '~', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-',
-      '+', '!', '@', '#', '$', '%', '°', '&', '*', '(', ')', '_',
-      '=', '{', '}', '[', ']', '|', '„', ':', ';', '”', '“', '<',
-      ',', '>', '.', '?', '/', 'A', 'B', 'C', 'D', 'E', 'F', 'G',
-      'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
-      'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e',
-      'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
-      'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '¢', '€', '–',
-      ' '
-    )
-
-    (keys zip values).toMap
-  }
-
-  val GrayFont: Map[Char, Sprite] = {
-    val sheet = DrawableStorage.spriteSheet("src/resources/Font/8x8Text/8x8text_whiteShadow.png", Vector2(96,112), Vector2(8))
-    CharToInt.toList.map(a => (a._1, sheet(a._2))).toMap
-  }
-
 }

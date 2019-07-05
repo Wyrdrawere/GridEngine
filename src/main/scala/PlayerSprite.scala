@@ -34,7 +34,7 @@ case class PlayerSprite
 
 object PlayerSprite {
   def FF1_PlayerSprite(job: Int) = PlayerSprite(
-    DrawableStorage.spriteSheet("src/resources/Sprite/ff1-classes.png", Vector2(972, 432), Vector2(36, 36)),
+    Sprite.get("src/resources/Sprite/ff1-classes.png", Vector2(972, 432), Vector2(36, 36)),
     Map(
       WalkUp -> List(27*job+2, 27*job+3),
       WalkDown -> List(27*job, 27*job+1),

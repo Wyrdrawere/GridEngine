@@ -10,6 +10,7 @@ import Util.PNGDecoder //todo: attempt to translate to scala
 case class Texture(id: Int) extends Drawable
 {
   override def drawRectangle(size: Vector2, position: Vector2): Unit = {
+    glEnable(GL_TEXTURE_2D)
     Texture.bind(id)
     glColor3f(1f,1f,1f)
     glBegin(GL_POLYGON)
@@ -22,10 +23,23 @@ case class Texture(id: Int) extends Drawable
     glTexCoord2f(0, 1)
     glVertex3d(-1.0 + 2*position.x, -1.0 + 2*(position.y+size.y), 0)
     glEnd()
+    glDisable(GL_TEXTURE_2D)
   }
 }
 
 object Texture {
+
+  private var textureCache: Map[String, Texture] = Map.empty
+
+  def get(path: String): Texture = {
+    if (textureCache.keys.toList.contains(path)) {
+      textureCache(path)
+    } else {
+      val t = load(path)
+      textureCache = textureCache.updated(path, t)
+      t
+    }
+  }
 
   def load(path: String): Texture = {
 

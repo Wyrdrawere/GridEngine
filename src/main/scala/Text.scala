@@ -12,3 +12,27 @@ case class Text
     }
   }
 }
+
+object Text {
+  val CharToInt: Map[Char,Int] = { //todo: dont even know, needs to be better
+    val values = List.range(0,96) :+ 167
+    val keys = List(
+      '~', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-',
+      '+', '!', '@', '#', '$', '%', '°', '&', '*', '(', ')', '_',
+      '=', '{', '}', '[', ']', '|', '„', ':', ';', '”', '“', '<',
+      ',', '>', '.', '?', '/', 'A', 'B', 'C', 'D', 'E', 'F', 'G',
+      'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+      'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e',
+      'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
+      'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '¢', '€', '–',
+      ' '
+    )
+
+    (keys zip values).toMap
+  }
+
+  val GrayFont: Map[Char, Sprite] = {
+    val sheet = Sprite.get("src/resources/Font/8x8Text/8x8text_whiteShadow.png", Vector2(96,112), Vector2(8))
+    CharToInt.toList.map(a => (a._1, sheet(a._2))).toMap
+  }
+}

@@ -68,7 +68,7 @@ object Overworld {
 
   def testWorld(level: Level) = Overworld(
     level,
-    DrawableStorage.spriteSheet("src/resources/Tileset/basictiles.png",Vector2(128,240),Vector2(16,16)),
+    Sprite.get("src/resources/Tileset/basictiles.png",Vector2(128,240),Vector2(16,16)),
     PlayerSprite.FF1_PlayerSprite(8),
     (0,0),
     5,
