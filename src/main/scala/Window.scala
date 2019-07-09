@@ -81,7 +81,7 @@ class Window {
 
     var test = Array.ofDim[Int](21,21)
     for (x <- test.indices; y <- test(x).indices) {
-      test(x)(y) = (Math.random()*16).toInt
+      test(x)(y) = 9
     }
     test = new Level(test).getSlice(test.length+2, test(0).length+2, (10,10))
 
@@ -111,7 +111,7 @@ class Window {
     val g2 = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0.5f,0))
     val g3 = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0,0.5f))
     val g4 = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0.5f))
-    var state = Overworld.testWorld(Level.TestDungeon)
+
 
     val formatTest = LevelFormat.pureToDraw(LevelFormat.testPure)
     for(x <- 0 until 3; y <- 0 until 3) {
@@ -124,9 +124,11 @@ class Window {
     val t3 = Text("EQUIPMENT", Text.DarkGrayFont)
     val t4 = Text("JOBS", Text.DarkGrayFont)
 
-    val testList: List[Drawable] = List(t1,t2,t3,t4)
+    val testList: List[Text] = List(t1,t2,t3,t4)
 
-    val testMenu = Menu(testList, 4)
+    var state = ListMenu(0, testList)
+
+    val testMenu = Menu(testList, 19)
 
 
     while ( { //todo: cleanup in preparation for menu neccessary
@@ -140,52 +142,9 @@ class Window {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         state = state.simulate(deltaTime, lastInput)
 
+        g.drawGrid(test, testMap, Vector2(0))
+        state.render(g)
 
-        state.render(g2)
-        //g3.drawGrid(test, testMap, Vector2(counter/scrollSpeed, 0))
-        g4.drawGrid(test, testMap, Vector2(0, counter/scrollSpeed))
-        g1.drawGrid(testText, testFont, Vector2(0))
-        g1.drawOnGrid(Color.Black, Vector2(15,5), Vector2(0.5f))
-
-        testMenu.render(g3)
-
-        //g.drawGrid(test, testMap, Vector2(0))
-        //g.drawOnGrid(t1, Vector2(8,15), Vector2(0), Vector2(t1.string.length))
-        //g.drawOnGrid(t2, Vector2(4,14), Vector2(0), Vector2(t2.string.length))
-        //g.drawOnGrid(t3, Vector2(4,11), Vector2(0.5f,0), Vector2(t3.string.length/2))
-        //g.drawOnGrid(t4, Vector2(2,8), Vector2(0, -0.5f), Vector2(t4.string.length/2))
-
-        //state.render(g)
-        //g.drawOnGrid(Color.White, Vector2(2), Vector2(0))
-
-
-        //text.drawRectangle(Vector2(0.5f), Vector2(0.25f, 0.5f))
-        //testMap(0).drawRectangle(Vector2(0.5f, 0.5f), Vector2(0.5f, 0.5f))
-
-        //g.drawGrid(testText, testFont, Vector2(0))
-
-        //g1.drawGridScrollable(tiles, Vector2(counter/scrollSpeed,0))
-        //state.render(g2)
-        //g3.drawGridScrollable(formatTest, Vector2(0))
-        //g4.drawGridScrollable(test, testFont, Vector2(0))
-
-
-
-        counter = if (up) {
-          if (counter < scrollSpeed) {
-            counter + 1
-          } else {
-            up = false
-            scrollSpeed
-          }
-        } else {
-          if (counter > -scrollSpeed) {
-            counter - 1
-          } else {
-            up = true
-            -scrollSpeed
-          }
-        }
 
         lastTime = thisTime
         lastInput = None
