@@ -21,7 +21,7 @@ class Grid
   def gridUnit: Vector2 = relativeSize /: dimensions
   def gridTranslation: Vector2 = relativePosition /: gridUnit
 
-  def drawGrid(content: Array[Array[Int]], tileSet: Map[Int, Drawable], offset: Vector2): Unit = {
+  def drawGrid(content: Array[Array[Int]], tileSet: Map[Int, Drawable], offset: Vector2): Unit = { //todo: offset needs to be optional
     dimensions = Vector2(content.length - 2, content(0).length - 2)
     for (x <- content.indices; y <- content(x).indices) {
       drawOnGrid(tileSet(content(x)(y)), Vector2(x,y), offset = offset)

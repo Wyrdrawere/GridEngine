@@ -8,8 +8,11 @@ import org.lwjgl.system.MemoryStack._
 import org.lwjgl.system.MemoryUtil._
 
 object Window {
+
+  val currentWindow = new Window()
+
   def main(args: Array[String]): Unit = { //todo: make proper main that can launch (different) windows. Game, leveleditor etc
-    new Window().run()
+    currentWindow.run()
   }
 }
 
@@ -18,6 +21,9 @@ class Window {
 
   var lastInput: Input = None
   var lastTime: Long = 0
+
+  var stackPointer = 0
+  var testStack = StateStack(List.empty)
 
   def run(): Unit = {
     init()
@@ -94,15 +100,13 @@ class Window {
     val g3 = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0,0.5f))
     val g4 = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0.5f))
 
-    val text = Text("HELLO WORLD!", Text.DarkGrayFont)
-    val t1 = Text("STATUS", Text.DarkGrayFont)
-    val t2 = Text("SKILLS", Text.DarkGrayFont)
-    val t3 = Text("EQUIPMENT", Text.DarkGrayFont)
-    val t4 = Text("JOBS", Text.DarkGrayFont)
 
-    val testList: List[Text] = List(t1,t2,t3,t4)
 
-    var state = ListMenu(0, testList)
+    var worldState = Overworld.testWorld(Level.TestDungeon)
+
+
+    testStack = testStack.push(worldState)
+
 
     while ( {
       !glfwWindowShouldClose(window)
@@ -113,11 +117,9 @@ class Window {
       if (deltaTime > 1000f / Config.fps) {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        state = state.simulate(deltaTime, lastInput)
 
-        g.drawGrid(test, testMap, Vector2(0))
-        state.render(g2)
-
+        testStack = testStack.simulate(deltaTime, lastInput)
+        testStack.render(g)
 
         lastTime = thisTime
         lastInput = None

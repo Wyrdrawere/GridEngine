@@ -1,5 +1,6 @@
-import Input.{DownArrow, LeftArrow, RightArrow, S, UpArrow, W}
+import Input.{DownArrow, LeftArrow, RightArrow, S, Space, UpArrow, W}
 import Scroll.{ScrollX, ScrollY, Stay}
+import Stateful.{Next, NextState, Same}
 
 case class Overworld
 (
@@ -9,8 +10,11 @@ case class Overworld
   pos: (Int,Int),
   zoom: Int,
   scroll: Scroll,
-  inputReady: Boolean //todo: stateful def?
+  inputReady: Boolean, //todo: stateful def?
+  next: NextState = Same
 ) extends Stateful {
+
+  override val nextState: NextState = next
 
   override def simulate(deltaTime: Long, input: Input): Overworld = {
 
@@ -25,6 +29,7 @@ case class Overworld
         case DownArrow => newState.copy(playerSprite = nextSprite, scroll = ScrollY(1), inputReady = false)
         case LeftArrow => newState.copy(playerSprite = nextSprite, scroll = ScrollX(1), inputReady = false)
         case RightArrow => newState.copy(playerSprite = nextSprite, scroll = ScrollX(-1), inputReady = false)
+        case Space => this.copy(next = Next(ListMenu.testMenu))
         case _ => newState
       }
     } else newState
@@ -50,15 +55,17 @@ case class Overworld
         this.copy(
           pos = if(ready) (pos._1-x.sign, pos._2) else pos,
           scroll = nextScroll,
-          inputReady = ready)
+          inputReady = ready,
+          next = Same)
       case ScrollY(y) =>
         val nextScroll = scroll.increment
         val ready = nextScroll == Stay
         this.copy(
           pos = if(ready) (pos._1, pos._2-y.sign) else pos,
           scroll = nextScroll,
-          inputReady = ready)
-      case Stay => this
+          inputReady = ready,
+          next = Same)
+      case Stay => this.copy(next = Same)
     }
   }
 }
