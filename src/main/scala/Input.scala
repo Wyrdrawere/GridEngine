@@ -40,7 +40,7 @@ object Input {
   case object None extends Input
 
   def apply(key: Int): Input = key match {
-      //todo: completely map this through. Or think it trough first, LOTS of work otherwise
+      //todo: completely map this through. Or think it through first, LOTS of work otherwise
     case 32 => Space
 
     case 65 => A
