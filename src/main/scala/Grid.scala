@@ -12,6 +12,11 @@ class Grid
     dimensions = dim
   }
 
+  def setDimensionsSquare(xAmount: Int): Unit = {
+    val yAmount = xAmount * relativeSize.y / relativeSize.x
+    setDimensions(Vector2(xAmount, yAmount))
+  }
+
   val windowSize: Vector2 = Config.windowSize
   def gridUnit: Vector2 = relativeSize /: dimensions
   def gridTranslation: Vector2 = relativePosition /: gridUnit

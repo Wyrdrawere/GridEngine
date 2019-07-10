@@ -56,10 +56,8 @@ object Sprite {
 
   def get(path: String, size: Vector2, tileSize: Vector2): Map[Int, Sprite] = {
     if (spriteSheetCache.keys.toList.contains(path)) {
-      println("loaded store: " + path)
       spriteSheetCache(path)
     } else {
-      println("loaded fresh: " + path)
       val s = Sprite.TextureToTileSet(Texture.get(path), size, tileSize)
       spriteSheetCache = spriteSheetCache.updated(path, s)
       s

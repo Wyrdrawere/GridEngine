@@ -21,6 +21,7 @@ case class ListMenu
   override def simulate(deltaTime: Long, input: Input): ListMenu = this.copy(_cursor = navigate(input))
 
   override def render(grid: Grid): Unit = {
+    grid.setDimensionsSquare(15)
     val dim = grid.getDimensions
     for (x <- items.toList.indices) {
       grid.drawOnGrid(items(x), Vector2(dim.x/4, dim.y-(x+1)-(x*gap)), Vector2(0), Vector2(items(x).string.length))

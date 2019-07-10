@@ -81,42 +81,18 @@ class Window {
 
     var test = Array.ofDim[Int](21,21)
     for (x <- test.indices; y <- test(x).indices) {
-      test(x)(y) = 9
+      test(x)(y) = (Math.random()*16).toInt
     }
     test = new Level(test).getSlice(test.length+2, test(0).length+2, (10,10))
 
     val testMap = Sprite.get("src/resources/Tileset/basictiles.png", Vector2(128, 240), Vector2(16, 16))
     val testFont = Sprite.get("src/resources/Font/8x8Text/8x8text_darkGrayShadow.png", Vector2(96, 112), Vector2(8))
 
-    val testText = "  HELLO WORLD!  ".toCharArray.map(Text.CharToInt(_)).map(x => Array(167,167,167,167,167,167,167,167, x, 167,167,167,167,167,167,167,167))
-
-
-    val testColor = Color.Red
-    val testText2 = Text("MENU", Text.DarkGrayFont)
-    val testSprite = testMap(2)
-    val testTile = Tile(List(testMap(11), testMap(56), testMap(24), testMap(29)))
-
-
-
-    val tiles = Array.ofDim[Tile](11,11)
-    for (x <- tiles.indices; y <- tiles(x).indices) {
-      tiles(x)(y) = testTile
-    }
-
-    var counter: Float = 0
-    var scrollSpeed: Float = 128
-    var up = true
     val g = new Grid
     val g1 = new Grid(relativeSize = Vector2(0.5f))
-    val g2 = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0.5f,0))
+    val g2 = new Grid(relativeSize = Vector2(0.5f, 1), relativePosition = Vector2(0.5f,0))
     val g3 = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0,0.5f))
     val g4 = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0.5f))
-
-
-    val formatTest = LevelFormat.pureToDraw(LevelFormat.testPure)
-    for(x <- 0 until 3; y <- 0 until 3) {
-      println(formatTest(x)(y) + " " + LevelFormat.testDraw(x)(y))
-    }
 
     val text = Text("HELLO WORLD!", Text.DarkGrayFont)
     val t1 = Text("STATUS", Text.DarkGrayFont)
@@ -128,10 +104,7 @@ class Window {
 
     var state = ListMenu(0, testList)
 
-    val testMenu = Menu(testList, 19)
-
-
-    while ( { //todo: cleanup in preparation for menu neccessary
+    while ( {
       !glfwWindowShouldClose(window)
     }) {
       val thisTime = System.currentTimeMillis() //todo: wrap this in a function or something
@@ -143,7 +116,7 @@ class Window {
         state = state.simulate(deltaTime, lastInput)
 
         g.drawGrid(test, testMap, Vector2(0))
-        state.render(g)
+        state.render(g2)
 
 
         lastTime = thisTime
