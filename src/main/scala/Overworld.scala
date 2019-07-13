@@ -29,7 +29,7 @@ case class Overworld
         case DownArrow => newState.copy(playerSprite = nextSprite, scroll = ScrollY(1), inputReady = false)
         case LeftArrow => newState.copy(playerSprite = nextSprite, scroll = ScrollX(1), inputReady = false)
         case RightArrow => newState.copy(playerSprite = nextSprite, scroll = ScrollX(-1), inputReady = false)
-        case Space => this.copy(next = Next(ListMenu.testMenu))
+
         case _ => newState
       }
     } else newState

@@ -101,7 +101,7 @@ class Window {
     val g4 = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0.5f))
 
 
-    var state: State = World(Level.TestDungeon, testMap, PlayerSprite.FF1_PlayerSprite(0), (0,0), 5, g, State.BaseState)
+    var state: State = World(Level.TestDungeon, testMap, Color.Green, (0,0), 5, g, State.BaseState)
 
     while ( {
       !glfwWindowShouldClose(window)
@@ -115,7 +115,6 @@ class Window {
 
         state = state.simulate(deltaTime, lastInput)
         state.render()
-
         lastTime = thisTime
         lastInput = None
       }

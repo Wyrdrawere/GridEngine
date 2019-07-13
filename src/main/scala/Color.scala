@@ -1,4 +1,4 @@
-import org.lwjgl.opengl.GL11.{GL_POLYGON, glBegin, glColor4f, glEnd, glVertex3d}
+import org.lwjgl.opengl.GL11.{GL_BLEND, GL_ONE_MINUS_SRC_ALPHA, GL_POLYGON, GL_SRC_ALPHA, glBegin, glBlendFunc, glColor4f, glDisable, glEnable, glEnd, glVertex3d}
 
 case class Color
 (
@@ -11,6 +11,8 @@ case class Color
   def translucent(a: Float): Color = this.copy(alpha = a)
 
   override def drawRectangle(size: Vector2, position: Vector2): Unit = {
+    glEnable(GL_BLEND)
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
     glColor4f(red, green, blue, alpha)
     glBegin(GL_POLYGON)
     glVertex3d(-1.0 + 2*position.x, -1.0 + 2*position.y, 0)
@@ -18,6 +20,7 @@ case class Color
     glVertex3d(-1.0 + 2*(position.x+size.x), -1.0 + 2*(position.y+size.y), 0)
     glVertex3d(-1.0 + 2*position.x, -1.0 + 2*(position.y+size.y), 0)
     glEnd()
+    glDisable(GL_BLEND)
   }
 }
 

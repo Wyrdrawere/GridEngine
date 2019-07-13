@@ -1,4 +1,4 @@
-import Mutation.IdentMut
+import Mutation.{IdentMut, RemoveReturnMut}
 
 trait State {
 
@@ -10,8 +10,8 @@ trait State {
   final def simulate(deltaTime: Long, input: Input): State = {
     childState match {
       case Some(c) => c.returnMutation match {
-        case Some(m) => mutate(m)
-        case None => c.simulate(deltaTime, input)
+        case Some(m) => mutate(m).updateChild(c.mutate(RemoveReturnMut))
+        case None => updateChild(c.simulate(deltaTime, input))
       }
       case None => everyFrame(deltaTime).mutate(inputToMutation(input))
     }
@@ -30,6 +30,7 @@ trait State {
   def inputToMutation(input: Input): Mutation
   def draw(): Unit
 
+  def updateChild(child: State): State
 }
 
 object State {
@@ -45,6 +46,7 @@ object State {
 
     override def draw(): Unit = ()
 
+    override def updateChild(child: State): State = this //todo: once State is fully defined, rework this to be some sort of copy
   }
 }
 
