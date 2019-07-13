@@ -101,12 +101,7 @@ class Window {
     val g4 = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0.5f))
 
 
-
-    var worldState = Overworld.testWorld(Level.TestDungeon)
-
-
-    testStack = testStack.push(worldState)
-
+    var state: State = World(Level.TestDungeon, testMap, PlayerSprite.FF1_PlayerSprite(0), (0,0), 5, g, State.BaseState)
 
     while ( {
       !glfwWindowShouldClose(window)
@@ -118,8 +113,8 @@ class Window {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-        testStack = testStack.simulate(deltaTime, lastInput)
-        testStack.render(g)
+        state = state.simulate(deltaTime, lastInput)
+        state.render()
 
         lastTime = thisTime
         lastInput = None

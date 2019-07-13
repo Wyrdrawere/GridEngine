@@ -28,8 +28,6 @@ case class ListMenu
     }
   }
 
-  override def show(coordinate: Int): Vector2 = ???
-
   override def simulate(deltaTime: Long, input: Input): ListMenu = {
     this.copy(_cursor = navigate(input), next = if(end) Remove else Same)
   }
