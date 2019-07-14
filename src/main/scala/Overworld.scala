@@ -1,4 +1,4 @@
-import Mutation.{ChangeColorMut, Direction, DownMut, Identity, LeftMut, MakeSubMenu, OpenMenuMut, PauseMut, RightMut, SetChild, SetReturnMutation, UpMut}
+import Mutation.{ChangeColorMut, ChangeJob, Direction, DownMut, Identity, LeftMut, MakeSubMenu, OpenMenuMut, PauseMut, RightMut, SetChild, SetReturnMutation, UpMut}
 import Scroller.{Rest, ScrollX, ScrollY, Stay}
 
 case class Overworld
@@ -26,6 +26,7 @@ case class Overworld
       this.copy(playerSprite = playerSprite.animateSprite(OverworldSprite.Walk(dir)), scroller = scroller(dir))
     case PauseMut => this.copy(childState = Some(makeMenu()))
     case SetChild(state) => this.copy(childState = state)
+    case ChangeJob(job) => this.copy(playerSprite = OverworldSprite.FF1_PlayerSprite(job).copy(currentSprite = playerSprite.currentSprite).animateSprite(OverworldSprite.Walk(Vector2.Down)))
     case _ => this
   }
 

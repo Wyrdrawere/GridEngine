@@ -81,4 +81,6 @@ object Sprite {
     }
     spriteMap
   }
+
+  val ff1_Spritesheet: Map[Int, Sprite] = Sprite.get("src/resources/Sprite/ff1-classes.png", Vector2(972,432), Vector2(36))
 }

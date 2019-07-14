@@ -15,6 +15,7 @@ object Mutation {
   final case object RemoveChildMut extends Mutation
   final case class ChangeColorMut(color: Color) extends Mutation
   final case object MakeSubMenu extends Mutation
+  final case class ChangeJob(job: Int) extends Mutation
 
   //todo: phase out above
 
