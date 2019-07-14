@@ -1,4 +1,4 @@
-import Mutation.{CancelMut, ConfirmMut, Direction, DownMut, Identity, SetChild, SetReturnMutation, UpMut}
+import Mutation.{CancelMut, ConfirmMut, Direction, DownMut, Identity, MakeSubMenu, SetChild, SetReturnMutation, UpMut}
 
 case class ListMenu
 (
@@ -13,8 +13,12 @@ case class ListMenu
   override def mutate(mutation: Mutation): Stateful = mutation match {
     case Direction(Vector2.Up) => this.copy(cursor = if (cursor > 0) cursor - 1 else cursor)
     case Direction(Vector2.Down) => this.copy(cursor = if (cursor < items.size - 1) cursor + 1 else cursor)
-    case ConfirmMut => this.copy(returnMutation = items(cursor)._2)
+    case ConfirmMut => items(cursor)._2 match {
+      case r@SetReturnMutation(m) => mutate(r)
+      case m@_ => mutate(m)
+    }
     case CancelMut => this.copy(returnMutation = SetChild(None))
+    case MakeSubMenu => this.copy(childState = Some(JobMenu(Vector2(0), new Grid(Vector2(0.75f,0.75f), Vector2(0, 0.25f)))))
     case SetReturnMutation(m) => this.copy(returnMutation = m)
     case _ => this
   }

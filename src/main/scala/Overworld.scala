@@ -1,4 +1,4 @@
-import Mutation.{ChangeColorMut, Direction, DownMut, Identity, LeftMut, OpenMenuMut, PauseMut, RightMut, SetChild, UpMut}
+import Mutation.{ChangeColorMut, Direction, DownMut, Identity, LeftMut, MakeSubMenu, OpenMenuMut, PauseMut, RightMut, SetChild, SetReturnMutation, UpMut}
 import Scroller.{Rest, ScrollX, ScrollY, Stay}
 
 case class Overworld
@@ -36,12 +36,13 @@ case class Overworld
 
   private def makeMenu(): ListMenu = {
     val items = Map(
-      0 -> (Text("Up", Text.DarkGrayFont), Direction(Vector2.Up)),
-      1 -> (Text("Down", Text.DarkGrayFont), Direction(Vector2.Down)),
-      2 -> (Text("Left", Text.DarkGrayFont), Direction(Vector2.Left)),
-      3 -> (Text("Right", Text.DarkGrayFont), Direction(Vector2.Right)),
+      0 -> (Text("Up", Text.DarkGrayFont), SetReturnMutation(Direction(Vector2.Up))),
+      1 -> (Text("Down", Text.DarkGrayFont), SetReturnMutation(Direction(Vector2.Down))),
+      2 -> (Text("Left", Text.DarkGrayFont), SetReturnMutation(Direction(Vector2.Left))),
+      3 -> (Text("Right", Text.DarkGrayFont), SetReturnMutation(Direction(Vector2.Right))),
+      4 -> (Text("Jobs", Text.DarkGrayFont), MakeSubMenu),
     )
-    val subgrid = new Grid(Vector2(0.25f, 1), relativePosition = Vector2(0.75f, 0))
+    val subgrid = new Grid(Vector2(0.25f, 0.75f), relativePosition = Vector2(0.75f, 0.25f))
     ListMenu(0, items, subgrid)
   }
 
