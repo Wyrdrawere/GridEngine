@@ -1,18 +1,57 @@
-import Stateful.{NextState, Same}
+import Input.{Back, DownArrow, Enter, LeftArrow, RightArrow, Space, UpArrow}
+import Mutation.{CancelMut, ConfirmMut, Direction, DownMut, Identity, LeftMut, PauseMut, RightMut, SetChild, SetReturnMutation, UpMut}
 
-trait Stateful { //todo: think about state abstract class wich holds a list of statefuls. Also make stateful/mutation a thing again
+trait Stateful {
 
-  val nextState: NextState = Same
+  val grid: Grid
+  val childState: Option[Stateful]
+  val returnMutation: Mutation
 
-  def simulate(deltaTime: Long, input: Input): Stateful
-  def render(grid: Grid): Unit //todo: make private and public def, have stateful set gridDimensions itself. Alternative: associate stateful with grid
+  final def simulate(deltaTime: Long, input: Input): Stateful = childState match {
+    case Some(child) => child.returnMutation match {
+      case Identity => this.everyFrame(deltaTime).mutate(SetChild(Some(child.simulate(deltaTime, input))))
+      case _ =>
+        val newState = this.mutate(child.returnMutation)
+        newState.childState match {
+          case Some(newChild) => newState.mutate(SetChild(Some(newChild.mutate(SetReturnMutation(Identity)))))
+          case None => newState
+        }
+    }
+    case None => this.everyFrame(deltaTime).mutate(inputToMutation(input))
+  }
+
+  final def render(): Unit = {
+    draw(grid)
+    childState match {
+      case Some(child) => child.render()
+      case None =>
+    }
+  }
+
+  def everyFrame(deltaTime: Long): Stateful = this
+  def inputToMutation(input: Input): Mutation = input match {
+    case UpArrow => Direction(Vector2.Up)
+    case DownArrow => Direction(Vector2.Down)
+    case LeftArrow => Direction(Vector2.Left)
+    case RightArrow => Direction(Vector2.Right)
+    case Enter => ConfirmMut
+    case Back => CancelMut
+    case Space => PauseMut
+    case _ => Identity
+  }
+
+  def mutate(mutation: Mutation): Stateful
+  def draw(grid: Grid): Unit
 }
 
 object Stateful {
+  object BaseStateful extends Stateful {
+    override val grid: Grid = new Grid()
+    override val childState: Option[Stateful] = None
+    override val returnMutation: Mutation = Identity
 
-  sealed trait NextState
-  case class Next(stateful: Stateful) extends NextState
-  case object Same extends NextState
-  case object Remove extends NextState
+    override def mutate(mutation: Mutation): Stateful = this
 
+    override def draw(grid: Grid): Unit = ()
+  }
 }

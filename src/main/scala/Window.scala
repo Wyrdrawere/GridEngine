@@ -22,9 +22,6 @@ class Window {
   var lastInput: Input = None
   var lastTime: Long = 0
 
-  var stackPointer = 0
-  var testStack = StateStack(List.empty)
-
   def run(): Unit = {
     init()
     loop()
@@ -85,23 +82,13 @@ class Window {
     GL.createCapabilities
     glClearColor(1.0f, 1.0f, 1.0f, 0.0f)
 
-    var test = Array.ofDim[Int](21,21)
-    for (x <- test.indices; y <- test(x).indices) {
-      test(x)(y) = (Math.random()*16).toInt
-    }
-    test = new Level(test).getSlice(test.length+2, test(0).length+2, (10,10))
-
-    val testMap = Sprite.get("src/resources/Tileset/basictiles.png", Vector2(128, 240), Vector2(16, 16))
-    val testFont = Sprite.get("src/resources/Font/8x8Text/8x8text_darkGrayShadow.png", Vector2(96, 112), Vector2(8))
-
-    val g = new Grid
-    val g1 = new Grid(relativeSize = Vector2(0.5f))
-    val g2 = new Grid(relativeSize = Vector2(0.5f, 1), relativePosition = Vector2(0.5f,0))
-    val g3 = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0,0.5f))
-    val g4 = new Grid(relativeSize = Vector2(0.5f), relativePosition = Vector2(0.5f))
-
-
-    var state: State = World(Level.TestDungeon, testMap, Color.Green, (0,0), 5, g, State.BaseState)
+    var state: Stateful = Overworld(
+      Level.TestDungeon,
+      OverworldSprite.FF1_PlayerSprite(0),
+      Vector2(0),
+      5,
+      Scroller(Config.scrollUnit, Vector2(0), Scroller.Stay),
+      new Grid)
 
     while ( {
       !glfwWindowShouldClose(window)

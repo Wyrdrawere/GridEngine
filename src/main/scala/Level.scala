@@ -1,43 +1,35 @@
-class Level(levelData: Array[Array[Int]]) {
-
-  // todo: better define level, make editor!
-
-  def getSlice(xSize: Int, ySize: Int, centerPos: (Int, Int)): Array[Array[Int]] = {
-    val slice = Array.ofDim[Int](xSize, ySize)
+case class Level
+(
+  level: Array[Array[Int]],
+  tileSet: Map[Int, Drawable],
+  blankTile: Int
+) {
+  def getSlice(size: Vector2, centerPos: Vector2): Array[Array[Int]] = {
+    val slice = Array.ofDim[Int](size.xi, size.yi)
     for (x <- slice.indices; y <- slice(x).indices) {
-      val levelX = centerPos._1 - (xSize / 2) + x
-      val levelY = centerPos._2 - (xSize / 2) + y
-      if (levelData.indices.contains(levelX) && levelData(0).indices.contains(levelY)) {
-        slice(x)(y) = levelData(levelX)(levelY)
+      val levelX = centerPos.xi - (size.xi / 2) + x
+      val levelY = centerPos.yi - (size.yi / 2) + y
+      if (level.indices.contains(levelX) && level(0).indices.contains(levelY)) {
+        slice(x)(y) = level(levelX)(levelY)
       } else {
-        slice(x)(y) = 22 //todo: make blank Element adjustable. Possibly make tileSet part of Level (full redefinition coming soon)
+        slice(x)(y) = blankTile
       }
     }
     slice
   }
 
+  def getDrawableSlice(size: Vector2, centerPos: Vector2): Array[Array[Drawable]] =
+    getSlice(size, centerPos).map(x => x.map(y => tileSet(y)))
 }
 
 object Level {
-  val Test = Array(
-    Array(1, 1, 1, 1, 1),
-    Array(1, 3, 3, 3, 1),
-    Array(1, 3, 3, 3, 1),
-    Array(1, 3, 3, 3, 1),
-    Array(1, 3, 3, 3, 1),
-    Array(1, 4, 4, 4, 1),
-    Array(1, 4, 4, 4, 1),
-    Array(1, 4, 4, 4, 1),
-    Array(1, 4, 4, 4, 1),
-    Array(1, 1, 1, 1, 1),
-  )
 
-  def RandomLevel(xSize: Int, ySize: Int, max: Float): Level = {
-    val level = Array.ofDim[Int](xSize, ySize)
+  def RandomLevel(size: Vector2, tileSet: Map[Int, Drawable], blank: Int): Level = {
+    val level = Array.ofDim[Int](size.xi, size.yi)
     for (x <- level.indices; y <- level(x).indices) {
-      level(x)(y) = (Math.random() * max).toInt
+      level(x)(y) = (Math.random() * tileSet.size).toInt
     }
-    new Level(level)
+    Level(level, tileSet, blank)
   }
 
   val TestDungeon: Level = {
@@ -53,6 +45,7 @@ object Level {
         level(x)(y) = 1
       }
     }
-    new Level(level)
+    Level(level, Sprite.get("src/resources/Tileset/basictiles.png", Vector2(128,240), Vector2(16)), 22)
   }
+
 }
