@@ -26,7 +26,7 @@ case class Overworld
       this.copy(playerSprite = playerSprite.animateSprite(OverworldSprite.Walk(dir)), scroller = scroller(dir))
     case PauseMut => this.copy(childState = Some(makeMenu()))
     case SetChild(state) => this.copy(childState = state)
-    case ChangeJob(job) => this.copy(playerSprite = OverworldSprite.FF1_PlayerSprite(job).copy(currentSprite = playerSprite.currentSprite).animateSprite(OverworldSprite.Walk(Vector2.Down)))
+    case ChangeJob(job) => this.copy(playerSprite = OverworldSprite.FF1_PlayerSprite(job).copy(currentSprite = (playerSprite.currentSprite%27)+(27*job)))
     case _ => this
   }
 
