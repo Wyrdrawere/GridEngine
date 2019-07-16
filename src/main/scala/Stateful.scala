@@ -1,23 +1,27 @@
 import Input.{Back, DownArrow, Enter, LeftArrow, RightArrow, Space, UpArrow}
 import Mutation.{CancelMut, ConfirmMut, Direction, DownMut, Identity, LeftMut, PauseMut, RightMut, SetChild, SetReturnMutation, UpMut}
+import Stateful.Receive
 
 trait Stateful {
 
+  val box: Statebox
   val grid: Grid
   val childState: Option[Stateful]
   val returnMutation: Mutation
 
+  def copy(box: Statebox = box, grid: Grid = grid, childState: Option[Stateful] = childState, returnMutation: Mutation = returnMutation): Stateful
+
   final def simulate(deltaTime: Long, input: Input): Stateful = childState match {
     case Some(child) => child.returnMutation match {
-      case Identity => this.everyFrame(deltaTime).mutate(SetChild(Some(child.simulate(deltaTime, input))))
+      case Identity => this.everyFrame(deltaTime).receive(SetChild(Some(child.simulate(deltaTime, input))))
       case _ =>
-        val newState = this.mutate(child.returnMutation)
+        val newState = this.receive(child.returnMutation)
         newState.childState match {
-          case Some(newChild) => newState.mutate(SetChild(Some(newChild.mutate(SetReturnMutation(Identity)))))
+          case Some(newChild) => newState.receive(SetChild(Some(newChild.receive(SetReturnMutation(Identity)))))
           case None => newState
         }
     }
-    case None => this.everyFrame(deltaTime).mutate(inputToMutation(input))
+    case None => this.everyFrame(deltaTime).receive(inputToMutation(input))
   }
 
   final def render(): Unit = {
@@ -27,6 +31,15 @@ trait Stateful {
       case None =>
     }
   }
+
+  def receive(mutation: Mutation): Stateful = (default orElse mutate orElse catchCase)(mutation)
+  def default: Receive = {
+    case Identity => this
+    case SetChild(state) => this.copy(childState = state)
+    case SetReturnMutation(mutation) => this.copy(returnMutation = mutation)
+  }
+  def catchCase: Receive = {case _ => this}
+
 
   def everyFrame(deltaTime: Long): Stateful = this
   def inputToMutation(input: Input): Mutation = input match {
@@ -40,18 +53,10 @@ trait Stateful {
     case _ => Identity
   }
 
-  def mutate(mutation: Mutation): Stateful
+  def mutate: Receive
   def draw(grid: Grid): Unit
 }
 
 object Stateful {
-  object BaseStateful extends Stateful {
-    override val grid: Grid = new Grid()
-    override val childState: Option[Stateful] = None
-    override val returnMutation: Mutation = Identity
-
-    override def mutate(mutation: Mutation): Stateful = this
-
-    override def draw(grid: Grid): Unit = ()
-  }
+  type Receive = PartialFunction[Mutation, Stateful]
 }

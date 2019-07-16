@@ -82,12 +82,14 @@ class Window {
     GL.createCapabilities
     glClearColor(1.0f, 1.0f, 1.0f, 0.0f)
 
-    var state: Stateful = Overworld(
+    var state: Stateful = new Overworld(
+      Statebox.OverworldBox(
       Level.TestDungeon,
       OverworldSprite.FF1_PlayerSprite(0),
       Vector2(0),
       5,
-      Scroller(Config.scrollUnit, Vector2(0), Scroller.Stay),
+      Scroller(Config.scrollUnit, Vector2(0), Scroller.Stay)
+      ),
       new Grid)
 
     while ( {

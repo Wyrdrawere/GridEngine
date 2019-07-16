@@ -1,39 +1,43 @@
 import Mutation.{ChangeColorMut, ChangeJob, Direction, DownMut, Identity, LeftMut, MakeSubMenu, OpenMenuMut, PauseMut, RightMut, SetChild, SetReturnMutation, UpMut}
 import Scroller.{Rest, ScrollX, ScrollY, Stay}
+import Stateful.Receive
 
-case class Overworld
+class Overworld
 (
-  level: Level,
-  playerSprite: OverworldSprite,
-  pos: Vector2,
-  zoom: Int,
-  scroller: Scroller,
-
-  grid: Grid,
-  childState: Option[Stateful] = None,
-  returnMutation: Mutation = Identity
+  override val box: Statebox.OverworldBox,
+  override val grid: Grid,
+  override val childState: Option[Stateful] = None,
+  override val returnMutation: Mutation = Identity
 ) extends Stateful {
 
+  override def copy
+  (box: Statebox = box,
+   grid: Grid = grid,
+   childState: Option[Stateful] = childState,
+   returnMutation: Mutation = returnMutation): Stateful = new Overworld(
+    box.asInstanceOf[Statebox.OverworldBox], grid, childState, returnMutation
+  )
+
   override def everyFrame(deltaTime: Long): Stateful = {
-    val newScroller = scroller.increment //todo: too hacky, please fix
-    val newPos = if (scroller.increment.currentScroll == Rest) pos+scroller.scrollDirection else pos
-    this.copy(pos = newPos, scroller = newScroller)
+    val newScroller = box.scroller.increment //todo: too hacky, please fix
+    val newPos = if (box.scroller.increment.currentScroll == Rest) box.pos+box.scroller.scrollDirection else box.pos
+    this.copy(box = box.copy(pos = newPos, scroller = newScroller))
   }
 
-  override def mutate(mutation: Mutation): Stateful = mutation match {
+  override def mutate: Receive = {
     case Identity => this
-    case Direction(dir) if scroller.currentScroll == Scroller.Stay =>
-      this.copy(playerSprite = playerSprite.animateSprite(OverworldSprite.Walk(dir)), scroller = scroller(dir))
-    case PauseMut => this.copy(childState = Some(makeMenu()))
-    case SetChild(state) => this.copy(childState = state)
-    case ChangeJob(job) => this.copy(playerSprite = OverworldSprite.FF1_PlayerSprite(job).copy(currentSprite = (playerSprite.currentSprite%27)+(27*job)))
+    case Direction(dir) if box.scroller.currentScroll == Scroller.Stay =>
+      this.copy(box.copy(playerSprite = box.playerSprite.animateSprite(OverworldSprite.Walk(dir)), scroller = box.scroller(dir)))
+    case PauseMut => this.receive(SetChild(Some(makeMenu())))
+    case ChangeJob(job) => this.copy(box.copy(playerSprite = OverworldSprite.FF1_PlayerSprite(job).copy(currentSprite = (box.playerSprite.currentSprite%27)+(27*job))))
     case _ => this
   }
 
   override def draw(grid: Grid): Unit = {
-    grid.drawGrid(level.getSlice(Vector2(zoom*2+1), pos), level.tileSet, scroller.toVector2/scroller.scrollUnit)
-    grid.drawOnCenter(playerSprite)
+    grid.drawGrid(box.level.getSlice(Vector2(box.zoom*2+1), box.pos), box.level.tileSet, box.scroller.toVector2/box.scroller.scrollUnit)
+    grid.drawOnCenter(box.playerSprite)
   }
+
 
   private def makeMenu(): ListMenu = {
     val items = Map(
@@ -44,8 +48,9 @@ case class Overworld
       4 -> (Text("Jobs", Text.DarkGrayFont), MakeSubMenu),
     )
     val subgrid = new Grid(Vector2(0.25f, 0.75f), relativePosition = Vector2(0.75f, 0.25f))
-    ListMenu(0, items, subgrid)
+    new ListMenu(Statebox.ListMenuBox(0, items), subgrid)
   }
+
 
 
 }
