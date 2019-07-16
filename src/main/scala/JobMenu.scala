@@ -1,4 +1,4 @@
-import Mutation.{CancelMut, ChangeJob, ConfirmMut, Direction, Identity, SetChild, SetReturnMutation}
+import Mutation.{CancelMut, ChangeJob, ConfirmMut, Direction, Identity, SetBox, SetChild, SetReturnMutation}
 import Stateful.Receive
 
 class JobMenu
@@ -19,19 +19,15 @@ class JobMenu
   )
 
   override def mutate: Receive = {
-    case Direction(Vector2.Up) => this.copy(box.copy(cursor = if (box.cursor.y < 1) box.cursor+Vector2.Up else box.cursor))
-    case Direction(Vector2.Down) => this.copy(box.copy(cursor = if (box.cursor.y > 0) box.cursor+Vector2.Down else box.cursor))
-    case Direction(Vector2.Left) => this.copy(box.copy(cursor = if (box.cursor.x > 0) box.cursor+Vector2.Left else box.cursor))
-    case Direction(Vector2.Right) => this.copy(box.copy(cursor = if (box.cursor.x < box.items.size/2-1) box.cursor+Vector2.Right else box.cursor))
-    case ConfirmMut => this.receive(SetReturnMutation(box.items(box.cursor)._2))
-    case CancelMut => this.receive(SetReturnMutation(SetChild(None)))
-    case _ => this
+    case Direction(Vector2.Up) => receive(SetBox(box.copy(cursor = if (box.cursor.y < 1) box.cursor+Vector2.Up else box.cursor)))
+    case Direction(Vector2.Down) => receive(SetBox(box.copy(cursor = if (box.cursor.y > 0) box.cursor+Vector2.Down else box.cursor)))
+    case Direction(Vector2.Left) => receive(SetBox(box.copy(cursor = if (box.cursor.x > 0) box.cursor+Vector2.Left else box.cursor)))
+    case Direction(Vector2.Right) => receive(SetBox(box.copy(cursor = if (box.cursor.x < box.items.size/2-1) box.cursor+Vector2.Right else box.cursor)))
+    case ConfirmMut => receive(SetReturnMutation(box.items(box.cursor)._2))
+    case CancelMut => receive(SetReturnMutation(SetChild(None)))
   }
 
   override def draw(grid: Grid): Unit = {
-
-    println(returnMutation)
-
     grid.setDimensions(Vector2(3))
     for(x <- 0 to 3; y <- 0 to 3) {
       grid.drawOnGrid(Color.Blue.translucent(0.75f), Vector2(x,y), Vector2(0))

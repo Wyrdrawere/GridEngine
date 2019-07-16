@@ -1,4 +1,4 @@
-import Mutation.{ChangeColorMut, ChangeJob, Direction, DownMut, Identity, LeftMut, MakeSubMenu, OpenMenuMut, PauseMut, RightMut, SetChild, SetReturnMutation, UpMut}
+import Mutation.{ChangeColorMut, ChangeJob, Direction, DownMut, Identity, LeftMut, MakeSubMenu, OpenMenuMut, PauseMut, RightMut, SetBox, SetChild, SetReturnMutation, UpMut}
 import Scroller.{Rest, ScrollX, ScrollY, Stay}
 import Stateful.Receive
 
@@ -21,15 +21,15 @@ class Overworld
   override def everyFrame(deltaTime: Long): Stateful = {
     val newScroller = box.scroller.increment //todo: too hacky, please fix
     val newPos = if (box.scroller.increment.currentScroll == Rest) box.pos+box.scroller.scrollDirection else box.pos
-    this.copy(box = box.copy(pos = newPos, scroller = newScroller))
+    receive(SetBox(box.copy(pos = newPos, scroller = newScroller)))
   }
 
   override def mutate: Receive = {
     case Identity => this
     case Direction(dir) if box.scroller.currentScroll == Scroller.Stay =>
-      this.copy(box.copy(playerSprite = box.playerSprite.animateSprite(OverworldSprite.Walk(dir)), scroller = box.scroller(dir)))
-    case PauseMut => this.receive(SetChild(Some(makeMenu())))
-    case ChangeJob(job) => this.copy(box.copy(playerSprite = OverworldSprite.FF1_PlayerSprite(job).copy(currentSprite = (box.playerSprite.currentSprite%27)+(27*job))))
+      receive(SetBox(box.copy(playerSprite = box.playerSprite.animateSprite(OverworldSprite.Walk(dir)), scroller = box.scroller(dir))))
+    case PauseMut => receive(SetChild(Some(makeMenu())))
+    case ChangeJob(job) => receive(SetBox(box.copy(playerSprite = OverworldSprite.FF1_PlayerSprite(job).copy(currentSprite = (box.playerSprite.currentSprite%27)+(27*job)))))
     case _ => this
   }
 

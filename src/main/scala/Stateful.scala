@@ -1,5 +1,5 @@
 import Input.{Back, DownArrow, Enter, LeftArrow, RightArrow, Space, UpArrow}
-import Mutation.{CancelMut, ConfirmMut, Direction, DownMut, Identity, LeftMut, PauseMut, RightMut, SetChild, SetReturnMutation, UpMut}
+import Mutation.{CancelMut, ConfirmMut, Direction, DownMut, Identity, LeftMut, PauseMut, RightMut, SetBox, SetChild, SetReturnMutation, UpMut}
 import Stateful.Receive
 
 trait Stateful {
@@ -35,6 +35,7 @@ trait Stateful {
   def receive(mutation: Mutation): Stateful = (default orElse mutate orElse catchCase)(mutation)
   def default: Receive = {
     case Identity => this
+    case SetBox(box) => this.copy(box= box)
     case SetChild(state) => this.copy(childState = state)
     case SetReturnMutation(mutation) => this.copy(returnMutation = mutation)
   }

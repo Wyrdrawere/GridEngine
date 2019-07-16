@@ -1,4 +1,4 @@
-import Mutation.{CancelMut, ChangeJob, ConfirmMut, Direction, DownMut, Identity, MakeSubMenu, SetChild, SetReturnMutation, UpMut}
+import Mutation.{CancelMut, ChangeJob, ConfirmMut, Direction, DownMut, Identity, MakeSubMenu, SetBox, SetChild, SetReturnMutation, UpMut}
 import Stateful.Receive
 
 class ListMenu
@@ -20,16 +20,12 @@ class ListMenu
   )
 
   override def mutate: Receive = {
-    case Direction(Vector2.Up) => this.copy(box.copy(cursor = if (box.cursor > 0) box.cursor - 1 else box.cursor))
-    case Direction(Vector2.Down) => this.copy(box.copy(cursor = if (box.cursor < box.items.size - 1) box.cursor + 1 else box.cursor))
-    case ConfirmMut => box.items(box.cursor)._2 match {
-      case r@SetReturnMutation(_) => receive(r)
-      case m@_ => receive(m)
-    }
-    case CancelMut => this.copy(returnMutation = SetChild(None))
-    case MakeSubMenu => this.receive(SetChild(Some(makeJobMenu)))
-    case c@ChangeJob(_) => this.copy(returnMutation = c)
-    case _ => this
+    case Direction(Vector2.Up) => receive(SetBox(box.copy(cursor = if (box.cursor > 0) box.cursor - 1 else box.cursor)))
+    case Direction(Vector2.Down) => receive(SetBox(box.copy(cursor = if (box.cursor < box.items.size - 1) box.cursor + 1 else box.cursor)))
+    case ConfirmMut => receive(box.items(box.cursor)._2)
+    case CancelMut => receive(SetReturnMutation(SetChild(None)))
+    case MakeSubMenu => receive(SetChild(Some(makeJobMenu)))
+    case c@ChangeJob(_) => receive(SetReturnMutation(c))
   }
 
   override def draw(grid: Grid): Unit = {

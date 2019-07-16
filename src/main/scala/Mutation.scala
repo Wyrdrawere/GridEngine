@@ -20,6 +20,7 @@ object Mutation {
   //todo: phase out above
 
   final case object Identity extends Mutation
+  final case class SetBox(box: Statebox) extends Mutation
   final case class SetChild(state: Option[Stateful]) extends Mutation
   final case class SetReturnMutation(mutation: Mutation) extends Mutation
   final case class Direction(dir: Vector2) extends Mutation
