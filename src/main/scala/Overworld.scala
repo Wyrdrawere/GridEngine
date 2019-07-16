@@ -1,5 +1,5 @@
-import Mutation.{ChangeColorMut, ChangeJob, Direction, DownMut, Identity, LeftMut, MakeSubMenu, OpenMenuMut, PauseMut, RightMut, SetBox, SetChild, SetReturnMutation, UpMut}
-import Scroller.{Rest, ScrollX, ScrollY, Stay}
+import Mutation._
+import Scroller.Rest
 import Stateful.Receive
 
 class Overworld
@@ -20,7 +20,7 @@ class Overworld
 
   override def everyFrame(deltaTime: Long): Stateful = {
     val newScroller = box.scroller.increment //todo: too hacky, please fix
-    val newPos = if (box.scroller.increment.currentScroll == Rest) box.pos+box.scroller.scrollDirection else box.pos
+    val newPos = if (box.scroller.increment.currentScroll == Rest) box.pos + box.scroller.scrollDirection else box.pos
     receive(SetBox(box.copy(pos = newPos, scroller = newScroller)))
   }
 
@@ -29,12 +29,12 @@ class Overworld
     case Direction(dir) if box.scroller.currentScroll == Scroller.Stay =>
       receive(SetBox(box.copy(playerSprite = box.playerSprite.animateSprite(OverworldSprite.Walk(dir)), scroller = box.scroller(dir))))
     case PauseMut => receive(SetChild(Some(makeMenu())))
-    case ChangeJob(job) => receive(SetBox(box.copy(playerSprite = OverworldSprite.FF1_PlayerSprite(job).copy(currentSprite = (box.playerSprite.currentSprite%27)+(27*job)))))
+    case ChangeJob(job) => receive(SetBox(box.copy(playerSprite = OverworldSprite.FF1_PlayerSprite(job).copy(currentSprite = (box.playerSprite.currentSprite % 27) + (27 * job)))))
     case _ => this
   }
 
   override def draw(grid: Grid): Unit = {
-    grid.drawGrid(box.level.getSlice(Vector2(box.zoom*2+1), box.pos), box.level.tileSet, box.scroller.toVector2/box.scroller.scrollUnit)
+    grid.drawGrid(box.level.getSlice(Vector2(box.zoom * 2 + 1), box.pos), box.level.tileSet, box.scroller.toVector2 / box.scroller.scrollUnit)
     grid.drawOnCenter(box.playerSprite)
   }
 
@@ -50,7 +50,6 @@ class Overworld
     val subgrid = new Grid(Vector2(0.25f, 0.75f), relativePosition = Vector2(0.75f, 0.25f))
     new ListMenu(Statebox.ListMenuBox(0, items), subgrid)
   }
-
 
 
 }

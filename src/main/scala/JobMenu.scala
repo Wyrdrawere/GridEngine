@@ -55,7 +55,7 @@ class JobMenu
 object JobMenu {
 
   def SpriteSheetConvert(sprites: Map[Int, Sprite], cols: Int): Map[Vector2, (Sprite, Mutation)] = {
-    var s = sprites.toList.filter(x => x._1 % cols == 0).sortBy(x => x._1)
+    val s = sprites.toList.filter(x => x._1 % cols == 0).sortBy(x => x._1)
 
     var xc = 0
     var yc = 1

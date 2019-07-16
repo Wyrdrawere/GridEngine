@@ -1,4 +1,4 @@
-import Mutation.{CancelMut, ChangeJob, ConfirmMut, Direction, DownMut, Identity, MakeSubMenu, SetBox, SetChild, SetReturnMutation, UpMut}
+import Mutation._
 import Stateful.Receive
 
 class ListMenu
@@ -37,7 +37,7 @@ class ListMenu
     val dim = grid.getDimensions
     for(x <- box.items.toList.indices) {
       val size = box.items(x)._1 match {
-        case Text(s, f) => Vector2(s.length)
+        case Text(s, _) => Vector2(s.length)
         case _ => Vector2(1)
       }
       grid.drawOnGrid(box.items(x)._1, Vector2(3, dim.y-2-x), Vector2(0), size)
