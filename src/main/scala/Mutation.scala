@@ -24,6 +24,7 @@ object Mutation {
   final case class SetChild(state: Option[Stateful]) extends Mutation
   final case class SetReturnMutation(mutation: Mutation) extends Mutation
   final case class Direction(dir: Vector2) extends Mutation
+  final case class InputMut(key: Input) extends Mutation
 
 
 }

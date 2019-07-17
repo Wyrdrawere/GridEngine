@@ -1,3 +1,4 @@
+import Input.{S, W}
 import Mutation._
 import Scroller.Rest
 import Stateful.Receive
@@ -30,7 +31,9 @@ class Overworld
       receive(SetBox(box.copy(playerSprite = box.playerSprite.animateSprite(OverworldSprite.Walk(dir)), scroller = box.scroller(dir))))
     case PauseMut => receive(SetChild(Some(makeMenu())))
     case ChangeJob(job) => receive(SetBox(box.copy(playerSprite = OverworldSprite.FF1_PlayerSprite(job).copy(currentSprite = (box.playerSprite.currentSprite % 27) + (27 * job)))))
-    case _ => this
+    case CancelMut => receive(SetBox(box.copy(pos = Vector2(0))))
+    case InputMut(W) => receive(SetBox(box.copy(zoom = if (box.zoom > 1) box.zoom-1 else box.zoom)))
+    case InputMut(S) => receive(SetBox(box.copy(zoom = box.zoom+1)))
   }
 
   override def draw(grid: Grid): Unit = {

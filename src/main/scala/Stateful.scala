@@ -1,5 +1,5 @@
-import Input.{Back, DownArrow, Enter, LeftArrow, RightArrow, Space, UpArrow}
-import Mutation.{CancelMut, ConfirmMut, Direction, Identity, PauseMut, SetBox, SetChild, SetReturnMutation}
+import Input.{Back, DownArrow, Enter, LeftArrow, RightArrow, S, Space, UpArrow, W}
+import Mutation.{CancelMut, ConfirmMut, Direction, Identity, InputMut, PauseMut, SetBox, SetChild, SetReturnMutation}
 import Stateful.Receive
 
 trait Stateful {
@@ -9,7 +9,7 @@ trait Stateful {
   val childState: Option[Stateful]
   val returnMutation: Mutation
 
-  def copy(box: Statebox = box, grid: Grid = grid, childState: Option[Stateful] = childState, returnMutation: Mutation = returnMutation): Stateful
+  protected def copy(box: Statebox = box, grid: Grid = grid, childState: Option[Stateful] = childState, returnMutation: Mutation = returnMutation): Stateful
 
   final def simulate(deltaTime: Long, input: Input): Stateful = childState match {
     case Some(child) => child.returnMutation match {
@@ -32,30 +32,31 @@ trait Stateful {
     }
   }
 
-  def receive(mutation: Mutation): Stateful = (default orElse mutate orElse catchCase)(mutation)
-  def default: Receive = {
+  final protected def receive(mutation: Mutation): Stateful = (default orElse mutate orElse catchCase)(mutation)
+  final private def default: Receive = {
     case Identity => this
     case SetBox(b) => this.copy(box = b)
     case SetChild(state) => this.copy(childState = state)
     case SetReturnMutation(mutation) => this.copy(returnMutation = mutation)
   }
-  def catchCase: Receive = {case _ => this}
+  final private def catchCase: Receive = {case _ => this}
 
-
-  def everyFrame(deltaTime: Long): Stateful = this
-  def inputToMutation(input: Input): Mutation = input match {
+  protected def everyFrame(deltaTime: Long): Stateful = this
+  protected def inputToMutation(input: Input): Mutation = input match {
     case UpArrow => Direction(Vector2.Up)
     case DownArrow => Direction(Vector2.Down)
     case LeftArrow => Direction(Vector2.Left)
     case RightArrow => Direction(Vector2.Right)
+    case W => InputMut(W)
+    case S => InputMut(S)
     case Enter => ConfirmMut
     case Back => CancelMut
     case Space => PauseMut
     case _ => Identity
   }
 
-  def mutate: Receive
-  def draw(grid: Grid): Unit
+  protected def mutate: Receive
+  protected def draw(grid: Grid): Unit
 }
 
 object Stateful {

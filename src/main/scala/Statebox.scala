@@ -1,7 +1,6 @@
-abstract class Statebox {
+abstract class Statebox
 
-
-}
+abstract class TestBox[T]
 
 object Statebox{
 
@@ -24,5 +23,4 @@ object Statebox{
   cursor: Vector2,
   items: Map[Vector2, (Drawable, Mutation)]
   )extends Statebox
-
 }
