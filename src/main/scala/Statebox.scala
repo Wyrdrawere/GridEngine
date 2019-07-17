@@ -1,7 +1,5 @@
 abstract class Statebox
 
-abstract class TestBox[T]
-
 object Statebox{
 
   case class OverworldBox
