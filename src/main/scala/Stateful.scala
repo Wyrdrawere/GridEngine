@@ -1,15 +1,22 @@
 import Input.{Back, DownArrow, Enter, LeftArrow, RightArrow, S, Space, UpArrow, W}
 import Mutation.{CancelMut, ConfirmMut, Direction, Identity, InputMut, PauseMut, SetBox, SetChild, SetReturnMutation}
-import Stateful.Receive
 
 trait Stateful {
+
+  type Receive = PartialFunction[Mutation, Stateful]
 
   val box: Statebox
   val grid: Grid
   val childState: Option[Stateful]
   val returnMutation: Mutation
 
-  protected def copy(box: Statebox = box, grid: Grid = grid, childState: Option[Stateful] = childState, returnMutation: Mutation = returnMutation): Stateful
+  protected def copy
+  (
+    box: Statebox = box,
+    grid: Grid = grid,
+    childState: Option[Stateful] = childState,
+    returnMutation: Mutation = returnMutation
+  ): Stateful
 
   final def simulate(deltaTime: Long, input: Input): Stateful = childState match {
     case Some(child) => child.returnMutation match {
@@ -57,8 +64,4 @@ trait Stateful {
 
   protected def mutate: Receive
   protected def draw(grid: Grid): Unit
-}
-
-object Stateful {
-  type Receive = PartialFunction[Mutation, Stateful]
 }

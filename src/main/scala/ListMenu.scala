@@ -1,5 +1,4 @@
 import Mutation._
-import Stateful.Receive
 
 class ListMenu
 (

@@ -1,7 +1,6 @@
 import Input.{S, W}
 import Mutation._
 import Scroller.Rest
-import Stateful.Receive
 
 class Overworld
 (

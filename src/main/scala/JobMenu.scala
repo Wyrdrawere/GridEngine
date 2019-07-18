@@ -1,5 +1,4 @@
 import Mutation.{CancelMut, ChangeJob, ConfirmMut, Direction, Identity, SetBox, SetChild, SetReturnMutation}
-import Stateful.Receive
 
 class JobMenu
 (
