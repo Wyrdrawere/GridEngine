@@ -19,8 +19,8 @@ class ListMenu
   )
 
   override def mutate: Receive = {
-    case Direction(Vector2.Up) => receive(SetBox(box.copy(cursor = if (box.cursor > 0) box.cursor - 1 else box.cursor)))
-    case Direction(Vector2.Down) => receive(SetBox(box.copy(cursor = if (box.cursor < box.items.size - 1) box.cursor + 1 else box.cursor)))
+    case Direction(Vector2.Up) => receive(SetBox(box.copy(cursor = if (box.cursor > 0) box.cursor - 1 else box.items.size - 1)))
+    case Direction(Vector2.Down) => receive(SetBox(box.copy(cursor = if (box.cursor < box.items.size - 1) box.cursor + 1 else 0)))
     case ConfirmMut => receive(box.items(box.cursor)._2)
     case CancelMut => receive(SetReturnMutation(SetChild(None)))
     case MakeSubMenu => receive(SetChild(Some(makeJobMenu)))

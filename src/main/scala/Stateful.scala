@@ -16,7 +16,7 @@ trait Stateful {
     grid: Grid = grid,
     childState: Option[Stateful] = childState,
     returnMutation: Mutation = returnMutation
-  ): Stateful
+  ): Stateful //todo: find way to implement this here
 
   final def simulate(deltaTime: Long, input: Input): Stateful = childState match {
     case Some(child) => child.returnMutation match {
