@@ -15,13 +15,6 @@ object Window {
   def main(args: Array[String]): Unit = { //todo: make proper main that can launch (different) windows. Game, leveleditor etc
     currentWindow.run()
   }
-
-  def getCursorPosition: Vector2 = {
-    var x = BufferUtils.createDoubleBuffer(1)
-    var y = BufferUtils.createDoubleBuffer(1)
-    glfwGetCursorPos(0, x, y)
-    Vector2(x.get(0).toFloat, y.get(0).toFloat)
-  }
 }
 
 class Window {
@@ -29,6 +22,7 @@ class Window {
 
   var lastInput: Input = None
   var lastCursor: Vector2 = Vector2(0)
+  var lastMouse: Long = 0
   var lastTime: Long = 0
 
   def run(): Unit = {
@@ -59,12 +53,22 @@ class Window {
       window,
       (window: Long, xPos: Double, yPos: Double) => cursorCallback(window, xPos, yPos))
 
+    glfwSetMouseButtonCallback(
+      window,
+      (window: Long, button: Int, action: Int, mods: Int) => mouseCallback(window, button, action, mods))
+
     glfwSetKeyCallback(
       window,
       (window: Long, key: Int, scancode: Int, action: Int, mods: Int) => keyCallback(window, key, scancode, action, mods))
 
     def cursorCallback(window: Long, xPos: Double, yPos: Double): Unit = {
       lastCursor = Vector2(xPos.toFloat, Config.windowSize.y-yPos.toFloat)
+    }
+
+    def mouseCallback(window: Long, button: Int, action: Int, mods: Int): Unit = {
+      if (action == GLFW_PRESS) {
+        lastMouse = button
+      }
     }
 
     def keyCallback(window: Long, key: Int, scancode: Int, action: Int, mods: Int): Unit = {
@@ -126,6 +130,7 @@ class Window {
         lastTime = thisTime
         lastInput = None
         println(lastCursor)
+        println(lastMouse)
 
 
       }

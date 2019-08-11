@@ -16,11 +16,7 @@ class Editor
     box.asInstanceOf[Statebox.EditorBox], grid, childState, returnMutation
   )
 
-  override protected def mutate: Receive
+  override protected def mutate: Receive = ???
 
-  = ???
-
-  override protected def draw(grid: Grid): Unit
-
-  = ???
+  override protected def draw(grid: Grid): Unit = ???
 }
