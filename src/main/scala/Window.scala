@@ -13,6 +13,7 @@ object Window {
   val currentWindow = new Window()
 
   def main(args: Array[String]): Unit = { //todo: make proper main that can launch (different) windows. Game, leveleditor etc
+    //todo: the above and INPUT!!!
     currentWindow.run()
   }
 }
@@ -22,7 +23,7 @@ class Window {
 
   var lastInput: Input = None
   var lastCursor: Vector2 = Vector2(0)
-  var lastMouse: Long = 0
+  var lastMouse: Long = -1
   var lastTime: Long = 0
 
   def run(): Unit = {
@@ -68,7 +69,7 @@ class Window {
     def mouseCallback(window: Long, button: Int, action: Int, mods: Int): Unit = {
       if (action == GLFW_PRESS) {
         lastMouse = button
-      }
+      } else lastMouse = -1
     }
 
     def keyCallback(window: Long, key: Int, scancode: Int, action: Int, mods: Int): Unit = {
