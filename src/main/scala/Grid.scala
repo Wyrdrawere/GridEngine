@@ -17,6 +17,8 @@ class Grid
     setDimensions(Vector2(xAmount, yAmount))
   }
 
+  def getGridCoordinate(absolute: Vector2): Vector2 = ???
+
   val windowSize: Vector2 = Config.windowSize
   def gridUnit: Vector2 = relativeSize /: dimensions
   def gridTranslation: Vector2 = relativePosition /: gridUnit

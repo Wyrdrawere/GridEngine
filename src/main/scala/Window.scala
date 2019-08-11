@@ -1,4 +1,5 @@
 import Input._
+import org.lwjgl.BufferUtils
 import org.lwjgl.glfw._
 import org.lwjgl.opengl._
 import org.lwjgl.glfw.Callbacks._
@@ -14,12 +15,20 @@ object Window {
   def main(args: Array[String]): Unit = { //todo: make proper main that can launch (different) windows. Game, leveleditor etc
     currentWindow.run()
   }
+
+  def getCursorPosition: Vector2 = {
+    var x = BufferUtils.createDoubleBuffer(1)
+    var y = BufferUtils.createDoubleBuffer(1)
+    glfwGetCursorPos(0, x, y)
+    Vector2(x.get(0).toFloat, y.get(0).toFloat)
+  }
 }
 
 class Window {
   private var window = 0L
 
   var lastInput: Input = None
+  var lastCursor: Vector2 = Vector2(0)
   var lastTime: Long = 0
 
   def run(): Unit = {
@@ -46,18 +55,27 @@ class Window {
     window = glfwCreateWindow(Config.windowSize.xi, Config.windowSize.yi, Config.windowName, NULL, NULL)
     if (window == NULL) throw new RuntimeException("Failed to create the GLFW window")
 
-    glfwSetKeyCallback(window, (window: Long, key: Int, scancode: Int, action: Int, mods: Int) => {
-      // todo: make better input
-      def foo(window: Long, key: Int, scancode: Int, action: Int, mods: Int): Unit = {
-        if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
-          glfwSetWindowShouldClose(window, true)
-        } else if (action == GLFW_PRESS || action == GLFW_REPEAT) {
-          lastInput = Input(key)
-        }
-      }
+    glfwSetCursorPosCallback(
+      window,
+      (window: Long, xPos: Double, yPos: Double) => cursorCallback(window, xPos, yPos))
 
-      foo(window, key, scancode, action, mods)
-    })
+    glfwSetKeyCallback(
+      window,
+      (window: Long, key: Int, scancode: Int, action: Int, mods: Int) => keyCallback(window, key, scancode, action, mods))
+
+    def cursorCallback(window: Long, xPos: Double, yPos: Double): Unit = {
+      lastCursor = Vector2(xPos.toFloat, Config.windowSize.y-yPos.toFloat)
+    }
+
+    def keyCallback(window: Long, key: Int, scancode: Int, action: Int, mods: Int): Unit = {
+      if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
+        glfwSetWindowShouldClose(window, true)
+      } else if (action == GLFW_PRESS || action == GLFW_REPEAT) {
+        lastInput = Input(key)
+      }
+    }
+
+
     try {
       val stack = stackPush
       try {
@@ -102,10 +120,14 @@ class Window {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
+
         state = state.simulate(deltaTime, lastInput)
         state.render()
         lastTime = thisTime
         lastInput = None
+        println(lastCursor)
+
+
       }
 
       glfwSwapBuffers(window)

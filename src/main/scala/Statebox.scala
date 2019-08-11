@@ -21,4 +21,9 @@ object Statebox{
   cursor: Vector2,
   items: Map[Vector2, (Drawable, Mutation)]
   )extends Statebox
+
+  case class EditorBox
+  (
+
+  )extends Statebox
 }
