@@ -65,7 +65,7 @@ class Overworld
       4 -> (Text("Jobs", Text.DarkGrayFont), MakeSubMenu),
     )
     val subgrid = new Grid(Vector2(0.25f, 0.75f), relativePosition = Vector2(0.75f, 0.25f))
-    new ListMenu(Statebox.ListMenuBox(0, items), subgrid)
+    new ListMenu(Statebox.ListMenuBox(0, items, InputDelay(Map.empty)), subgrid)
   }
 
 

@@ -20,6 +20,4 @@ object Mutation {
   final case class KeyHeld(key: InputKey) extends Mutation
   final case class KeyReleased(key: InputKey) extends Mutation
 
-
-
 }

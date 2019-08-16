@@ -13,7 +13,8 @@ object Statebox{
   case class ListMenuBox
   (
   cursor: Int,
-  items: Map[Int, (Drawable, Mutation)]
+  items: Map[Int, (Drawable, Mutation)],
+  inputDelay: InputDelay
   )extends Statebox
 
   case class JobMenuBox
