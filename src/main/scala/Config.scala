@@ -1,6 +1,3 @@
-import InputKey.{DownArrow, Enter, LeftArrow, RightArrow, Space, UpArrow}
-import Mutation.{ConfirmMut, Direction, KeyHeld, KeyPressed, KeyReleased, PauseMut}
-
 object Config {
   val windowName: String = "GridEngine"
   val windowSize: Vector2 = Vector2(800,800)
