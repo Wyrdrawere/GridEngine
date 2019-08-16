@@ -12,7 +12,7 @@ object Mutation {
   final case class SetChild(state: Option[Stateful]) extends Mutation
   final case class SetReturnMutation(mutation: Mutation) extends Mutation
   final case class Composite(mut: List[Mutation]) extends Mutation
-  final case class CursorPosition(pos: Vector2)
+  final case class CursorPosition(pos: Vector2) extends Mutation
   final case class MouseClicked(button: InputMouseButton) extends Mutation
   final case class MouseHeld(button: InputMouseButton) extends Mutation
   final case class MouseReleased(button: InputMouseButton) extends Mutation

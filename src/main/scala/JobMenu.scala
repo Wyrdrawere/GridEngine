@@ -1,5 +1,5 @@
-import InputKey.{Back, DownArrow, Enter, LeftArrow, RightArrow, UpArrow}
-import Mutation.{CancelMut, ChangeJob, ConfirmMut, Direction, Identity, KeyPressed, SetBox, SetChild, SetReturnMutation}
+import InputKey._
+import Mutation._
 
 class JobMenu
 (

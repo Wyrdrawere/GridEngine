@@ -13,7 +13,6 @@ object Input {
   def update: Input = {
     updateKeys()
     updateMouse()
-    println(input)
     input
   }
 
@@ -43,11 +42,12 @@ object Input {
     frameRemovedKeys = frameRemovedKeys + key
   }
 
+  //todo: copy-paste function, generalize them
   private def updateKeys(): Unit = {
 
     var pressed: Set[InputKey] = frameAddedKeys
     var held: Set[InputKey] = input.pressedKey ++ input.heldKey
-    var released: Set[InputKey] = frameRemovedKeys
+    val released: Set[InputKey] = frameRemovedKeys
 
     for (k <- released) {
       pressed = pressed - k
@@ -67,7 +67,7 @@ object Input {
 
     var pressed: Set[InputMouseButton] = frameAddedButtons
     var held: Set[InputMouseButton] = input.pressedButton ++ input.heldButton
-    var released: Set[InputMouseButton] = frameRemovedButtons
+    val released: Set[InputMouseButton] = frameRemovedButtons
 
     for (b <- released) {
       pressed = pressed - b

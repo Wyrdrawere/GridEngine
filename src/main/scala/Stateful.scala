@@ -1,5 +1,4 @@
-import InputKey.{Back, DownArrow, Enter, LeftArrow, RightArrow, S, Space, UpArrow, W}
-import Mutation.{CancelMut, Composite, ConfirmMut, CursorPosition, Direction, Identity, InputMut, InputMutation, KeyHeld, KeyPressed, KeyReleased, MouseClicked, MouseHeld, MouseReleased, PauseMut, SetBox, SetChild, SetReturnMutation}
+import Mutation._
 
 trait Stateful {
 
@@ -64,7 +63,7 @@ trait Stateful {
     val kHold = input.heldKey.toList.map(k => KeyHeld(k))
     val kRelease = input.releasedKey.toList.map(k => KeyReleased(k))
 
-    Composite(mClick ++ mHold ++ mRelease ++ kPress ++ kHold ++ kRelease)
+    Composite(mClick ++ mHold ++ mRelease ++ kPress ++ kHold ++ kRelease :+ pos)
   }
 
   protected def mutate: Receive
