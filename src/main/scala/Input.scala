@@ -13,6 +13,7 @@ object Input {
   def update: Input = {
     updateKeys()
     updateMouse()
+    println(input)
     input
   }
 

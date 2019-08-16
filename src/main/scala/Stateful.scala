@@ -28,7 +28,7 @@ trait Stateful {
           case None => newState
         }
     }
-    case None => this.everyFrame(deltaTime).receive(InputMutation(input))
+    case None => this.everyFrame(deltaTime).receive(inputToMutation(input))
   }
 
   final def render(): Unit = {
@@ -57,19 +57,17 @@ trait Stateful {
     val pos = CursorPosition(input.cursorPosition)
 
     val mClick = input.pressedButton.toList.map(b => MouseClicked(b))
-    val mHold = input.pressedButton.toList.map(b => MouseHeld(b))
-    val mRelease = input.pressedButton.toList.map(b => MouseReleased(b))
+    val mHold = input.heldButton.toList.map(b => MouseHeld(b))
+    val mRelease = input.releasedButton.toList.map(b => MouseReleased(b))
 
     val kPress = input.pressedKey.toList.map(k => KeyPressed(k))
     val kHold = input.heldKey.toList.map(k => KeyHeld(k))
     val kRelease = input.releasedKey.toList.map(k => KeyReleased(k))
 
     var keyMutations: List[Mutation] = kPress ++ kHold ++ kRelease
-    keyMutations = keyMutations.filter(m => !Config.keyMap.toList.map(x => x._1).contains(m))
+    keyMutations = keyMutations.filter(m => Config.keyMap.toList.map(x => x._1).contains(m))
 
-    val c = Composite(mClick ++ mHold ++ mRelease ++ keyMutations.map(m => Config.keyMap(m)))
-    println(c)
-    c
+    Composite(mClick ++ mHold ++ mRelease ++ keyMutations.map(m => Config.keyMap(m)))
   }
 
   protected def mutate: Receive
