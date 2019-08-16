@@ -1,5 +1,3 @@
-import Input._
-import org.lwjgl.BufferUtils
 import org.lwjgl.glfw._
 import org.lwjgl.opengl._
 import org.lwjgl.glfw.Callbacks._
@@ -8,23 +6,14 @@ import org.lwjgl.opengl.GL11._
 import org.lwjgl.system.MemoryStack._
 import org.lwjgl.system.MemoryUtil._
 
-object Window {
-
-  val currentWindow = new Window()
-
-  def main(args: Array[String]): Unit = { //todo: make proper main that can launch (different) windows. Game, leveleditor etc
-    //todo: the above and INPUT!!!
-    currentWindow.run()
-  }
-}
-
-class Window {
-  private var window = 0L
-
-  var lastInput: Input = None
+class Window(initState: () => Stateful) {
+  var lastInput: InputKey = InputKey.NoKey
   var lastCursor: Vector2 = Vector2(0)
-  var lastMouse: Long = -1
+  var lastMouse: InputMouseButton = InputMouseButton.NoMouseButton
   var lastTime: Long = 0
+
+  private var state: Option[Stateful] = None
+  private var window = 0L
 
   def run(): Unit = {
     init()
@@ -63,23 +52,27 @@ class Window {
       (window: Long, key: Int, scancode: Int, action: Int, mods: Int) => keyCallback(window, key, scancode, action, mods))
 
     def cursorCallback(window: Long, xPos: Double, yPos: Double): Unit = {
-      lastCursor = Vector2(xPos.toFloat, Config.windowSize.y-yPos.toFloat)
+      Input.moveCursor(Vector2(xPos.toFloat, Config.windowSize.y-yPos.toFloat))
     }
 
     def mouseCallback(window: Long, button: Int, action: Int, mods: Int): Unit = {
       if (action == GLFW_PRESS) {
-        lastMouse = button
-      } else lastMouse = -1
-    }
-
-    def keyCallback(window: Long, key: Int, scancode: Int, action: Int, mods: Int): Unit = {
-      if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
-        glfwSetWindowShouldClose(window, true)
-      } else if (action == GLFW_PRESS || action == GLFW_REPEAT) {
-        lastInput = Input(key)
+        Input.addButton(InputMouseButton(button))
+      } else if (action == GLFW_RELEASE) {
+        Input.removeButton(InputMouseButton(button))
       }
     }
 
+    def keyCallback(window: Long, key: Int, scancode: Int, action: Int, mods: Int): Unit = {
+
+      if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
+        glfwSetWindowShouldClose(window, true)
+      } else if (action == GLFW_PRESS || action == GLFW_REPEAT) {
+        Input.addKey(InputKey(key))
+      } else if (action == GLFW_RELEASE) {
+        Input.removeKey(InputKey(key))
+      }
+    }
 
     try {
       val stack = stackPush
@@ -102,18 +95,10 @@ class Window {
   }
 
   private def loop(): Unit = {
+
     GL.createCapabilities
     glClearColor(1.0f, 1.0f, 1.0f, 0.0f)
-
-    var state: Stateful = new Overworld(
-      Statebox.OverworldBox(
-      Level.TestDungeon,
-      OverworldSprite.FF1_PlayerSprite(0),
-      Vector2(0),
-      5,
-      Scroller(Config.scrollUnit, Vector2(0), Scroller.Stay)
-      ),
-      new Grid)
+    state = Some(initState())
 
     while ( {
       !glfwWindowShouldClose(window)
@@ -126,12 +111,15 @@ class Window {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
 
-        state = state.simulate(deltaTime, lastInput)
-        state.render()
+        state = state.map(_.simulate(deltaTime, lastInput))
+        state.foreach(_.render())
         lastTime = thisTime
-        lastInput = None
-        println(lastCursor)
-        println(lastMouse)
+        lastInput = InputKey.NoKey
+
+        println(Input.update)
+
+        //println(lastCursor)
+        //println(lastMouse)
 
 
       }

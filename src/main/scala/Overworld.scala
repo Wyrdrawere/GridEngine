@@ -1,4 +1,4 @@
-import Input.{S, W}
+import InputKey.{S, W}
 import Mutation._
 import Scroller.Rest
 

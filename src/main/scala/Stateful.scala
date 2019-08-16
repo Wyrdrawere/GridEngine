@@ -1,4 +1,4 @@
-import Input.{Back, DownArrow, Enter, LeftArrow, RightArrow, S, Space, UpArrow, W}
+import InputKey.{Back, DownArrow, Enter, LeftArrow, RightArrow, S, Space, UpArrow, W}
 import Mutation.{CancelMut, ConfirmMut, Direction, Identity, InputMut, PauseMut, SetBox, SetChild, SetReturnMutation}
 
 trait Stateful {
@@ -18,7 +18,7 @@ trait Stateful {
     returnMutation: Mutation = returnMutation
   ): Stateful //todo: find way to implement this here
 
-  final def simulate(deltaTime: Long, input: Input): Stateful = childState match {
+  final def simulate(deltaTime: Long, input: InputKey): Stateful = childState match {
     case Some(child) => child.returnMutation match {
       case Identity => this.everyFrame(deltaTime).receive(SetChild(Some(child.simulate(deltaTime, input))))
       case _ =>
@@ -49,7 +49,7 @@ trait Stateful {
   final private def catchCase: Receive = {case _ => this}
 
   protected def everyFrame(deltaTime: Long): Stateful = this
-  protected def inputToMutation(input: Input): Mutation = input match {
+  protected def inputToMutation(input: InputKey): Mutation = input match {
     case UpArrow => Direction(Vector2.Up)
     case DownArrow => Direction(Vector2.Down)
     case LeftArrow => Direction(Vector2.Left)

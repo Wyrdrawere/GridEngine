@@ -1,83 +1,84 @@
-sealed trait Input
+case class Input
+(
+  cursorPosition: Vector2,
+  pressedButton: Set[InputMouseButton],
+  heldButton: Set[InputMouseButton],
+  releasedButton: Set[InputMouseButton],
+  pressedKey: Set[InputKey],
+  heldKey: Set[InputKey],
+  releasedKey: Set[InputKey],
+)
 
 object Input {
-  case object Space extends Input
+  def update: Input = {
+    updateKeys()
+    updateMouse()
+    input
+  }
 
-  case object A extends Input
-  case object B extends Input
-  case object C extends Input
-  case object D extends Input
-  case object E extends Input
-  case object F extends Input
-  case object G extends Input
-  case object H extends Input
-  case object I extends Input
-  case object J extends Input
-  case object K extends Input
-  case object L extends Input
-  case object M extends Input
-  case object N extends Input
-  case object O extends Input
-  case object P extends Input
-  case object Q extends Input
-  case object R extends Input
-  case object S extends Input
-  case object T extends Input
-  case object U extends Input
-  case object V extends Input
-  case object W extends Input
-  case object X extends Input
-  case object Y extends Input
-  case object Z extends Input
+  private var input = Input(Vector2(0), Set.empty, Set.empty, Set.empty, Set.empty, Set.empty, Set.empty)
 
-  case object Enter extends Input
-  case object Back extends Input
-  case object UpArrow extends Input
-  case object DownArrow extends Input
-  case object LeftArrow extends Input
-  case object RightArrow extends Input
+  private var cursorPosition: Vector2 = Vector2(0)
+  private var frameAddedKeys: Set[InputKey] = Set.empty
+  private var frameRemovedKeys: Set[InputKey] = Set.empty
+  private var frameAddedButtons: Set[InputMouseButton] = Set.empty
+  private var frameRemovedButtons: Set[InputMouseButton] = Set.empty
 
-  case object None extends Input
+  def moveCursor(newPosition: Vector2): Unit = cursorPosition = newPosition
 
-  def apply(key: Int): Input = key match {
-      //todo: completely map this through. Or think it through first, LOTS of work otherwise
-    case 32 => Space
+  def addButton(button: InputMouseButton): Unit = {
+    frameAddedButtons = frameAddedButtons + button
+  }
 
-    case 65 => A
-    case 66 => B
-    case 67 => C
-    case 68 => D
-    case 69 => E
-    case 70 => F
-    case 71 => G
-    case 72 => H
-    case 73 => I
-    case 74 => J
-    case 75 => K
-    case 76 => L
-    case 77 => M
-    case 78 => N
-    case 79 => O
-    case 80 => P
-    case 81 => Q
-    case 82 => R
-    case 83 => S
-    case 84 => T
-    case 85 => U
-    case 86 => V
-    case 87 => W
-    case 88 => X
-    case 89 => Z //qwertz/qwerty weirdness?
-    case 90 => Y
+  def removeButton(button: InputMouseButton): Unit = {
+    frameRemovedButtons = frameRemovedButtons + button
+  }
 
-    case 257 => Enter
-    case 259 => Back
-    case 262 => RightArrow
-    case 263 => LeftArrow
-    case 264 => DownArrow
-    case 265 => UpArrow
-    case _ =>
-      println(key)
-      Space
+  def addKey(key: InputKey): Unit = {
+    frameAddedKeys = frameAddedKeys + key
+  }
+
+  def removeKey(key: InputKey): Unit = {
+    frameRemovedKeys = frameRemovedKeys + key
+  }
+
+  private def updateKeys(): Unit = {
+
+    var pressed: Set[InputKey] = frameAddedKeys
+    var held: Set[InputKey] = input.pressedKey ++ input.heldKey
+    var released: Set[InputKey] = frameRemovedKeys
+
+    for (k <- released) {
+      pressed = pressed - k
+      held = held - k
+    }
+
+    for(k <- held) {
+      pressed = pressed - k
+    }
+
+    frameAddedKeys = Set.empty
+    frameRemovedKeys = Set.empty
+    input = input.copy(pressedKey = pressed, heldKey = held, releasedKey = released)
+  }
+
+  private def updateMouse(): Unit = {
+
+    var pressed: Set[InputMouseButton] = frameAddedButtons
+    var held: Set[InputMouseButton] = input.pressedButton ++ input.heldButton
+    var released: Set[InputMouseButton] = frameRemovedButtons
+
+    for (b <- released) {
+      pressed = pressed - b
+      held = held - b
+    }
+
+    for(b <- held) {
+      pressed = pressed - b
+    }
+
+    frameAddedButtons = Set.empty
+    frameRemovedButtons = Set.empty
+    input = input.copy(cursorPosition = cursorPosition, pressedButton = pressed, heldButton = held, releasedButton = released)
   }
 }
