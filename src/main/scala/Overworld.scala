@@ -7,15 +7,17 @@ class Overworld
   override val box: Statebox.OverworldBox,
   override val grid: Grid,
   override val childState: Option[Stateful] = None,
-  override val returnMutation: Mutation = Identity
+  override val returnMutation: Mutation = Identity,
+  override val inputDelay: InputDelay = InputDelay(Map.empty)
 ) extends Stateful {
 
   override def copy
   (box: Statebox = box,
    grid: Grid = grid,
    childState: Option[Stateful] = childState,
-   returnMutation: Mutation = returnMutation): Stateful = new Overworld(
-    box.asInstanceOf[Statebox.OverworldBox], grid, childState, returnMutation
+   returnMutation: Mutation = returnMutation,
+   inputDelay: InputDelay = inputDelay): Stateful = new Overworld(
+    box.asInstanceOf[Statebox.OverworldBox], grid, childState, returnMutation, inputDelay
   )
 
   override def everyFrame(deltaTime: Long): Stateful = {
@@ -65,7 +67,7 @@ class Overworld
       4 -> (Text("Jobs", Text.DarkGrayFont), MakeSubMenu),
     )
     val subgrid = new Grid(Vector2(0.25f, 0.75f), relativePosition = Vector2(0.75f, 0.25f))
-    new ListMenu(Statebox.ListMenuBox(0, items, InputDelay(Map.empty)), subgrid)
+    new ListMenu(Statebox.ListMenuBox(0, items), subgrid)
   }
 
 

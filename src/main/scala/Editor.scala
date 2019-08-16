@@ -4,6 +4,7 @@ class Editor
   override val grid: Grid,
   override val childState: Option[Stateful],
   override val returnMutation: Mutation,
+  override val inputDelay: InputDelay = InputDelay(Map.empty)
 )
   extends Stateful {
 
@@ -12,8 +13,9 @@ class Editor
   (box: Statebox = box,
    grid: Grid = grid,
    childState: Option[Stateful] = childState,
-   returnMutation: Mutation = returnMutation): Stateful = new Editor(
-    box.asInstanceOf[Statebox.EditorBox], grid, childState, returnMutation
+   returnMutation: Mutation = returnMutation,
+   inputDelay: InputDelay = inputDelay): Stateful = new Editor(
+    box.asInstanceOf[Statebox.EditorBox], grid, childState, returnMutation, inputDelay
   )
 
   override protected def mutate: Receive = ???

@@ -8,13 +8,15 @@ trait Stateful {
   val grid: Grid
   val childState: Option[Stateful]
   val returnMutation: Mutation
+  val inputDelay: InputDelay
 
   protected def copy
   (
     box: Statebox = box,
     grid: Grid = grid,
     childState: Option[Stateful] = childState,
-    returnMutation: Mutation = returnMutation
+    returnMutation: Mutation = returnMutation,
+    inputDelay: InputDelay = InputDelay(Map.empty)
   ): Stateful //todo: find way to implement this here
 
   final def simulate(deltaTime: Long, input: Input): Stateful = childState match {
@@ -27,7 +29,7 @@ trait Stateful {
           case None => newState
         }
     }
-    case None => this.everyFrame(deltaTime).receive(inputToMutation(input))
+    case None => this.everyFrame(deltaTime).delayInput(deltaTime).receive(inputToMutation(input))
   }
 
   final def render(): Unit = {
@@ -39,17 +41,23 @@ trait Stateful {
   }
 
   final protected def receive(mutation: Mutation): Stateful = (default orElse mutate orElse catchCase)(mutation)
+
   final private def default: Receive = {
     case Identity => this
     case SetBox(b) => this.copy(box = b)
     case SetChild(state) => this.copy(childState = state)
     case SetReturnMutation(mutation) => this.copy(returnMutation = mutation)
+    case SetDelay(delay) => this.copy(inputDelay = delay)
     case Composite(ms) => ms match {
       case Nil => this
       case x :: xs => this.receive(x).receive(Composite(xs))
     }
   }
   final private def catchCase: Receive = {case _ => this}
+
+  final private def delayInput(deltaTime: Long): Stateful = {
+    this.receive(SetDelay(inputDelay.cooldown(deltaTime)))
+  }
 
   protected def everyFrame(deltaTime: Long): Stateful = this
   protected def inputToMutation(input: Input): Mutation = {

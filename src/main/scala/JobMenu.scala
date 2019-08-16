@@ -6,7 +6,9 @@ class JobMenu
   override val box: Statebox.JobMenuBox,
   override val grid: Grid,
   override val childState: Option[Stateful] = None,
-  override val returnMutation: Mutation = Identity
+  override val returnMutation: Mutation = Identity,
+  override val inputDelay: InputDelay = InputDelay(Map.empty)
+
 ) extends Stateful {
 
 
@@ -14,8 +16,9 @@ class JobMenu
   (box: Statebox = box,
    grid: Grid = grid,
    childState: Option[Stateful] = childState,
-   returnMutation: Mutation = returnMutation): Stateful = new JobMenu(
-    box.asInstanceOf[Statebox.JobMenuBox], grid, childState, returnMutation
+   returnMutation: Mutation = returnMutation,
+   inputDelay: InputDelay = inputDelay): Stateful = new JobMenu(
+    box.asInstanceOf[Statebox.JobMenuBox], grid, childState, returnMutation, inputDelay
   )
 
   override def mutate: Receive = {

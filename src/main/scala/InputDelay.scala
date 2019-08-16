@@ -1,7 +1,5 @@
 case class InputDelay(keys: Map[InputKey, Long]) {
 
-  //todo: belongs in stateful basetrait, instead of implementations
-
   def add(key: InputKey, cooldown: Long): InputDelay = this.copy(keys.updated(key, cooldown))
 
   def cooldown(time: Long): InputDelay = {

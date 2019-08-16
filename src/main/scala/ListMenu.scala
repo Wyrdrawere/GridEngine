@@ -7,23 +7,24 @@ class ListMenu
 
   override val grid: Grid,
   override val childState: Option[Stateful] = None,
-  override val returnMutation: Mutation = Identity
-
+  override val returnMutation: Mutation = Identity,
+  override val inputDelay: InputDelay = InputDelay(Map.empty)
 ) extends Stateful {
 
   override def copy
   (box: Statebox = box,
    grid: Grid = grid,
    childState: Option[Stateful] = childState,
-   returnMutation: Mutation = returnMutation): Stateful = new ListMenu(
-    box.asInstanceOf[Statebox.ListMenuBox], grid, childState, returnMutation
+   returnMutation: Mutation = returnMutation,
+   inputDelay: InputDelay = inputDelay): Stateful = new ListMenu(
+    box.asInstanceOf[Statebox.ListMenuBox], grid, childState, returnMutation, inputDelay
   )
 
   override def mutate: Receive = {
     case KeyPressed(UpArrow) => move(Vector2.Up)
     case KeyPressed(DownArrow) => move(Vector2.Down)
-    case KeyHeld(UpArrow) if box.inputDelay.keyActive(UpArrow) => move(Vector2.Up)
-    case KeyHeld(DownArrow) if box.inputDelay.keyActive(DownArrow) => move(Vector2.Down)
+    case KeyHeld(UpArrow) if inputDelay.keyActive(UpArrow) => move(Vector2.Up)
+    case KeyHeld(DownArrow) if inputDelay.keyActive(DownArrow) => move(Vector2.Down)
     case KeyPressed(Enter) => receive(box.items(box.cursor)._2)
     case KeyPressed(Back) => receive(SetReturnMutation(SetChild(None)))
 
@@ -48,17 +49,13 @@ class ListMenu
     grid.drawOnGrid(Color.Pink, Vector2(2, dim.y-2-box.cursor), Vector2(0))
   }
 
-  override protected def everyFrame(deltaTime: Long): Stateful = {
-    this.receive(SetBox(box.copy(inputDelay = box.inputDelay.cooldown(deltaTime))))
-  }
-
   private def move(dir: Vector2): Stateful = dir match {
-    case Vector2.Up => receive(SetBox(box.copy(
-      cursor = if (box.cursor > 0) box.cursor - 1 else box.items.size - 1,
-      inputDelay = box.inputDelay.add(UpArrow, 300))))
-    case Vector2.Down => receive(SetBox(box.copy(
-      cursor = if (box.cursor < box.items.size - 1) box.cursor + 1 else 0,
-      inputDelay = box.inputDelay.add(DownArrow, 300))))
+    case Vector2.Up => receive(Composite(List(
+      SetBox(box.copy(cursor = if (box.cursor > 0) box.cursor - 1 else box.items.size - 1)),
+      SetDelay(inputDelay.add(UpArrow,300)))))
+    case Vector2.Down => receive(Composite(List(
+      SetBox(box.copy(cursor = if (box.cursor < box.items.size - 1) box.cursor + 1 else 0)),
+      SetDelay(inputDelay.add(DownArrow,300)))))
     case _ => this
   }
 

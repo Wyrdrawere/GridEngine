@@ -14,7 +14,6 @@ object Statebox{
   (
   cursor: Int,
   items: Map[Int, (Drawable, Mutation)],
-  inputDelay: InputDelay
   )extends Statebox
 
   case class JobMenuBox
