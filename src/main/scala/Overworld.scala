@@ -37,11 +37,7 @@ class Overworld
     }
 
     case CursorPosition(pos) => {
-      val p = grid.getGridCoordinate(pos)
-      p match {
-        case Some(v) => c = v
-        case _ =>
-      }
+      c = pos
       this
     }
 
@@ -70,7 +66,11 @@ class Overworld
     grid.drawGrid(box.level.getSlice(Vector2(box.zoom * 2 + 1), box.pos), box.level.tileSet, box.scroller.toVector2 / box.scroller.scrollUnit)
     grid.drawOnCenter(box.playerSprite)
     grid.setDimensions(grid.getDimensions*4)
-    grid.drawOnGrid(Color.Green, Vector2(c.xi+1f, c.yi), Vector2(c.xi-c.x, c.yi-c.y), Vector2(1f))
+    grid.getGridCoordinate(c) match {
+      case Some(v) => grid.drawOnGrid(Color.Green, Vector2(v.xi+1f, v.yi), Vector2(v.xi-v.x, v.yi-v.y), Vector2(1f))
+      case None =>
+    }
+    grid.setDimensions(grid.getDimensions/4)
   }
 
   private def move(dir: Vector2) = {
