@@ -13,7 +13,7 @@ case class Vector2(x: Float, y: Float) { //todo: refactor everything to use this
   def yi: Int = y.toInt
   def abs: Vector2 = Vector2(this.x.abs, this.y.abs)
 
-  //todo: make all the things used to manipulate these into methods OR figure out implicitly translating tupels to Vector2s
+  //todo: make all the things used to manipulate these into methods OR figure out implicitly translating tuples to Vector2s
 }
 
 object Vector2 {
