@@ -63,9 +63,9 @@ trait Stateful {
   protected def inputToMutation(input: Input): Mutation = {
     val pos = CursorPosition(input.cursorPosition)
 
-    val mClick = input.pressedButton.toList.map(b => MouseClicked(b))
-    val mHold = input.heldButton.toList.map(b => MouseHeld(b))
-    val mRelease = input.releasedButton.toList.map(b => MouseReleased(b))
+    val mClick = input.pressedButton.toList.map(b => MouseClicked(b, input.cursorPosition))
+    val mHold = input.heldButton.toList.map(b => MouseHeld(b, input.cursorPosition))
+    val mRelease = input.releasedButton.toList.map(b => MouseReleased(b, input.cursorPosition))
 
     val kPress = input.pressedKey.toList.map(k => KeyPressed(k))
     val kHold = input.heldKey.toList.map(k => KeyHeld(k))

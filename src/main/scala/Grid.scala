@@ -17,7 +17,24 @@ class Grid
     setDimensions(Vector2(xAmount, yAmount))
   }
 
-  def getGridCoordinate(absolute: Vector2): Vector2 = ???
+  def isInside(absolute: Vector2): Boolean = {
+    val x = absolute.x/Config.windowSize.x
+    val y = absolute.y/Config.windowSize.y
+    x > relativePosition.x && x < relativePosition.x + relativeSize.x && y > relativePosition.y && y < relativePosition.y + relativeSize.y
+  }
+
+  def getGridCoordinate(absolute: Vector2): Option[Vector2] = {
+    if(isInside(absolute)) {
+      var x = absolute.x/Config.windowSize.x - relativePosition.x
+      var y = absolute.y/Config.windowSize.y - relativePosition.y
+
+      x = x / gridUnit.x
+      y = y / gridUnit.y
+
+      Some(Vector2(x,y))
+
+    } else None
+  }
 
   val windowSize: Vector2 = Config.windowSize
   def gridUnit: Vector2 = relativeSize /: dimensions

@@ -11,6 +11,8 @@ class Overworld
   override val inputDelay: InputDelay = InputDelay(Map.empty)
 ) extends Stateful {
 
+  var c: Vector2 = Vector2(0)
+
   override def copy
   (box: Statebox = box,
    grid: Grid = grid,
@@ -28,6 +30,21 @@ class Overworld
 
   override def mutate: Receive = {
     case Identity => this
+
+    case MouseClicked(button, pos) => {
+      println(grid.getGridCoordinate(pos))
+      this
+    }
+
+    case CursorPosition(pos) => {
+      val p = grid.getGridCoordinate(pos)
+      p match {
+        case Some(v) => c = v
+        case _ =>
+      }
+      this
+    }
+
     case KeyPressed(UpArrow) if box.scroller.currentScroll == Scroller.Stay => move(Vector2.Up)
     case KeyPressed(DownArrow) if box.scroller.currentScroll == Scroller.Stay => move(Vector2.Down)
     case KeyPressed(LeftArrow) if box.scroller.currentScroll == Scroller.Stay => move(Vector2.Left)
@@ -52,6 +69,7 @@ class Overworld
   override def draw(grid: Grid): Unit = {
     grid.drawGrid(box.level.getSlice(Vector2(box.zoom * 2 + 1), box.pos), box.level.tileSet, box.scroller.toVector2 / box.scroller.scrollUnit)
     grid.drawOnCenter(box.playerSprite)
+    grid.drawOnGrid(Color.Green, Vector2(c.xi+1, c.yi+0.75f), Vector2(c.xi-c.x, c.yi-c.y), Vector2(0.25f))
   }
 
   private def move(dir: Vector2) = {
