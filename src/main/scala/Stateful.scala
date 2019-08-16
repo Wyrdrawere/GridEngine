@@ -1,5 +1,5 @@
 import InputKey.{Back, DownArrow, Enter, LeftArrow, RightArrow, S, Space, UpArrow, W}
-import Mutation.{CancelMut, ConfirmMut, Direction, Identity, InputMut, PauseMut, SetBox, SetChild, SetReturnMutation}
+import Mutation.{CancelMut, Composite, ConfirmMut, CursorPosition, Direction, Identity, InputMut, InputMutation, KeyHeld, KeyPressed, KeyReleased, MouseClicked, MouseHeld, MouseReleased, PauseMut, SetBox, SetChild, SetReturnMutation}
 
 trait Stateful {
 
@@ -18,7 +18,7 @@ trait Stateful {
     returnMutation: Mutation = returnMutation
   ): Stateful //todo: find way to implement this here
 
-  final def simulate(deltaTime: Long, input: InputKey): Stateful = childState match {
+  final def simulate(deltaTime: Long, input: Input): Stateful = childState match {
     case Some(child) => child.returnMutation match {
       case Identity => this.everyFrame(deltaTime).receive(SetChild(Some(child.simulate(deltaTime, input))))
       case _ =>
@@ -28,7 +28,7 @@ trait Stateful {
           case None => newState
         }
     }
-    case None => this.everyFrame(deltaTime).receive(inputToMutation(input))
+    case None => this.everyFrame(deltaTime).receive(InputMutation(input))
   }
 
   final def render(): Unit = {
@@ -45,21 +45,31 @@ trait Stateful {
     case SetBox(b) => this.copy(box = b)
     case SetChild(state) => this.copy(childState = state)
     case SetReturnMutation(mutation) => this.copy(returnMutation = mutation)
+    case Composite(ms) => ms match {
+      case Nil => this
+      case x :: xs => this.receive(x).receive(Composite(xs))
+    }
   }
   final private def catchCase: Receive = {case _ => this}
 
   protected def everyFrame(deltaTime: Long): Stateful = this
-  protected def inputToMutation(input: InputKey): Mutation = input match {
-    case UpArrow => Direction(Vector2.Up)
-    case DownArrow => Direction(Vector2.Down)
-    case LeftArrow => Direction(Vector2.Left)
-    case RightArrow => Direction(Vector2.Right)
-    case W => InputMut(W)
-    case S => InputMut(S)
-    case Enter => ConfirmMut
-    case Back => CancelMut
-    case Space => PauseMut
-    case _ => Identity
+  protected def inputToMutation(input: Input): Mutation = {
+    val pos = CursorPosition(input.cursorPosition)
+
+    val mClick = input.pressedButton.toList.map(b => MouseClicked(b))
+    val mHold = input.pressedButton.toList.map(b => MouseHeld(b))
+    val mRelease = input.pressedButton.toList.map(b => MouseReleased(b))
+
+    val kPress = input.pressedKey.toList.map(k => KeyPressed(k))
+    val kHold = input.heldKey.toList.map(k => KeyHeld(k))
+    val kRelease = input.releasedKey.toList.map(k => KeyReleased(k))
+
+    var keyMutations: List[Mutation] = kPress ++ kHold ++ kRelease
+    keyMutations = keyMutations.filter(m => !Config.keyMap.toList.map(x => x._1).contains(m))
+
+    val c = Composite(mClick ++ mHold ++ mRelease ++ keyMutations.map(m => Config.keyMap(m)))
+    println(c)
+    c
   }
 
   protected def mutate: Receive

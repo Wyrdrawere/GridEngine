@@ -7,11 +7,8 @@ import org.lwjgl.system.MemoryStack._
 import org.lwjgl.system.MemoryUtil._
 
 class Window(initState: () => Stateful) {
-  var lastInput: InputKey = InputKey.NoKey
-  var lastCursor: Vector2 = Vector2(0)
-  var lastMouse: InputMouseButton = InputMouseButton.NoMouseButton
-  var lastTime: Long = 0
 
+  private var lastTime: Long = 0
   private var state: Option[Stateful] = None
   private var window = 0L
 
@@ -110,18 +107,9 @@ class Window(initState: () => Stateful) {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-
-        state = state.map(_.simulate(deltaTime, lastInput))
+        state = state.map(_.simulate(deltaTime, Input.update))
         state.foreach(_.render())
         lastTime = thisTime
-        lastInput = InputKey.NoKey
-
-        println(Input.update)
-
-        //println(lastCursor)
-        //println(lastMouse)
-
-
       }
 
       glfwSwapBuffers(window)
