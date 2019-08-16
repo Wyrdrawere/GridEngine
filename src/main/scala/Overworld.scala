@@ -69,7 +69,8 @@ class Overworld
   override def draw(grid: Grid): Unit = {
     grid.drawGrid(box.level.getSlice(Vector2(box.zoom * 2 + 1), box.pos), box.level.tileSet, box.scroller.toVector2 / box.scroller.scrollUnit)
     grid.drawOnCenter(box.playerSprite)
-    grid.drawOnGrid(Color.Green, Vector2(c.xi+1, c.yi+0.75f), Vector2(c.xi-c.x, c.yi-c.y), Vector2(0.25f))
+    grid.setDimensions(grid.getDimensions*4)
+    grid.drawOnGrid(Color.Green, Vector2(c.xi+1f, c.yi), Vector2(c.xi-c.x, c.yi-c.y), Vector2(1f))
   }
 
   private def move(dir: Vector2) = {
@@ -87,6 +88,5 @@ class Overworld
     val subgrid = new Grid(Vector2(0.25f, 0.75f), relativePosition = Vector2(0.75f, 0.25f))
     new ListMenu(Statebox.ListMenuBox(0, items), subgrid)
   }
-
 
 }
