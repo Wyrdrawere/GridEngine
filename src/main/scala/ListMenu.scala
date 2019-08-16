@@ -1,3 +1,4 @@
+import InputKey.{Back, DownArrow, Enter, UpArrow}
 import Mutation._
 
 class ListMenu
@@ -19,10 +20,10 @@ class ListMenu
   )
 
   override def mutate: Receive = {
-    case Direction(Vector2.Up) => receive(SetBox(box.copy(cursor = if (box.cursor > 0) box.cursor - 1 else box.items.size - 1)))
-    case Direction(Vector2.Down) => receive(SetBox(box.copy(cursor = if (box.cursor < box.items.size - 1) box.cursor + 1 else 0)))
-    case ConfirmMut => receive(box.items(box.cursor)._2)
-    case CancelMut => receive(SetReturnMutation(SetChild(None)))
+    case KeyPressed(UpArrow) => receive(SetBox(box.copy(cursor = if (box.cursor > 0) box.cursor - 1 else box.items.size - 1)))
+    case KeyPressed(DownArrow) => receive(SetBox(box.copy(cursor = if (box.cursor < box.items.size - 1) box.cursor + 1 else 0)))
+    case KeyPressed(Enter) => receive(box.items(box.cursor)._2)
+    case KeyPressed(Back) => receive(SetReturnMutation(SetChild(None)))
     case MakeSubMenu => receive(SetChild(Some(makeJobMenu)))
     case c@ChangeJob(_) => receive(SetReturnMutation(c))
   }

@@ -64,10 +64,7 @@ trait Stateful {
     val kHold = input.heldKey.toList.map(k => KeyHeld(k))
     val kRelease = input.releasedKey.toList.map(k => KeyReleased(k))
 
-    var keyMutations: List[Mutation] = kPress ++ kHold ++ kRelease
-    keyMutations = keyMutations.filter(m => Config.keyMap.toList.map(x => x._1).contains(m))
-
-    Composite(mClick ++ mHold ++ mRelease ++ keyMutations.map(m => Config.keyMap(m)))
+    Composite(mClick ++ mHold ++ mRelease ++ kPress ++ kHold ++ kRelease)
   }
 
   protected def mutate: Receive

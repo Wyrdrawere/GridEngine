@@ -1,4 +1,5 @@
-import Mutation.{CancelMut, ChangeJob, ConfirmMut, Direction, Identity, SetBox, SetChild, SetReturnMutation}
+import InputKey.{Back, DownArrow, Enter, LeftArrow, RightArrow, UpArrow}
+import Mutation.{CancelMut, ChangeJob, ConfirmMut, Direction, Identity, KeyPressed, SetBox, SetChild, SetReturnMutation}
 
 class JobMenu
 (
@@ -18,12 +19,12 @@ class JobMenu
   )
 
   override def mutate: Receive = {
-    case Direction(Vector2.Up) => receive(SetBox(box.copy(cursor = if (box.cursor.y < 1) box.cursor+Vector2.Up else box.cursor)))
-    case Direction(Vector2.Down) => receive(SetBox(box.copy(cursor = if (box.cursor.y > 0) box.cursor+Vector2.Down else box.cursor)))
-    case Direction(Vector2.Left) => receive(SetBox(box.copy(cursor = if (box.cursor.x > 0) box.cursor+Vector2.Left else box.cursor)))
-    case Direction(Vector2.Right) => receive(SetBox(box.copy(cursor = if (box.cursor.x < box.items.size/2-1) box.cursor+Vector2.Right else box.cursor)))
-    case ConfirmMut => receive(SetReturnMutation(box.items(box.cursor)._2))
-    case CancelMut => receive(SetReturnMutation(SetChild(None)))
+    case KeyPressed(UpArrow) => receive(SetBox(box.copy(cursor = if (box.cursor.y < 1) box.cursor+Vector2.Up else box.cursor)))
+    case KeyPressed(DownArrow) => receive(SetBox(box.copy(cursor = if (box.cursor.y > 0) box.cursor+Vector2.Down else box.cursor)))
+    case KeyPressed(LeftArrow) => receive(SetBox(box.copy(cursor = if (box.cursor.x > 0) box.cursor+Vector2.Left else box.cursor)))
+    case KeyPressed(RightArrow) => receive(SetBox(box.copy(cursor = if (box.cursor.x < box.items.size/2-1) box.cursor+Vector2.Right else box.cursor)))
+    case KeyPressed(Enter) => receive(SetReturnMutation(box.items(box.cursor)._2))
+    case KeyPressed(Back) => receive(SetReturnMutation(SetChild(None)))
   }
 
   override def draw(grid: Grid): Unit = {
