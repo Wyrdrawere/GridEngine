@@ -1,7 +1,13 @@
+import java.nio.{ByteBuffer, IntBuffer}
+import java.util.Objects
+
 import org.lwjgl.glfw._
 import org.lwjgl.opengl._
 import org.lwjgl.glfw.Callbacks._
 import org.lwjgl.glfw.GLFW._
+import org.lwjgl.openal.{AL, ALC}
+import org.lwjgl.openal.ALC10.{ALC_DEFAULT_DEVICE_SPECIFIER, alcCloseDevice, alcCreateContext, alcDestroyContext, alcGetString, alcMakeContextCurrent, alcOpenDevice}
+import org.lwjgl.openal.EXTThreadLocalContext.alcSetThreadContext
 import org.lwjgl.opengl.GL11._
 import org.lwjgl.system.MemoryStack._
 import org.lwjgl.system.MemoryUtil._
@@ -10,10 +16,13 @@ class Window(initState: () => Stateful) {
 
   private var lastTime: Long = 0
   private var state: Option[Stateful] = None
-  private var window = 0L
+  private var window: Long = 0L
+  private var alContext: Long = 0L
+  private var alDevice: Long = 0L
 
   def run(): Unit = {
-    init()
+    initGL()
+    initAL()
     loop()
 
     glfwFreeCallbacks(window)
@@ -23,7 +32,7 @@ class Window(initState: () => Stateful) {
     glfwSetErrorCallback(null).free()
   }
 
-  private def init(): Unit = {
+  private def initGL(): Unit = {
     GLFWErrorCallback.createPrint(System.err).set
 
     if (!glfwInit) throw new IllegalStateException("Unable to initialize GLFW")
@@ -93,11 +102,24 @@ class Window(initState: () => Stateful) {
     glfwShowWindow(window)
   }
 
+  private def initAL(): Unit = {
+    alDevice = alcOpenDevice(null.asInstanceOf[ByteBuffer])
+    if (alDevice == NULL) throw new IllegalStateException("Failed to open the default device.")
+    val deviceCaps = ALC.createCapabilities(alDevice)
+    val defaultDeviceSpecifier = Objects.requireNonNull(alcGetString(NULL, ALC_DEFAULT_DEVICE_SPECIFIER))
+    alContext = alcCreateContext(alDevice, null.asInstanceOf[IntBuffer])
+    alcSetThreadContext(alContext)
+    AL.createCapabilities(deviceCaps)
+  }
+
   private def loop(): Unit = {
 
     GL.createCapabilities
     glClearColor(1.0f, 1.0f, 1.0f, 0.0f)
     state = Some(initState())
+
+    val test = Sound.load("src/resources/Sound/REOL - No title.ogg")
+    val test2 = Sound.load("src/resources/Sound/step.ogg")
 
     while ( {
       !glfwWindowShouldClose(window)
@@ -112,11 +134,24 @@ class Window(initState: () => Stateful) {
         state = state.map(_.simulate(deltaTime, Input.update))
         state.foreach(_.render())
         lastTime = thisTime
+
+      }
+
+      if(!test.isPlaying) {
+        //test.play()
+      }
+      if(!test2.isPlaying) {
+        test2.play()
       }
 
       glfwSwapBuffers(window)
 
       glfwPollEvents()
+
+
     }
+    alcMakeContextCurrent(NULL)
+    alcDestroyContext(alContext)
+    alcCloseDevice(alDevice)
   }
 }
