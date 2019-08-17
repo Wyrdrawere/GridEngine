@@ -4,12 +4,17 @@ import java.io._
 import java.nio._
 
 import org.lwjgl.openal.AL10._
+import org.lwjgl.openal.AL11._
 import org.lwjgl.stb.STBVorbis._
 import org.lwjgl.system.MemoryUtil._
 
 
 case class Sound(sourceId: Int, bufferId: Int) {
   def play(): Unit = {
+    alSourcePlay(sourceId)
+  }
+  def playFrom(sec: Float): Unit = {
+    alSourcef(sourceId, AL_SEC_OFFSET, sec)
     alSourcePlay(sourceId)
   }
   def pause(): Unit = {
@@ -22,6 +27,8 @@ case class Sound(sourceId: Int, bufferId: Int) {
     alDeleteSources(sourceId)
     alDeleteBuffers(bufferId)
   }
+
+  alSourcef(sourceId, AL_INITIAL, 12)
 
   def isPlaying: Boolean = {
     alGetSourcei(sourceId, AL_SOURCE_STATE) == AL_PLAYING
