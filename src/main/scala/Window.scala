@@ -19,6 +19,7 @@ class Window(initState: () => Stateful) {
   private var window: Long = 0L
   private var alContext: Long = 0L
   private var alDevice: Long = 0L
+  private var stop: Boolean = false
 
   def run(): Unit = {
     initGL()
@@ -63,6 +64,7 @@ class Window(initState: () => Stateful) {
 
     def mouseCallback(window: Long, button: Int, action: Int, mods: Int): Unit = {
       if (action == GLFW_PRESS) {
+        stop = !stop
         Input.addButton(InputMouseButton(button))
       } else if (action == GLFW_RELEASE) {
         Input.removeButton(InputMouseButton(button))
@@ -119,7 +121,7 @@ class Window(initState: () => Stateful) {
     state = Some(initState())
 
     val test = Sound.load("src/resources/Sound/REOL - No title.ogg")
-    val test2 = Sound.load("src/resources/Sound/step.ogg")
+    val test2 = Sound.load("src/resources/Sound/6 - (Don't Fear) The Reaper.ogg")
 
     while ( {
       !glfwWindowShouldClose(window)
@@ -137,12 +139,14 @@ class Window(initState: () => Stateful) {
 
       }
 
-      if(!test.isPlaying) {
-        //test.play()
-      }
-      if(!test2.isPlaying) {
+      if(!test2.isPlaying && !stop) {
         test2.play()
       }
+
+      if(stop) {
+        test2.pause()
+      }
+
 
       glfwSwapBuffers(window)
 

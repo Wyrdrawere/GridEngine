@@ -31,15 +31,16 @@ class Overworld
   override def mutate: Receive = {
     case Identity => this
 
-    case MouseClicked(button, pos) => {
+      //todo: remove mouse stuff from here
+    case MouseClicked(button, pos) =>
       println(grid.getGridCoordinate(pos))
       this
-    }
 
-    case CursorPosition(pos) => {
+
+    case CursorPosition(pos) =>
       c = pos
       this
-    }
+
 
     case KeyPressed(UpArrow) if box.scroller.currentScroll == Scroller.Stay => move(Vector2.Up)
     case KeyPressed(DownArrow) if box.scroller.currentScroll == Scroller.Stay => move(Vector2.Down)

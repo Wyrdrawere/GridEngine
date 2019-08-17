@@ -34,7 +34,6 @@ object Sound {
   def load(path: String): Sound = {
     val buffer = alGenBuffers
     val source = alGenSources
-    println(buffer + " " + source)
     try {
       val info = STBVorbisInfo.malloc
       try {
