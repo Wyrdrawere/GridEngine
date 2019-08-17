@@ -75,6 +75,7 @@ class Overworld
   }
 
   private def move(dir: Vector2) = {
+    box.stepSound.play()
     receive(SetBox(box.copy(playerSprite = box.playerSprite.animateSprite(OverworldSprite.Walk(dir)), scroller = box.scroller(dir))))
   }
 

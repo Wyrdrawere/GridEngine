@@ -6,7 +6,8 @@ object Main extends App {
       OverworldSprite.FF1_PlayerSprite(0),
       Vector2(0),
       5,
-      Scroller(Config.scrollUnit, Vector2(0), Scroller.Stay)
+      Scroller(Config.scrollUnit, Vector2(0), Scroller.Stay),
+      Sound.load("src/resources/Sound/step.ogg")
     ),
     new Grid)
 

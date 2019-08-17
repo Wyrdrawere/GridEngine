@@ -8,6 +8,7 @@ object Statebox{
    pos: Vector2,
    zoom: Int,
    scroller: Scroller,
+   stepSound: Sound
   )extends Statebox
 
   case class ListMenuBox
