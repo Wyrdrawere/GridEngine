@@ -8,7 +8,7 @@ class OverState extends State {
   var playerSprite: OverworldSprite = OverworldSprite.FF1_PlayerSprite(0)
   var pos: Vector2 = Vector2(0)
   var scroller: Scroller = new Scroller(Config.scrollUnit, Vector2(0), Scroller.Stay)
-  inputDelay = new NewInputDelay(10000)
+  inputDelay = new NewInputDelay(300)
 
   override protected def update(deltaTime: Long): Unit = {
     val newScroller = scroller.increment //todo: too hacky, please fix

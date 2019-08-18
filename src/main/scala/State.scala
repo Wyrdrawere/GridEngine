@@ -13,12 +13,7 @@ trait State {
       case Some(child) => child.simulate(deltaTime, input)
       case None =>
         update(deltaTime)
-        for (i <- input) i match {
-          case KeyPressed(key) if inputDelay.isActive(key) => receive(i)
-          case KeyHeld(key) if inputDelay.isActive(key) => receive(i)
-          case KeyReleased(key) if inputDelay.isActive(key) => receive(i)
-          case _ => receive(i) //todo: input still wonky, split mouse and keyboard
-        }
+        for (i <- input) receive(i)
     }
   }
 
