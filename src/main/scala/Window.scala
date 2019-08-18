@@ -25,12 +25,8 @@ class Window(initState: () => Stateful) {
     initGL()
     initAL()
     loop()
-
-    glfwFreeCallbacks(window)
-    glfwDestroyWindow(window)
-
-    glfwTerminate()
-    glfwSetErrorCallback(null).free()
+    closeAL()
+    closeGL()
   }
 
   private def initGL(): Unit = {
@@ -104,6 +100,14 @@ class Window(initState: () => Stateful) {
     glfwShowWindow(window)
   }
 
+  private def closeGL(): Unit = {
+    glfwFreeCallbacks(window)
+    glfwDestroyWindow(window)
+
+    glfwTerminate()
+    glfwSetErrorCallback(null).free()
+  }
+
   private def initAL(): Unit = {
     alDevice = alcOpenDevice(null.asInstanceOf[ByteBuffer])
     if (alDevice == NULL) throw new IllegalStateException("Failed to open the default device.")
@@ -114,11 +118,19 @@ class Window(initState: () => Stateful) {
     AL.createCapabilities(deviceCaps)
   }
 
+  private def closeAL(): Unit = {
+    alcMakeContextCurrent(NULL)
+    alcDestroyContext(alContext)
+    alcCloseDevice(alDevice)
+  }
+
   private def loop(): Unit = {
 
     GL.createCapabilities
     glClearColor(1.0f, 1.0f, 1.0f, 0.0f)
-    state = Some(initState())
+
+    val s = new OverState
+
 
     val test = Sound.load("src/resources/Sound/REOL - No title.ogg")
     val test2 = Sound.load("src/resources/Sound/6 - (Don't Fear) The Reaper.ogg")
@@ -133,20 +145,16 @@ class Window(initState: () => Stateful) {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-        state = state.map(_.simulate(deltaTime, Input.update))
-        state.foreach(_.render())
-        lastTime = thisTime
+        s.simulate(deltaTime, Input.update)
+        s.render()
 
+        lastTime = thisTime
       }
 
       glfwSwapBuffers(window)
 
       glfwPollEvents()
-
-
     }
-    alcMakeContextCurrent(NULL)
-    alcDestroyContext(alContext)
-    alcCloseDevice(alDevice)
+
   }
 }
