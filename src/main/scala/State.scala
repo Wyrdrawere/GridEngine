@@ -11,7 +11,7 @@ trait State {
   private var sounds: List[Sound] = List.empty
 
   final def simulate(deltaTime: Long, input: Input): Unit = {
-    this.everyFrame(deltaTime)
+    this.update(deltaTime)
     childState match {
       case Some(child) => child.returnMutation match {
         case Identity => child.simulate(deltaTime, input)
@@ -29,10 +29,7 @@ trait State {
     sounds.foreach(s => s.play())
     sounds = List.empty
     draw(grid)
-    childState match {
-      case Some(child) => child.render()
-      case None =>
-    }
+    for (child <- childState) child.render()
   }
 
   final protected def receive(mutation: Mutation): Unit = (default orElse mutate orElse catchCase)(mutation)
@@ -42,11 +39,9 @@ trait State {
     case Composite(ms) => for (m <- ms) this ! m
     case SetChildState(child) => this.childState = child
     case SetReturnMutation(mutation) => this.returnMutation = mutation
-
   }
   final private def catchCase: Receive = {case _ => this}
 
-  protected def everyFrame(deltaTime: Long): Unit = ()
   protected def inputToMutation(input: Input): Mutation = {
     val pos = CursorPosition(input.cursorPosition)
 
@@ -64,6 +59,7 @@ trait State {
     this.receive(SetDelay(inputDelay.cooldown(deltaTime)))
   }
 
+  protected def update(deltaTime: Long): Unit = ()
   protected def mutate: Receive
   protected def draw(grid: Grid): Unit
 }

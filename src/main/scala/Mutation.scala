@@ -1,4 +1,4 @@
-sealed trait Mutation
+trait Mutation
 
 object Mutation {
 

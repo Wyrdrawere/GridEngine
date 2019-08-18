@@ -17,7 +17,7 @@ class OverState extends State {
     grid.drawOnCenter(playerSprite)
   }
 
-  override def everyFrame(deltaTime: Long): Unit = {
+  override def update(deltaTime: Long): Unit = {
     val newScroller = scroller.increment //todo: too hacky, please fix
     val newPos = if (scroller.increment.currentScroll == Scroller.Rest) pos + scroller.scrollDirection else pos
     pos = newPos
