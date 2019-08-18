@@ -8,18 +8,17 @@ class OverState extends State {
   var playerSprite: OverworldSprite = OverworldSprite.FF1_PlayerSprite(0)
   var pos: Vector2 = Vector2(0)
   var scroller: Scroller = new Scroller(Config.scrollUnit, Vector2(0), Scroller.Stay)
-  inputDelay = new NewInputDelay(300)
+  inputDelay = new NewInputDelay(10000)
 
   override protected def update(deltaTime: Long): Unit = {
     val newScroller = scroller.increment //todo: too hacky, please fix
-    val newPos = if (scroller.increment.currentScroll == Stay) pos + scroller.scrollDirection else pos
+    val newPos = if (scroller.increment.currentScroll == Rest) pos + scroller.scrollDirection else pos
     pos = newPos
     scroller = newScroller
   }
 
-  override protected def control(input: Input): Controller = {
-    case KeyPressed(UpArrow) => move(Vector2.Up)
-    case _ => println("called")
+  override protected def control: Controller = {
+    case KeyPressed(UpArrow)|KeyHeld(UpArrow) if scroller.currentScroll == Scroller.Stay => move(Vector2.Up)
   }
 
   override protected def draw(grid: Grid): Unit = {

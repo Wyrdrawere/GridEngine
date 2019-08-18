@@ -13,18 +13,11 @@ trait State {
       case Some(child) => child.simulate(deltaTime, input)
       case None =>
         update(deltaTime)
-        receive(input.head)
-        for (i <- input) {
-          println(i)
-          control(i)
-        }
         for (i <- input) i match {
-          case KeyPressed(key) if inputDelay.isActive(key) =>
-            println("pressed " + key)
-            this.receive(i)
+          case KeyPressed(key) if inputDelay.isActive(key) => receive(i)
           case KeyHeld(key) if inputDelay.isActive(key) => receive(i)
           case KeyReleased(key) if inputDelay.isActive(key) => receive(i)
-          case _ => receive(i) //todo: input still wonky
+          case _ => receive(i) //todo: input still wonky, split mouse and keyboard
         }
     }
   }
@@ -34,14 +27,14 @@ trait State {
     for (child <- childState) child.render()
   }
 
-  final private def receive(input: Input): Unit = control(input) orElse default(input)
-  final private def default(input: Input): Controller = {case _ => println("default")}
+  final private def receive(input: Input): Unit = (control orElse default)(input)
+  final private def default: Controller = {case _ => ()}
 
   protected def idleUpdate(deltaTime: Long): Unit = ()
 
   protected def update(deltaTime: Long): Unit
 
-  protected def control(input: Input): Controller
+  protected def control: Controller
 
   protected def draw(grid: Grid): Unit
 }
