@@ -1,65 +1,47 @@
-import Mutation.{Composite, CursorPosition, Identity, KeyHeld, KeyPressed, KeyReleased, MouseClicked, MouseHeld, MouseReleased, SetChildState, SetDelay, SetReturnMutation}
+import Input.{Controller, KeyHeld, KeyPressed, KeyReleased}
+import InputKey.UpArrow
 
 trait State {
 
-  type Receive = PartialFunction[Mutation, Unit]
+  protected var inputDelay: NewInputDelay = new NewInputDelay(0)
+  protected var grid: Grid = new Grid()
+  protected var childState: Option[State] = None
 
-  private var grid: Grid = new Grid()
-  private var childState: Option[State] = None
-  private var returnMutation: Mutation = Identity
-  private var inputDelay: InputDelay = InputDelay(Map.empty)
-  private var sounds: List[Sound] = List.empty
-
-  final def simulate(deltaTime: Long, input: Input): Unit = {
-    this.update(deltaTime)
+  final def simulate(deltaTime: Long, input: List[Input]): Unit = {
+    idleUpdate(deltaTime)
     childState match {
-      case Some(child) => child.returnMutation match {
-        case Identity => child.simulate(deltaTime, input)
-        case m@_ =>
-          this ! m
-          for (child <- childState) child.simulate(deltaTime, input)
-      }
+      case Some(child) => child.simulate(deltaTime, input)
       case None =>
-        this.delayInput(deltaTime)
-        this ! inputToMutation(input)
+        update(deltaTime)
+        receive(input.head)
+        for (i <- input) {
+          println(i)
+          control(i)
+        }
+        for (i <- input) i match {
+          case KeyPressed(key) if inputDelay.isActive(key) =>
+            println("pressed " + key)
+            this.receive(i)
+          case KeyHeld(key) if inputDelay.isActive(key) => receive(i)
+          case KeyReleased(key) if inputDelay.isActive(key) => receive(i)
+          case _ => receive(i) //todo: input still wonky
+        }
     }
   }
 
   final def render(): Unit = {
-    sounds.foreach(s => s.play())
-    sounds = List.empty
     draw(grid)
     for (child <- childState) child.render()
   }
 
-  final protected def receive(mutation: Mutation): Unit = (default orElse mutate orElse catchCase)(mutation)
-  final protected def !(mutation: Mutation): Unit = this.receive(mutation)
-  final private def default: Receive = {
-    case Identity => this
-    case Composite(ms) => for (m <- ms) this ! m
-    case SetChildState(child) => this.childState = child
-    case SetReturnMutation(mutation) => this.returnMutation = mutation
-  }
-  final private def catchCase: Receive = {case _ => this}
+  final private def receive(input: Input): Unit = control(input) orElse default(input)
+  final private def default(input: Input): Controller = {case _ => println("default")}
 
-  protected def inputToMutation(input: Input): Mutation = {
-    val pos = CursorPosition(input.cursorPosition)
+  protected def idleUpdate(deltaTime: Long): Unit = ()
 
-    val mClick = input.pressedButton.toList.map(b => MouseClicked(b, input.cursorPosition))
-    val mHold = input.heldButton.toList.map(b => MouseHeld(b, input.cursorPosition))
-    val mRelease = input.releasedButton.toList.map(b => MouseReleased(b, input.cursorPosition))
+  protected def update(deltaTime: Long): Unit
 
-    val kPress = input.pressedKey.toList.filter(k => inputDelay.keyActive(k)).map(k => KeyPressed(k))
-    val kHold = input.heldKey.toList.filter(k => inputDelay.keyActive(k)).map(k => KeyHeld(k))
-    val kRelease = input.releasedKey.toList.map(k => KeyReleased(k))
+  protected def control(input: Input): Controller
 
-    Composite(mClick ++ mHold ++ mRelease ++ kPress ++ kHold ++ kRelease :+ pos)
-  }
-  final private def delayInput(deltaTime: Long): Unit = {
-    this.receive(SetDelay(inputDelay.cooldown(deltaTime)))
-  }
-
-  protected def update(deltaTime: Long): Unit = ()
-  protected def mutate: Receive
   protected def draw(grid: Grid): Unit
 }

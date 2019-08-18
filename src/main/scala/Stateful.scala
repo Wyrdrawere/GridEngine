@@ -19,7 +19,7 @@ trait Stateful {
     inputDelay: InputDelay = InputDelay(Map.empty)
   ): Stateful //todo: find way to implement this here
 
-  final def simulate(deltaTime: Long, input: Input): Stateful = childState match {
+  final def simulate(deltaTime: Long, input: InputData): Stateful = childState match {
     case Some(child) => child.returnMutation match {
       case Identity => this.everyFrame(deltaTime).receive(SetChild(Some(child.simulate(deltaTime, input))))
       case _ =>
@@ -60,7 +60,7 @@ trait Stateful {
   }
 
   protected def everyFrame(deltaTime: Long): Stateful = this
-  protected def inputToMutation(input: Input): Mutation = {
+  protected def inputToMutation(input: InputData): Mutation = {
     val pos = CursorPosition(input.cursorPosition)
 
     val mClick = input.pressedButton.toList.map(b => MouseClicked(b, input.cursorPosition))

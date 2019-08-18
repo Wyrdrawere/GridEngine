@@ -55,15 +55,15 @@ class Window(initState: () => Stateful) {
       (window: Long, key: Int, scancode: Int, action: Int, mods: Int) => keyCallback(window, key, scancode, action, mods))
 
     def cursorCallback(window: Long, xPos: Double, yPos: Double): Unit = {
-      Input.moveCursor(Vector2(xPos.toFloat, Config.windowSize.y-yPos.toFloat))
+      InputData.moveCursor(Vector2(xPos.toFloat, Config.windowSize.y-yPos.toFloat))
     }
 
     def mouseCallback(window: Long, button: Int, action: Int, mods: Int): Unit = {
       if (action == GLFW_PRESS) {
         stop = !stop
-        Input.addButton(InputMouseButton(button))
+        InputData.addButton(InputMouseButton(button))
       } else if (action == GLFW_RELEASE) {
-        Input.removeButton(InputMouseButton(button))
+        InputData.removeButton(InputMouseButton(button))
       }
     }
 
@@ -72,9 +72,9 @@ class Window(initState: () => Stateful) {
       if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
         glfwSetWindowShouldClose(window, true)
       } else if (action == GLFW_PRESS || action == GLFW_REPEAT) {
-        Input.addKey(InputKey(key))
+        InputData.addKey(InputKey(key))
       } else if (action == GLFW_RELEASE) {
-        Input.removeKey(InputKey(key))
+        InputData.removeKey(InputKey(key))
       }
     }
 
@@ -145,7 +145,9 @@ class Window(initState: () => Stateful) {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-        s.simulate(deltaTime, Input.update)
+        InputData.update
+
+        s.simulate(deltaTime, InputData.toList())
         s.render()
 
         lastTime = thisTime
