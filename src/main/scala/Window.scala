@@ -135,6 +135,8 @@ class Window(initState: () => Stateful) {
     val test = Sound.load("src/resources/Sound/REOL - No title.ogg")
     val test2 = Sound.load("src/resources/Sound/6 - (Don't Fear) The Reaper.ogg")
 
+    test2.play()
+
     while ( {
       !glfwWindowShouldClose(window)
     }) {
