@@ -10,13 +10,15 @@ class NewInputDelay(delay: Long) extends Component {
   }
 
   override def idleUpdate(deltaTime: Long): Unit = {
-    keys = keys.map{case (k,c) => (k, c-deltaTime)}.filter{case (k,c) => c > 0}
+    keys = keys.map{case (k,c) => (k, c-deltaTime)}
+    keys = keys.filter{case (k,c) => c > 0}
   }
 
   override def update(deltaTime: Long): Unit = ()
 
-  override def control(input: Input): Controller = {
+  override def control: Controller = {
     case KeyPressed(key) => add(key)
     case KeyHeld(key) => add(key)
+    case _ =>
   }
 }

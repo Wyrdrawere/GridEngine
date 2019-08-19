@@ -9,7 +9,7 @@ class OverState extends State {
   var pos: Vector2 = Vector2(0)
   var scroller: Scroller = new Scroller(Config.scrollUnit, Vector2(0), Scroller.Stay)
   var stepSound: Sound = Sound.load("src/resources/Sound/step.ogg")
-  inputDelay = new NewInputDelay(300)
+  inputDelay = new NewInputDelay(0)
 
   override protected def update(deltaTime: Long): Unit = {
     val newScroller = scroller.increment //todo: too hacky, please fix
