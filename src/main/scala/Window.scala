@@ -12,10 +12,9 @@ import org.lwjgl.opengl.GL11._
 import org.lwjgl.system.MemoryStack._
 import org.lwjgl.system.MemoryUtil._
 
-class Window(initState: () => Stateful) {
+class Window() {
 
   private var lastTime: Long = 0
-  private var state: Option[Stateful] = None
   private var window: Long = 0L
   private var alContext: Long = 0L
   private var alDevice: Long = 0L
@@ -55,15 +54,14 @@ class Window(initState: () => Stateful) {
       (window: Long, key: Int, scancode: Int, action: Int, mods: Int) => keyCallback(window, key, scancode, action, mods))
 
     def cursorCallback(window: Long, xPos: Double, yPos: Double): Unit = {
-      InputData.moveCursor(Vector2(xPos.toFloat, Config.windowSize.y-yPos.toFloat))
+      Input.cursor = Vector2(xPos, yPos)
     }
 
     def mouseCallback(window: Long, button: Int, action: Int, mods: Int): Unit = {
       if (action == GLFW_PRESS) {
-        stop = !stop
-        InputData.addButton(InputMouseButton(button))
+        Input.add(InputItem.Mouse(button))
       } else if (action == GLFW_RELEASE) {
-        InputData.removeButton(InputMouseButton(button))
+        Input.remove(InputItem.Mouse(button))
       }
     }
 
@@ -72,9 +70,9 @@ class Window(initState: () => Stateful) {
       if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
         glfwSetWindowShouldClose(window, true)
       } else if (action == GLFW_PRESS || action == GLFW_REPEAT) {
-        InputData.addKey(InputKey(key))
+        Input.add(InputItem.Key(key))
       } else if (action == GLFW_RELEASE) {
-        InputData.removeKey(InputKey(key))
+        Input.remove(InputItem.Key(key))
       }
     }
 
@@ -131,7 +129,6 @@ class Window(initState: () => Stateful) {
 
     val s = new OverState
 
-
     val test = Sound.load("src/resources/Sound/REOL - No title.ogg")
     val test2 = Sound.load("src/resources/Sound/6 - (Don't Fear) The Reaper.ogg")
 
@@ -145,9 +142,9 @@ class Window(initState: () => Stateful) {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-        InputData.update
+        Input.update(deltaTime)
 
-        s.simulate(deltaTime, InputData.toList())
+        s.simulate(deltaTime)
         s.render()
 
         lastTime = thisTime

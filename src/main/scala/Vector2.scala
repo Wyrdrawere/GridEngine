@@ -19,6 +19,8 @@ case class Vector2(x: Float, y: Float) { //todo: refactor everything to use this
 object Vector2 {
   def apply(f: Float): Vector2 = Vector2(f,f)
 
+  def apply(xd: Double, yd: Double): Vector2 = Vector2(xd.toFloat, yd.toFloat)
+
   val Up = Vector2(0,1)
   val Down = Vector2(0,-1)
   val Left = Vector2(-1,0)
