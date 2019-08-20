@@ -1,6 +1,6 @@
 import Grid.{Full, Not, Partial, shouldDraw, positionToPositional}
 
-class Grid
+class Grid //todo: CLEANUP FINALLY
 (
   val relativeSize: Vector2 = Vector2(1, 1),
   val relativePosition: Vector2 = Vector2(0, 0),
