@@ -132,6 +132,8 @@ class Window() {
     val test = Sound.load("src/resources/Sound/REOL - No title.ogg")
     val test2 = Sound.load("src/resources/Sound/6 - (Don't Fear) The Reaper.ogg")
 
+    val g = new NewGrid(Vector2(1),Vector2(0.5f))
+
     while ( {
       !glfwWindowShouldClose(window)
     }) {
@@ -142,10 +144,7 @@ class Window() {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-        Input.update(deltaTime)
-
-        s.simulate(deltaTime)
-        s.render()
+        g.drawOnGrid(Sprite.ff1_Spritesheet(12), Vector2(1,1), Vector2(0,-0.5f))
 
         lastTime = thisTime
       }

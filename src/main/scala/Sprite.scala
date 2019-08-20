@@ -48,6 +48,31 @@ case class Sprite //todo: new name because font
     }
     Sprite(id, newMinX, newMaxX, newMinY, newMaxY).drawRectangle(size, position)
   }
+
+  override def drawRectanglePartialProto(size: Vector2, position: Vector2, lowerOffset: Vector2, upperOffset: Vector2): Unit = {
+    val MinX = minX*(1f+lowerOffset.x)
+    val MinY = minY*(1f+lowerOffset.y)
+    val MaxX = maxX*(1f-upperOffset.x)
+    val MaxY = maxY*(1f-upperOffset.y)
+
+    glEnable(GL_TEXTURE_2D)
+    glEnable(GL_BLEND)
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+    Texture.bind(id)
+    glColor3f(1f, 1f, 1f)
+    glBegin(GL_POLYGON)
+    glTexCoord2f(MinX, MaxY)
+    glVertex3d(-1.0 + 2 * position.x, -1.0 + 2 * position.y, 0)
+    glTexCoord2f(MaxX, MaxY)
+    glVertex3d(-1.0 + 2 * (position.x + size.x), -1.0 + 2 * position.y, 0)
+    glTexCoord2f(MaxX, MinY)
+    glVertex3d(-1.0 + 2 * (position.x + size.x), -1.0 + 2 * (position.y + size.y), 0)
+    glTexCoord2f(MinX, MinY)
+    glVertex3d(-1.0 + 2 * position.x, -1.0 + 2 * (position.y + size.y), 0)
+    glEnd()
+    glDisable(GL_BLEND)
+    glDisable(GL_TEXTURE_2D)
+  }
 }
 
 object Sprite {
