@@ -132,12 +132,9 @@ class Window() {
     val test = Sound.load("src/resources/Sound/REOL - No title.ogg")
     val test2 = Sound.load("src/resources/Sound/6 - (Don't Fear) The Reaper.ogg")
 
-    val g = new NewGrid(Vector2(0.5f),Vector2(0.25f))
-    val g2 = new NewGrid(Vector2(0.5f),Vector2(0.25f))
+    val g = new NewGrid(Vector2(0.5f, 0.75f),Vector2(0))
 
-    val t = Level.TestDungeon
-
-    val d = t.level.map(x => x.map(y => t.tileSet(y)))
+    val t = Text("Hello World", Text.DarkGrayFont)
 
     while ( {
       !glfwWindowShouldClose(window)
@@ -149,13 +146,11 @@ class Window() {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
+        g.squareCells(25)
 
+        println(g.cells + " " + g.gridUnit)
 
-        g.cells = Vector2(8)
-        g.drawOnGrid(Color.Pink, Vector2(1), Vector2(7.5f))
-        g.drawGrid(d, Vector2(Math.sin(thisTime), Math.cos(1.34*thisTime)))
-        g2.drawOnGrid(Color.Green, Vector2(1), Vector2(0))
-
+        g.drawOnGrid(t, Vector2(15), Vector2(0))
 
         lastTime = thisTime
       }

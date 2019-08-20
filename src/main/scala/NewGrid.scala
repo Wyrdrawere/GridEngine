@@ -6,6 +6,10 @@ class NewGrid
   var cells: Vector2 = Vector2(1)
   def gridUnit: Vector2 = relativeSize/:cells
 
+  def squareCells(xAmount: Int): Unit = {
+    cells = Vector2(xAmount, xAmount * relativeSize.y / relativeSize.x)
+  }
+
   def drawOnGrid(drawable: Drawable, size: Vector2, position: Vector2): Unit = {
     val lowerX = if(position.x < 0) position.x else 0
     val lowerY = if(position.y < 0) position.y else 0
