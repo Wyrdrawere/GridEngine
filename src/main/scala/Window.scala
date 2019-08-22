@@ -132,9 +132,9 @@ class Window() {
     val test = Sound.load("src/resources/Sound/REOL - No title.ogg")
     val test2 = Sound.load("src/resources/Sound/6 - (Don't Fear) The Reaper.ogg")
 
-    val g = new NewGrid(Vector2(0.5f, 0.75f),Vector2(0))
+    val g = new NewGrid(Vector2(1),Vector2(0))
 
-    val t = Text("Hello World", Text.DarkGrayFont)
+    val t = Text("DON'T FEAR THE REAPER", Text.DarkGrayFont)
 
     while ( {
       !glfwWindowShouldClose(window)
@@ -150,7 +150,7 @@ class Window() {
 
         println(g.cells + " " + g.gridUnit)
 
-        g.drawOnGrid(t, Vector2(15), Vector2(0))
+        g.drawOnGrid(t, Vector2(23,0), Vector2(1,12))
 
         lastTime = thisTime
       }
