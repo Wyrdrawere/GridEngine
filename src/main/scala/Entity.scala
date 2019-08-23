@@ -28,4 +28,8 @@ trait Entity {
     throw new Exception("Component to modify does not exist.")
   }
 
+  def update(deltaTime: Long, world: World): Unit = {
+    for (c <- csm) {c._2.update(deltaTime, world)}
+  }
+
 }

@@ -25,7 +25,7 @@ trait World {
       }
     }
     for(entity <- entities) {
-
+      entity.update(deltaTime, this)
     }
   }
 
