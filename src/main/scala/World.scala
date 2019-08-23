@@ -2,9 +2,13 @@ trait World {
 
   type Listener = PartialFunction[Event, (Long, World) => Unit]
 
-  protected def entities: List[Entity] = List.empty
+  private def _entities: List[Entity] = List.empty
   private var events: List[Event] = List.empty
   private var listeners: List[Listener] = List.empty
+
+  def entities: List[Entity] = _entities
+
+  def selectEntites(component: Component): List[Entity] = ???
 
   def emit(event: Event): Unit = {events = event +: events}
 
@@ -19,7 +23,7 @@ trait World {
       }
     }
     for(entity <- entities) {
-      entity.update(deltaTime, this)
+
     }
   }
 
@@ -29,7 +33,23 @@ trait Event
 
 trait Entity {
 
-  def update(deltaTime: Long, world: World): Unit
-  def render(grid: Grid): Unit
+  private var cs: List[Component] = List.empty
+
+  def components: List[Component] = cs
+
+  def attach(component: Component): Unit = {
+    cs = component +: cs
+  }
+
+  def detach[C <: Component](): Unit = {
+
+  }
+
+  def has(component: Component): Boolean = ???
 
 }
+
+trait Component
+
+case class HPComponent(var hp: Int) extends Component
+

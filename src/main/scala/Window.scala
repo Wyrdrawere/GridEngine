@@ -136,8 +136,6 @@ class Window() {
 
     val t = Text("DON'T FEAR THE REAPER", Text.DarkGrayFont)
 
-    test2.play()
-
     while ( {
       !glfwWindowShouldClose(window)
     }) {
