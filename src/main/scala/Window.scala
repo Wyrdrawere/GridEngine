@@ -1,6 +1,7 @@
 import java.nio.{ByteBuffer, IntBuffer}
 import java.util.Objects
 
+import Component.HPComponent
 import org.lwjgl.glfw._
 import org.lwjgl.opengl._
 import org.lwjgl.glfw.Callbacks._
@@ -134,7 +135,17 @@ class Window() {
 
     val g = new NewGrid(Vector2(1),Vector2(0))
 
-    val t = Text("DON'T FEAR THE REAPER", Text.DarkGrayFont)
+    var t = Text("DON'T FEAR THE REAPER", Text.DarkGrayFont)
+
+    val e = new Entity {}
+
+    e.attach(HPComponent(12))
+    println(e.has(HPComponent))
+    println(e.get(HPComponent))
+    e.detach(HPComponent)
+    println(e.has(HPComponent))
+    println(e.get(HPComponent))
+    e.attach(HPComponent(-System.currentTimeMillis().toInt))
 
     while ( {
       !glfwWindowShouldClose(window)
@@ -146,9 +157,16 @@ class Window() {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-        g.squareCells(25)
+        e.modify((c1:HPComponent) => HPComponent(c1.hp+deltaTime.toInt))
+        println(deltaTime.toInt)
 
-        g.drawOnGrid(t, Vector2(23,0), Vector2(1,12))
+        for (hpc <- e.get(HPComponent)) {
+          t = Text(hpc.hp.toString, Text.DarkGrayFont)
+        }
+
+        g.squareCells(5)
+
+        g.drawOnGrid(t, Vector2(1,1), Vector2(2,2))
 
         lastTime = thisTime
       }
