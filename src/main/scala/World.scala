@@ -10,7 +10,7 @@ trait World {
 
   def allEntities: List[Entity] = entities
 
-  def selectEntites[C <: Component](componentKey: ComponentKey[C]): List[Entity] = entities.filter(_.has(componentKey))
+  def selectEntities[C <: Component](componentKey: ComponentKey[C]): List[Entity] = entities.filter(_.has(componentKey))
 
   def emit(event: Event): Unit = {events = event +: events}
 
