@@ -136,6 +136,8 @@ class Window() {
 
     val t = Text("DON'T FEAR THE REAPER", Text.DarkGrayFont)
 
+    test2.play()
+
     while ( {
       !glfwWindowShouldClose(window)
     }) {
@@ -147,8 +149,6 @@ class Window() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
         g.squareCells(25)
-
-        println(g.cells + " " + g.gridUnit)
 
         g.drawOnGrid(t, Vector2(23,0), Vector2(1,12))
 
