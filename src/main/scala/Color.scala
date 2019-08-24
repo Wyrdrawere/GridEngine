@@ -31,6 +31,8 @@ object Color {
   val Green = Color(0,1,0)
   val Blue = Color(0,0,1)
   val Pink = Color(1,0,1)
+  val Cyan = Color(0,1,1)
+  val Yellow = Color(1,1,0)
 
   val simpleMap: Map[Int, Color] = Map(
     0 -> White,

@@ -22,11 +22,10 @@ class NewGrid
     }
   }
 
-  def drawGrid(drawables: Array[Array[Drawable]], layer: Layer = Layer.CenterPlane, offset: Vector2 = Vector2(0)): Unit = {
+  def drawGrid(drawables: Array[Array[Drawable]], layer: Layer = Layer.Background, offset: Vector2 = Vector2(0)): Unit = {
     cells = Vector2(drawables.length-2, drawables(0).length-2)
     for(x <- drawables.indices; y <- drawables(x).indices) {
       drawOnGrid(drawables(x)(y), Vector2(1), Vector2(x-1,y-1)+offset, layer)
     }
   }
-
 }

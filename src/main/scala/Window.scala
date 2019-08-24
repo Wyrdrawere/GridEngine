@@ -158,7 +158,6 @@ class Window() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
         e.modify((c1:HPComponent) => HPComponent(c1.hp+deltaTime.toInt))
-        println(deltaTime.toInt)
 
         for (hpc <- e.get(HPComponent)) {
           t = Text(hpc.hp.toString, Text.DarkGrayFont)
