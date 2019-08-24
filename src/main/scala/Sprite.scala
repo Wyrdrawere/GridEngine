@@ -9,7 +9,7 @@ case class Sprite //todo: new name because font
   maxY: Float,
 ) extends Drawable {
 
-  override def drawRectangle(size: Vector2, position: Vector2): Unit = {
+  override def drawRectangle(size: Vector2, position: Vector2, layer: Layer = Layer.CenterPlane): Unit = {
     glEnable(GL_TEXTURE_2D)
     glEnable(GL_BLEND)
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
@@ -17,13 +17,13 @@ case class Sprite //todo: new name because font
     glColor3f(1f, 1f, 1f)
     glBegin(GL_POLYGON)
     glTexCoord2f(minX, maxY)
-    glVertex3d(-1.0 + 2 * position.x, -1.0 + 2 * position.y, 0)
+    glVertex3d(-1.0 + 2 * position.x, -1.0 + 2 * position.y, layer.position)
     glTexCoord2f(maxX, maxY)
-    glVertex3d(-1.0 + 2 * (position.x + size.x), -1.0 + 2 * position.y, 0)
+    glVertex3d(-1.0 + 2 * (position.x + size.x), -1.0 + 2 * position.y, layer.position)
     glTexCoord2f(maxX, minY)
-    glVertex3d(-1.0 + 2 * (position.x + size.x), -1.0 + 2 * (position.y + size.y), 0)
+    glVertex3d(-1.0 + 2 * (position.x + size.x), -1.0 + 2 * (position.y + size.y), layer.position)
     glTexCoord2f(minX, minY)
-    glVertex3d(-1.0 + 2 * position.x, -1.0 + 2 * (position.y + size.y), 0)
+    glVertex3d(-1.0 + 2 * position.x, -1.0 + 2 * (position.y + size.y), layer.position)
     glEnd()
     glDisable(GL_BLEND)
     glDisable(GL_TEXTURE_2D)
@@ -49,12 +49,19 @@ case class Sprite //todo: new name because font
     Sprite(id, newMinX, newMaxX, newMinY, newMaxY).drawRectangle(size, position)
   }
 
-  override def drawRectanglePartialProto(size: Vector2, position: Vector2, lowerOffset: Vector2, upperOffset: Vector2): Unit = {
+  override def drawRectanglePartialProto
+  (
+    size: Vector2,
+    position: Vector2,
+    layer: Layer = Layer.CenterPlane,
+    lowerOffset: Vector2,
+    upperOffset: Vector2
+  ): Unit = {
     val newMinX = minX+(maxX-minX)*lowerOffset.x
     val newMinY = minY+(maxY-minY)*upperOffset.y
     val newMaxX = maxX-(maxX-minX)*upperOffset.x
     val newMaxY = maxY-(maxY-minY)*lowerOffset.y
-    Sprite(id, newMinX, newMaxX, newMinY, newMaxY).drawRectangle(size, position)
+    Sprite(id, newMinX, newMaxX, newMinY, newMaxY).drawRectangle(size, position, layer)
   }
 }
 

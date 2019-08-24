@@ -158,7 +158,6 @@ class Window() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
         e.modify((c1:HPComponent) => HPComponent(c1.hp+deltaTime.toInt))
-        println(deltaTime.toInt)
 
         for (hpc <- e.get(HPComponent)) {
           t = Text(hpc.hp.toString, Text.DarkGrayFont)
@@ -166,7 +165,10 @@ class Window() {
 
         g.squareCells(5)
 
-        g.drawOnGrid(t, Vector2(1,1), Vector2(2,2))
+        g.drawOnGrid(Color.Blue, Vector2(1), Vector2(2), Layer.Background)
+        g.drawOnGrid(Color.Green, Vector2(0.5f), Vector2(2), Layer.CenterPlane)
+        g.drawOnGrid(Color.Red, Vector2(0.25f), Vector2(2), Layer.Foreground)
+
 
         lastTime = thisTime
       }

@@ -9,19 +9,19 @@ import Util.PNGDecoder //todo: attempt to translate to scala
 
 case class Texture(id: Int) extends Drawable
 {
-  override def drawRectangle(size: Vector2, position: Vector2): Unit = {
+  override def drawRectangle(size: Vector2, position: Vector2, layer: Layer = Layer.CenterPlane): Unit = {
     glEnable(GL_TEXTURE_2D)
     Texture.bind(id)
     glColor3f(1f,1f,1f)
     glBegin(GL_POLYGON)
     glTexCoord2f(0, 0)
-    glVertex3d(-1.0 + 2*position.x, -1.0 + 2*position.y, 0)
+    glVertex3d(-1.0 + 2*position.x, -1.0 + 2*position.y, layer.position)
     glTexCoord2f(1, 0)
-    glVertex3d(-1.0 + 2*(position.x+size.x), -1.0 + 2*position.y, 0)
+    glVertex3d(-1.0 + 2*(position.x+size.x), -1.0 + 2*position.y, layer.position)
     glTexCoord2f(1, 1)
-    glVertex3d(-1.0 + 2*(position.x+size.x), -1.0 + 2*(position.y+size.y), 0)
+    glVertex3d(-1.0 + 2*(position.x+size.x), -1.0 + 2*(position.y+size.y), layer.position)
     glTexCoord2f(0, 1)
-    glVertex3d(-1.0 + 2*position.x, -1.0 + 2*(position.y+size.y), 0)
+    glVertex3d(-1.0 + 2*position.x, -1.0 + 2*(position.y+size.y), layer.position)
     glEnd()
     glDisable(GL_TEXTURE_2D)
   }
