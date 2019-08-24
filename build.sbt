@@ -5,7 +5,7 @@ version := "0.1"
 scalaVersion := "2.13.0"
 
 libraryDependencies ++= {
-  val version = "3.1.6"
+  val version = "3.2.2"
   val os = "linux" // TODO: Change to "linux" or "macos" if necessary
 
   Seq(
@@ -23,3 +23,4 @@ libraryDependencies ++= {
     }
   }
 }
+
