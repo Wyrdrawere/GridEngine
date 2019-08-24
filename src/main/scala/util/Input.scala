@@ -1,4 +1,4 @@
-import util.Vector2
+package util
 
 object Input {
 

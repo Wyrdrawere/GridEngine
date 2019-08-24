@@ -1,4 +1,6 @@
-import Scroller.{Rest, Scroll, ScrollX, ScrollY, Stay}
+package deprecate
+
+import deprecate.Scroller.{Rest, ScrollX, ScrollY, Stay}
 import util.Vector2
 
 case class Scroller

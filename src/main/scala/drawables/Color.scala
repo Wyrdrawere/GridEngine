@@ -1,4 +1,7 @@
-import org.lwjgl.opengl.GL11.{GL_BLEND, GL_ONE_MINUS_SRC_ALPHA, GL_POLYGON, GL_SRC_ALPHA, glBegin, glBlendFunc, glColor4f, glDisable, glEnable, glEnd, glVertex3d}
+package drawables
+
+import org.lwjgl.opengl.GL11._
+import render.{Drawable, Layer}
 import util.Vector2
 
 case class Color

@@ -1,4 +1,7 @@
-import Grid.{Full, Not, Partial, positionToPositional, shouldDraw}
+package render
+
+import drawables.Tile
+import render.Grid._
 import util.{Config, Vector2}
 
 class Grid //todo: CLEANUP FINALLY

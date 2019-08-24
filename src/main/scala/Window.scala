@@ -1,18 +1,25 @@
 import java.nio.{ByteBuffer, IntBuffer}
 import java.util.Objects
 
+import drawables.{Color, Text}
 import engine.Entity
-import org.lwjgl.glfw._
-import org.lwjgl.opengl._
 import org.lwjgl.glfw.Callbacks._
 import org.lwjgl.glfw.GLFW._
-import org.lwjgl.openal.{AL, ALC}
-import org.lwjgl.openal.ALC10.{ALC_DEFAULT_DEVICE_SPECIFIER, alcCloseDevice, alcCreateContext, alcDestroyContext, alcGetString, alcMakeContextCurrent, alcOpenDevice}
+import org.lwjgl.glfw._
+import org.lwjgl.openal.ALC10._
 import org.lwjgl.openal.EXTThreadLocalContext.alcSetThreadContext
+import org.lwjgl.openal.{AL, ALC}
 import org.lwjgl.opengl.GL11._
+import org.lwjgl.opengl._
 import org.lwjgl.system.MemoryStack._
 import org.lwjgl.system.MemoryUtil._
-import util.{Config, Vector2}
+import render.{Layer, NewGrid}
+import util.{Config, Input, InputItem, Vector2}
+
+object Window extends App {
+  val window: Window = new Window()
+  window.run()
+}
 
 class Window() {
 
@@ -129,14 +136,14 @@ class Window() {
     GL.createCapabilities
     glClearColor(1.0f, 1.0f, 1.0f, 0.0f)
 
-    val s = new OverState
-
-    val test = Sound.load("src/resources/Sound/REOL - No title.ogg")
-    val test2 = Sound.load("src/resources/Sound/6 - (Don't Fear) The Reaper.ogg")
+   // lazy val test = sound.Sound.load("src/resources/sound.Sound/REOL - No title.ogg")
+   // lazy val test2 = sound.Sound.load("src/resources/sound.Sound/6 - (Don't Fear) The Reaper.ogg")
 
     val g = new NewGrid(Vector2(1),Vector2(0))
 
     var t = Text("DON'T FEAR THE REAPER", Text.DarkGrayFont)
+
+    //test.play()
 
     val e = new Entity {}
 
@@ -148,6 +155,11 @@ class Window() {
     println(e.get(components.Health))
     e.attach(components.Health(-System.currentTimeMillis().toInt))
 
+    var b = true
+    var c = 0
+
+    var d = List.empty[sound.Sound]
+
     while ( {
       !glfwWindowShouldClose(window)
     }) {
@@ -158,18 +170,17 @@ class Window() {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-        e.modify((c1:components.Health) => components.Health(c1.value+deltaTime.toInt))
+        c = c + 1
 
-        for (hpc <- e.get(components.Health)) {
-          t = Text(hpc.value.toString, Text.DarkGrayFont)
+
+
+        if(c > 1000 && b) {
+          println("called")
+          d = sound.Sound.load("src/resources/Sound/6 - (Don't Fear) The Reaper.ogg") +: d
+          d(0).play()
+          b = false
+
         }
-
-        g.squareCells(5)
-
-        g.drawOnGrid(Color.Blue, Vector2(1), Vector2(2), Layer.Background)
-        g.drawOnGrid(Color.Green, Vector2(0.5f), Vector2(2), Layer.CenterPlane)
-        g.drawOnGrid(Color.Red, Vector2(0.25f), Vector2(2), Layer.Foreground)
-
 
         lastTime = thisTime
       }

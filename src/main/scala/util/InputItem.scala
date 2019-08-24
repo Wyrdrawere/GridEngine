@@ -1,3 +1,5 @@
+package util
+
 sealed trait InputItem
 
 object InputItem {

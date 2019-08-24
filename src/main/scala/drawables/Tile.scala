@@ -1,3 +1,6 @@
+package drawables
+
+import render.{Drawable, Layer}
 import util.Vector2
 
 case class Tile

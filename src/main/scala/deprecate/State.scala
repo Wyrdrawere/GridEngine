@@ -1,3 +1,7 @@
+package deprecate
+
+import render.Grid
+
 trait State {
 
   protected var grid: Grid = new Grid()

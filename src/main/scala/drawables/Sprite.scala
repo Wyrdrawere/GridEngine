@@ -1,4 +1,7 @@
-import org.lwjgl.opengl.GL11.{GL_BLEND, GL_ONE_MINUS_SRC_ALPHA, GL_POLYGON, GL_SRC_ALPHA, GL_TEXTURE_2D, glBegin, glBlendFunc, glColor3f, glDisable, glEnable, glEnd, glTexCoord2f, glVertex3d}
+package drawables
+
+import org.lwjgl.opengl.GL11._
+import render.{Drawable, Layer}
 import util.Vector2
 
 case class Sprite //todo: new name because font
@@ -98,6 +101,6 @@ object Sprite {
     spriteMap
   }
 
-  val ff1_Spritesheet: Map[Int, Sprite] = Sprite.get("src/resources/Sprite/ff1-classes.png", Vector2(972,432), Vector2(36))
-  val basicBackground: Map[Int, Sprite] = Sprite.TextureToTileSet(Texture.get("src/resources/Tileset/basictiles.png"),Vector2(128,240), Vector2(16))
+  lazy val ff1_Spritesheet: Map[Int, Sprite] = Sprite.get("src/resources/output.Sprite/ff1-classes.png", Vector2(972,432), Vector2(36))
+  lazy val basicBackground: Map[Int, Sprite] = Sprite.TextureToTileSet(Texture.get("src/resources/Tileset/basictiles.png"),Vector2(128,240), Vector2(16))
 }

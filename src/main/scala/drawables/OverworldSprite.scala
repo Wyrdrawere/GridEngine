@@ -1,4 +1,7 @@
-import OverworldSprite.SpriteMode
+package drawables
+
+import drawables.OverworldSprite.SpriteMode
+import render.{Drawable, Layer}
 import util.Vector2
 
 case class OverworldSprite
@@ -37,7 +40,7 @@ case class OverworldSprite
 object OverworldSprite {
 
   def FF1_PlayerSprite(job: Int): OverworldSprite = OverworldSprite(
-    Sprite.get("src/resources/Sprite/ff1-classes.png", Vector2(972, 432), Vector2(36, 36)),
+    Sprite.get("src/resources/output.Sprite/ff1-classes.png", Vector2(972, 432), Vector2(36, 36)),
     Map(
       Walk(Vector2.Up) -> List(27*job+2, 27*job+3),
       Walk(Vector2.Down) -> List(27*job, 27*job+1),

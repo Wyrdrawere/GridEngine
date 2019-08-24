@@ -1,3 +1,6 @@
+package deprecate
+
+import drawables.{Sprite, Tile}
 import util.Vector2
 
 object LevelFormat {
@@ -35,4 +38,3 @@ object LevelFormat {
   assert(testDraw.flatten.toList sameElements pureToDraw(testPure).flatten.toList)
 
 }
-

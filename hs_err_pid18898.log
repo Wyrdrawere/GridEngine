@@ -377,10 +377,10 @@ Event: 2,106 loading class scala/runtime/java8/JFunction1$mcFF$sp
 Event: 2,106 loading class scala/runtime/java8/JFunction1$mcFF$sp done
 Event: 2,106 loading class scala/runtime/java8/JFunction1$mcFF$sp
 Event: 2,106 loading class scala/runtime/java8/JFunction1$mcFF$sp done
-Event: 2,129 loading class Render.Color$
-Event: 2,129 loading class Render.Color$ done
-Event: 2,129 loading class Render.Color
-Event: 2,129 loading class Render.Color done
+Event: 2,129 loading class Render.output.Color$
+Event: 2,129 loading class Render.output.Color$ done
+Event: 2,129 loading class Render.output.Color
+Event: 2,129 loading class Render.output.Color done
 Event: 2,130 loading class scala/collection/immutable/HashMapBuilder
 Event: 2,130 loading class scala/collection/immutable/HashMapBuilder done
 

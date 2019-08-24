@@ -1,3 +1,6 @@
+package drawables
+
+import render.{Drawable, Layer}
 import util.Vector2
 
 case class Text
@@ -33,12 +36,12 @@ object Text {
     (keys zip values).toMap
   }
 
-  val WhiteFont: Map[Char, Sprite] = {
+  lazy val WhiteFont: Map[Char, Sprite] = {
     val sheet = Sprite.get("src/resources/Font/8x8Text/8x8text_whiteShadow.png", Vector2(96,112), Vector2(8))
     CharToInt.toList.map(a => (a._1, sheet(a._2))).toMap
   }
 
-  val DarkGrayFont: Map[Char, Sprite] = {
+  lazy val DarkGrayFont: Map[Char, Sprite] = {
     val sheet = Sprite.get("src/resources/Font/8x8Text/8x8text_darkGrayShadow.png", Vector2(96,112), Vector2(8))
     CharToInt.toList.map(a => (a._1, sheet(a._2))).toMap
   }

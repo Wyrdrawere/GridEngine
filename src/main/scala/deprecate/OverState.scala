@@ -1,6 +1,10 @@
-import InputItem.{DownArrow, LeftArrow, RightArrow, UpArrow}
-import Scroller.{Rest, Stay}
-import util.{Config, Vector2}
+package deprecate
+
+import deprecate.Scroller.Rest
+import drawables.OverworldSprite
+import render.Grid
+import util.InputItem.{LeftArrow, RightArrow}
+import util.{Config, Input, Vector2}
 
 class OverState extends State {
 
@@ -8,7 +12,7 @@ class OverState extends State {
   var playerSprite: OverworldSprite = OverworldSprite.FF1_PlayerSprite(0)
   var pos: Vector2 = Vector2(0)
   var scroller: Scroller = new Scroller(Config.scrollUnit, Vector2(0), Scroller.Stay)
-  var stepSound: Sound = Sound.load("src/resources/Sound/step.ogg")
+
 
   override protected def update(deltaTime: Long): Unit = {
     val newScroller = scroller.increment //todo: too hacky, please fix
@@ -34,6 +38,5 @@ class OverState extends State {
   private def move(dir: Vector2): Unit = {
     playerSprite = playerSprite.animateSprite(OverworldSprite.Walk(dir))
     scroller = scroller(dir)
-    stepSound.play()
   }
 }

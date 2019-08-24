@@ -1,11 +1,13 @@
-import org.lwjgl._
-import org.lwjgl.stb._
+package sound
+
 import java.io._
 import java.nio._
 
+import org.lwjgl._
 import org.lwjgl.openal.AL10._
 import org.lwjgl.openal.AL11._
 import org.lwjgl.stb.STBVorbis._
+import org.lwjgl.stb._
 import org.lwjgl.system.MemoryUtil._
 
 

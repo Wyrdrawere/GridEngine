@@ -1,3 +1,7 @@
+package deprecate
+
+import drawables.Sprite
+import render.Drawable
 import util.Vector2
 
 case class Level
