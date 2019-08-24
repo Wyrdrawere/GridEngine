@@ -1,3 +1,5 @@
+import util.Vector2
+
 object Input {
 
   var cursor: Vector2 = Vector2(0)

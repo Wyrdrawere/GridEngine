@@ -12,6 +12,7 @@ import org.lwjgl.openal.EXTThreadLocalContext.alcSetThreadContext
 import org.lwjgl.opengl.GL11._
 import org.lwjgl.system.MemoryStack._
 import org.lwjgl.system.MemoryUtil._
+import util.{Config, Vector2}
 
 class Window() {
 
@@ -139,13 +140,13 @@ class Window() {
 
     val e = new Entity {}
 
-    e.attach(HPComponent(12))
-    println(e.has(HPComponent))
-    println(e.get(HPComponent))
-    e.detach(HPComponent)
-    println(e.has(HPComponent))
-    println(e.get(HPComponent))
-    e.attach(HPComponent(-System.currentTimeMillis().toInt))
+    e.attach(components.Health(15))
+    println(e.has(components.Health))
+    println(e.get(components.Health))
+    e.detach(components.Health)
+    println(e.has(components.Health))
+    println(e.get(components.Health))
+    e.attach(components.Health(-System.currentTimeMillis().toInt))
 
     while ( {
       !glfwWindowShouldClose(window)
@@ -157,10 +158,10 @@ class Window() {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-        e.modify((c1:HPComponent) => HPComponent(c1.hp+deltaTime.toInt))
+        e.modify((c1:components.Health) => components.Health(c1.value+deltaTime.toInt))
 
-        for (hpc <- e.get(HPComponent)) {
-          t = Text(hpc.hp.toString, Text.DarkGrayFont)
+        for (hpc <- e.get(components.Health)) {
+          t = Text(hpc.value.toString, Text.DarkGrayFont)
         }
 
         g.squareCells(5)

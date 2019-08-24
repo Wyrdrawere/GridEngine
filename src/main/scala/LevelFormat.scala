@@ -1,3 +1,5 @@
+import util.Vector2
+
 object LevelFormat {
 
   type LevelDataPure = (Array[Array[List[(Int, Int)]]], List[(String, Vector2, Vector2)])

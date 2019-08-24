@@ -5,8 +5,6 @@ trait Entity
 
   private var components: Map[ComponentKey[_], Component] = Map.empty
 
-  //def components: Map[ComponentKey[_], Component] = csm //todo: figure out csm-renaming exception
-
   def attach[
   C <: Component,
   ](

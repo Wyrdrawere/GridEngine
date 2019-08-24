@@ -322,9 +322,9 @@ CodeHeap 'non-nmethods': size=5696Kb used=1475Kb max_used=1484Kb free=4221Kb
 Compilation events (10 events):
 Event: 2,128 Thread 0x00007f4bac16a000 1057       3       scala.runtime.BoxesRunTime::boxToFloat (5 bytes)
 Event: 2,128 Thread 0x00007f4bac16a000 nmethod 1057 0x00007f4b952ed390 code [0x00007f4b952ed560, 0x00007f4b952ed870]
-Event: 2,128 Thread 0x00007f4bac16a000 1058       3       Util.Vector2::$times (20 bytes)
+Event: 2,128 Thread 0x00007f4bac16a000 1058       3       Util.util.Vector2::$times (20 bytes)
 Event: 2,129 Thread 0x00007f4bac16a000 nmethod 1058 0x00007f4b952ed990 code [0x00007f4b952edb60, 0x00007f4b952eded0]
-Event: 2,129 Thread 0x00007f4bac16a000 1059       3       Util.Vector2::$minus (11 bytes)
+Event: 2,129 Thread 0x00007f4bac16a000 1059       3       Util.util.Vector2::$minus (11 bytes)
 Event: 2,129 Thread 0x00007f4bac16a000 nmethod 1059 0x00007f4b952ee010 code [0x00007f4b952ee240, 0x00007f4b952ee870]
 Event: 2,129 Thread 0x00007f4bac16a000 1060       1       java.lang.Boolean::booleanValue (5 bytes)
 Event: 2,130 Thread 0x00007f4bac16a000 nmethod 1060 0x00007f4b9c693e90 code [0x00007f4b9c694040, 0x00007f4b9c694170]

@@ -1,4 +1,4 @@
-package Util;/*
+package util;/*
  * Copyright (c) 2008-2010, Matthias Mann
  *
  * All rights reserved.

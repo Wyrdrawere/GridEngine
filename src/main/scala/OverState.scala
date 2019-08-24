@@ -1,5 +1,6 @@
 import InputItem.{DownArrow, LeftArrow, RightArrow, UpArrow}
 import Scroller.{Rest, Stay}
+import util.{Config, Vector2}
 
 class OverState extends State {
 

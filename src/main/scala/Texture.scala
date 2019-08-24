@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL12._
 import org.lwjgl.BufferUtils
 import java.io.FileInputStream
 
-import Util.PNGDecoder //todo: attempt to translate to scala
+import util.{PNGDecoder, Vector2} //todo: attempt to translate to scala
 
 case class Texture(id: Int) extends Drawable
 {

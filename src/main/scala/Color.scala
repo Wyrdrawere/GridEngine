@@ -1,4 +1,5 @@
 import org.lwjgl.opengl.GL11.{GL_BLEND, GL_ONE_MINUS_SRC_ALPHA, GL_POLYGON, GL_SRC_ALPHA, glBegin, glBlendFunc, glColor4f, glDisable, glEnable, glEnd, glVertex3d}
+import util.Vector2
 
 case class Color
 (

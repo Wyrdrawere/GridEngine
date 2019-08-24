@@ -1,3 +1,5 @@
+import util.Vector2
+
 trait Drawable {
   def drawRectangle(size: Vector2, position: Vector2, layer: Layer = Layer.CenterPlane): Unit
   def drawRectanglePartial(size: Vector2, position: Vector2, offset: Vector2, edge: (Boolean, Boolean, Boolean)): Unit = drawRectangle(size, position)

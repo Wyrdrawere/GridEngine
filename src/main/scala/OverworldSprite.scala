@@ -1,4 +1,5 @@
 import OverworldSprite.SpriteMode
+import util.Vector2
 
 case class OverworldSprite
 (

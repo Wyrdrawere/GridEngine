@@ -1,4 +1,4 @@
-package Util;
+package util;
 
 /*
  * Copyright LWJGL. All rights reserved.

@@ -1,4 +1,5 @@
 import Scroller.{Rest, Scroll, ScrollX, ScrollY, Stay}
+import util.Vector2
 
 case class Scroller
 (

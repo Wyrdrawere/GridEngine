@@ -1,4 +1,5 @@
 import org.lwjgl.opengl.GL11.{GL_BLEND, GL_ONE_MINUS_SRC_ALPHA, GL_POLYGON, GL_SRC_ALPHA, GL_TEXTURE_2D, glBegin, glBlendFunc, glColor3f, glDisable, glEnable, glEnd, glTexCoord2f, glVertex3d}
+import util.Vector2
 
 case class Sprite //todo: new name because font
 (

@@ -325,7 +325,7 @@ Event: 3,310 Thread 0x00007fe61816a000 1050       3       java.lang.Float::<init
 Event: 3,310 Thread 0x00007fe61816a000 nmethod 1050 0x00007fe6012e6710 code [0x00007fe6012e68c0, 0x00007fe6012e6af0]
 Event: 3,310 Thread 0x00007fe61816a000 1051       3       scala.runtime.BoxesRunTime::boxToFloat (5 bytes)
 Event: 3,310 Thread 0x00007fe61816a000 nmethod 1051 0x00007fe6012e6c10 code [0x00007fe6012e6de0, 0x00007fe6012e70f0]
-Event: 3,310 Thread 0x00007fe61816a000 1052       3       Util.Vector2::$times$colon (26 bytes)
+Event: 3,310 Thread 0x00007fe61816a000 1052       3       Util.util.Vector2::$times$colon (26 bytes)
 Event: 3,310 Thread 0x00007fe61816a000 nmethod 1052 0x00007fe6012e7210 code [0x00007fe6012e73e0, 0x00007fe6012e77b0]
 Event: 3,310 Thread 0x00007fe61816a000 1053       1       java.lang.Boolean::booleanValue (5 bytes)
 Event: 3,311 Thread 0x00007fe61816a000 nmethod 1053 0x00007fe608691710 code [0x00007fe6086918c0, 0x00007fe6086919f0]

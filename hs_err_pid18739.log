@@ -327,7 +327,7 @@ Event: 3,870 Thread 0x00007f96e016a000 1058       3       scala.collection.immut
 Event: 3,873 Thread 0x00007f96e016a000 nmethod 1058 0x00007f96c92ec790 code [0x00007f96c92eca40, 0x00007f96c92ee058]
 Event: 3,873 Thread 0x00007f96e016a000 1061       3       Render.Grid::gridUnit (14 bytes)
 Event: 3,874 Thread 0x00007f96e016a000 nmethod 1061 0x00007f96c92ee410 code [0x00007f96c92ee600, 0x00007f96c92eea10]
-Event: 3,874 Thread 0x00007f96e016a000 1065       3       Util.Vector2::$plus (26 bytes)
+Event: 3,874 Thread 0x00007f96e016a000 1065       3       Util.util.Vector2::$plus (26 bytes)
 Event: 3,874 Thread 0x00007f96e016a000 nmethod 1065 0x00007f96c92eec10 code [0x00007f96c92eede0, 0x00007f96c92ef170]
 Event: 3,874 Thread 0x00007f96e016a000 1055       1       Level::blankTile (5 bytes)
 

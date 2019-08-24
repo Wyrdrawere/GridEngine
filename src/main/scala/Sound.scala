@@ -58,7 +58,7 @@ object Sound {
   private def readVorbis(resource: String, bufferSize: Int, info: STBVorbisInfo): ShortBuffer = {
     var vorbis: ByteBuffer = null
     try
-      vorbis = Util.IOUtil.ioResourceToByteBuffer(resource, bufferSize)
+      vorbis = util.IOUtil.ioResourceToByteBuffer(resource, bufferSize)
     catch {
       case e: IOException =>
         throw new RuntimeException(e)

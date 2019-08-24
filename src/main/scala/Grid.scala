@@ -1,4 +1,5 @@
-import Grid.{Full, Not, Partial, shouldDraw, positionToPositional}
+import Grid.{Full, Not, Partial, positionToPositional, shouldDraw}
+import util.{Config, Vector2}
 
 class Grid //todo: CLEANUP FINALLY
 (

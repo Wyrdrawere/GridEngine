@@ -1,3 +1,5 @@
+package util
+
 object Config {
   val windowName: String = "GridEngine"
   val windowSize: Vector2 = Vector2(800,800)

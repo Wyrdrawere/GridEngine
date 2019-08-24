@@ -1,3 +1,5 @@
+import util.Vector2
+
 case class Tile
 (
   content: List[Sprite],

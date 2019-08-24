@@ -1,3 +1,5 @@
+import util.Vector2
+
 class NewGrid
 (relativeSize: Vector2,
  relativePosition: Vector2
