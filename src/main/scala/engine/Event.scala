@@ -1,0 +1,3 @@
+package engine
+
+trait Event

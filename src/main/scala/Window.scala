@@ -1,7 +1,7 @@
 import java.nio.{ByteBuffer, IntBuffer}
 import java.util.Objects
 
-import Component.HPComponent
+import engine.Entity
 import org.lwjgl.glfw._
 import org.lwjgl.opengl._
 import org.lwjgl.glfw.Callbacks._

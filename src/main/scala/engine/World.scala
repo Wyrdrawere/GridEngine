@@ -1,4 +1,6 @@
-import Component.{Component, ComponentKey}
+package engine
+
+import scala.collection.View
 
 trait World {
 
@@ -10,7 +12,11 @@ trait World {
 
   def allEntities: List[Entity] = entities
 
-  def selectEntities[C <: Component](componentKey: ComponentKey[C]): List[Entity] = entities.filter(_.has(componentKey))
+  def selectEntities[
+  C <: Component,
+  ](
+    componentKey: ComponentKey[C],
+  ): View[Entity] = entities.view.filter(_.has(componentKey))
 
   def emit(event: Event): Unit = {events = event +: events}
 
@@ -30,6 +36,3 @@ trait World {
   }
 
 }
-
-
-
