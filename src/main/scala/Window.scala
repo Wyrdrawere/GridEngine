@@ -136,14 +136,14 @@ class Window() {
     GL.createCapabilities
     glClearColor(1.0f, 1.0f, 1.0f, 0.0f)
 
-   // lazy val test = sound.Sound.load("src/resources/sound.Sound/REOL - No title.ogg")
-   // lazy val test2 = sound.Sound.load("src/resources/sound.Sound/6 - (Don't Fear) The Reaper.ogg")
+   lazy val test = sound.Sound.load("src/resources/Sound/REOL - No title.ogg")
+   lazy val test2 = sound.Sound.load("src/resources/Sound/6 - (Don't Fear) The Reaper.ogg")
 
     val g = new NewGrid(Vector2(1),Vector2(0))
 
     var t = Text("DON'T FEAR THE REAPER", Text.DarkGrayFont)
 
-    //test.play()
+    test.play()
 
     val e = new Entity {}
 
@@ -155,11 +155,6 @@ class Window() {
     println(e.get(components.Health))
     e.attach(components.Health(-System.currentTimeMillis().toInt))
 
-    var b = true
-    var c = 0
-
-    var d = List.empty[sound.Sound]
-
     while ( {
       !glfwWindowShouldClose(window)
     }) {
@@ -169,18 +164,6 @@ class Window() {
       if (deltaTime > 1000f / Config.fps) {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-
-        c = c + 1
-
-
-
-        if(c > 1000 && b) {
-          println("called")
-          d = sound.Sound.load("src/resources/Sound/6 - (Don't Fear) The Reaper.ogg") +: d
-          d(0).play()
-          b = false
-
-        }
 
         lastTime = thisTime
       }
