@@ -19,12 +19,16 @@ case class OverworldSprite
     this.copy(currentSprite = nextSprite)
   }
 
-  override def drawRectangle(size: Vector2, position: Vector2): Unit = {
-    spriteSheet(currentSprite).drawRectangle(size, position)
+  override def drawRectangle(size: Vector2, position: Vector2, layer: Layer = Layer.CenterPlane): Unit = {
+    spriteSheet(currentSprite).drawRectangle(size, position, layer)
   }
 
   override def drawRectanglePartial(size: Vector2, position: Vector2, offset: Vector2, edge: (Boolean, Boolean, Boolean)): Unit = {
     spriteSheet(currentSprite).drawRectanglePartial(size, position, offset, edge)
+  }
+
+  override def drawRectanglePartialProto(size: Vector2, position: Vector2, layer: Layer, lowerOffset: Vector2, upperOffset: Vector2): Unit = {
+    spriteSheet(currentSprite).drawRectanglePartialProto(size, position, layer, lowerOffset, upperOffset)
   }
 
 }

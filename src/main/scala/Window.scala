@@ -166,7 +166,10 @@ class Window() {
 
         g.squareCells(5)
 
-        g.drawOnGrid(t, Vector2(1,1), Vector2(2,2))
+        g.drawOnGrid(Color.Blue, Vector2(1), Vector2(2), Layer.Background)
+        g.drawOnGrid(Color.Green, Vector2(0.5f), Vector2(2), Layer.CenterPlane)
+        g.drawOnGrid(Color.Red, Vector2(0.25f), Vector2(2), Layer.Foreground)
+
 
         lastTime = thisTime
       }
