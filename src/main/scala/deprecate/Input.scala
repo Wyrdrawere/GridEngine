@@ -1,4 +1,6 @@
-package util
+package deprecate
+
+import util.{InputItem, Vector2}
 
 object Input {
 

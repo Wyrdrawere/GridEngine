@@ -1,6 +1,7 @@
-package drawables
+package deprecate
 
-import drawables.OverworldSprite.SpriteMode
+import deprecate.OverworldSprite.SpriteMode
+import drawables.Sprite
 import render.{Drawable, Layer}
 import util.Vector2
 

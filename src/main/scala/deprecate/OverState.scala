@@ -1,10 +1,8 @@
 package deprecate
 
 import deprecate.Scroller.Rest
-import drawables.OverworldSprite
-import render.Grid
 import util.InputItem.{LeftArrow, RightArrow}
-import util.{Config, Input, Vector2}
+import util.{Config, Vector2}
 
 class OverState extends State {
 

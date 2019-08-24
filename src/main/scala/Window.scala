@@ -1,6 +1,7 @@
 import java.nio.{ByteBuffer, IntBuffer}
 import java.util.Objects
 
+import deprecate.Input
 import drawables.{Color, Text}
 import engine.Entity
 import org.lwjgl.glfw.Callbacks._
@@ -14,7 +15,7 @@ import org.lwjgl.opengl._
 import org.lwjgl.system.MemoryStack._
 import org.lwjgl.system.MemoryUtil._
 import render.{Layer, NewGrid}
-import util.{Config, Input, InputItem, Vector2}
+import util.{Config, InputItem, Vector2}
 
 object Window extends App {
   val window: Window = new Window()

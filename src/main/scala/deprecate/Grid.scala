@@ -1,7 +1,8 @@
-package render
+package deprecate
 
+import deprecate.Grid.{Full, Not, Partial}
 import drawables.Tile
-import render.Grid._
+import render.Drawable
 import util.{Config, Vector2}
 
 class Grid //todo: CLEANUP FINALLY
@@ -61,8 +62,8 @@ class Grid //todo: CLEANUP FINALLY
   def drawOnGrid(drawable: Drawable, gridPosition: Vector2, offset: Vector2, relSize: Vector2 = Vector2(1, 1)): Unit = {
     val size = relSize*:gridUnit
     val position = gridTranslation - offset + Vector2(gridPosition.x - 1, gridPosition.y - 1)
-    val positional = positionToPositional(gridPosition, Vector2(dimensions.x+1, dimensions.y+1))
-    shouldDraw(positional, offset) match {
+    val positional = Grid.positionToPositional(gridPosition, Vector2(dimensions.x+1, dimensions.y+1))
+    Grid.shouldDraw(positional, offset) match {
       case Full => drawable.drawRectangle(size, gridUnit *: position)
       case Partial(rel, shift, edge) => drawable.drawRectanglePartial(size *: (Vector2(1) - rel), gridUnit *: (position + shift), offset, edge)
       case Not =>
