@@ -2,7 +2,7 @@ package render
 
 import util.Vector2
 
-class NewGrid
+class Grid
 (relativeSize: Vector2,
  relativePosition: Vector2
 ) {

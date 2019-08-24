@@ -40,7 +40,19 @@ case class Sound(sourceId: Int, bufferId: Int) {
 
 object Sound {
 
-  def load(path: String): Sound = {
+  private var soundCache: Map[String, Sound] = Map.empty
+
+  def get(path: String): Sound = {
+    if (soundCache.keys.toList.contains(path)) {
+      soundCache(path)
+    } else {
+      val s = load(path)
+      soundCache = soundCache.updated(path, s)
+      s
+    }
+  }
+
+  private def load(path: String): Sound = {
     val buffer = alGenBuffers
     val source = alGenSources
     try {

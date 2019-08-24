@@ -83,7 +83,7 @@ object Sprite {
     }
   }
 
-  def TextureToTileSet(texture: Texture, size: Vector2, tileSize: Vector2): Map[Int, Sprite] = {
+  private def TextureToTileSet(texture: Texture, size: Vector2, tileSize: Vector2): Map[Int, Sprite] = {
     val xAmount = (size.x / tileSize.x).toInt
     val yAmount = (size.y / tileSize.y).toInt
     var spriteMap: Map[Int, Sprite] = Map.empty

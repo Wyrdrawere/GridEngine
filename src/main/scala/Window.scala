@@ -1,8 +1,7 @@
 import java.nio.{ByteBuffer, IntBuffer}
-import java.util.Objects
 
 import deprecate.Input
-import drawables.{Color, Text}
+import drawables.Text
 import engine.Entity
 import org.lwjgl.glfw.Callbacks._
 import org.lwjgl.glfw.GLFW._
@@ -14,7 +13,7 @@ import org.lwjgl.opengl.GL11._
 import org.lwjgl.opengl._
 import org.lwjgl.system.MemoryStack._
 import org.lwjgl.system.MemoryUtil._
-import render.{Layer, NewGrid}
+import render.Grid
 import util.{Config, InputItem, Vector2}
 
 object Window extends App {
@@ -28,7 +27,6 @@ class Window() {
   private var window: Long = 0L
   private var alContext: Long = 0L
   private var alDevice: Long = 0L
-  private var stop: Boolean = false
 
   def run(): Unit = {
     initGL()
@@ -88,19 +86,17 @@ class Window() {
 
     //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN)
 
+    val stack = stackPush
     try {
-      val stack = stackPush
-      try {
-        val pWidth = stack.mallocInt(1)
-        val pHeight = stack.mallocInt(1)
+      val pWidth = stack.mallocInt(1)
+      val pHeight = stack.mallocInt(1)
 
-        glfwGetWindowSize(window, pWidth, pHeight)
-        val vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor)
-        glfwSetWindowPos(window, (vidmode.width - pWidth.get(0)) / 2, (vidmode.height - pHeight.get(0)) / 2)
-      }
-      finally {
-        if (stack != null) stack.close()
-      }
+      glfwGetWindowSize(window, pWidth, pHeight)
+      val vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor)
+      glfwSetWindowPos(window, (vidmode.width - pWidth.get(0)) / 2, (vidmode.height - pHeight.get(0)) / 2)
+    }
+    finally {
+      if (stack != null) stack.close()
     }
 
     glfwMakeContextCurrent(window)
@@ -120,7 +116,6 @@ class Window() {
     alDevice = alcOpenDevice(null.asInstanceOf[ByteBuffer])
     if (alDevice == NULL) throw new IllegalStateException("Failed to open the default device.")
     val deviceCaps = ALC.createCapabilities(alDevice)
-    val defaultDeviceSpecifier = Objects.requireNonNull(alcGetString(NULL, ALC_DEFAULT_DEVICE_SPECIFIER))
     alContext = alcCreateContext(alDevice, null.asInstanceOf[IntBuffer])
     alcSetThreadContext(alContext)
     AL.createCapabilities(deviceCaps)
@@ -137,10 +132,10 @@ class Window() {
     GL.createCapabilities
     glClearColor(1.0f, 1.0f, 1.0f, 0.0f)
 
-   lazy val test = sound.Sound.load("src/resources/Sound/REOL - No title.ogg")
-   lazy val test2 = sound.Sound.load("src/resources/Sound/6 - (Don't Fear) The Reaper.ogg")
+   lazy val test = sound.Sound.get("src/resources/Sound/REOL - No title.ogg")
+   lazy val test2 = sound.Sound.get("src/resources/Sound/6 - (Don't Fear) The Reaper.ogg")
 
-    val g = new NewGrid(Vector2(1),Vector2(0))
+    val g = new Grid(Vector2(1),Vector2(0))
 
     var t = Text("DON'T FEAR THE REAPER", Text.DarkGrayFont)
 
@@ -165,6 +160,9 @@ class Window() {
       if (deltaTime > 1000f / Config.fps) {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+
+        g.squareCells(5)
+        g.drawOnGrid(drawables.Sprite.basicBackground(12), Vector2(1), Vector2(2))
 
         lastTime = thisTime
       }

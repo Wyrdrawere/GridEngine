@@ -42,7 +42,7 @@ object Texture {
     }
   }
 
-  def load(path: String): Texture = {
+  private def load(path: String): Texture = {
 
     val img = new FileInputStream(new File(path))
     val dec = new PNGDecoder(img)
