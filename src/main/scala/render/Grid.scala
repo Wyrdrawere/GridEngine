@@ -27,6 +27,10 @@ class Grid
     }
   }
 
+  def drawOnCenter(drawable: Drawable, size: Vector2, layer: Layer = Layer.CenterPlane): Unit = {
+    drawOnGrid(drawable, size, cells.map(v => math.floor(v/2).toFloat), layer)
+  }
+
   def drawGrid(drawables: Array[Array[Drawable]], offset: Vector2 = Vector2(0), layer: Layer = Layer.Background): Unit = {
     cells = Vector2(drawables.length-2, drawables(0).length-2)
     for(x <- drawables.indices; y <- drawables(x).indices) {

@@ -143,6 +143,7 @@ class Window() {
     var t = Text("DON'T FEAR THE REAPER", Text.DarkGrayFont)
 
     world.levelEntity()
+    world.playerEntity(0)
 
     while ( {
       !glfwWindowShouldClose(window)

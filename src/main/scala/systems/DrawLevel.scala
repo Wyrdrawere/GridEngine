@@ -4,7 +4,7 @@ import components.{Background, Position, Scroll}
 import engine.{System, World}
 import util.Vector2
 
-object LevelDraw extends System {
+object DrawLevel extends System {
   override def update(world: World, deltaTime: Long): Unit = {
     world.selectEntities(Background).view.foreach(e => e.get(Background).foreach(bg => {
       val offset = e.get(Scroll) match {
