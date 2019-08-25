@@ -1,16 +1,18 @@
-package deprecate
+package systems
 
-import util.{InputItem, Vector2}
+import engine.Event.{KeyPressed, KeyReleased}
+import engine.{System, World}
+import util.InputItem
 
-object Input {
-
-  var cursor: Vector2 = Vector2(0)
+object Input extends System {
 
   private var activeInput: Set[InputItem] = Set.empty
   private var releasedInput: Set[InputItem] = Set.empty
   private var delayedInput: Map[InputItem, Long] = Map.empty
 
-  def update(deltaTime: Long): Unit = {
+  override def update(world: World, deltaTime: Long): Unit = {
+    for(i <- activeInput) if(!delayedInput.contains(i)) world.emit(KeyPressed(i))
+    for(i <- releasedInput) world.emit(KeyReleased(i))
     releasedInput = Set.empty
     delayedInput = delayedInput.map{case (i,t:Long) => (i, t-deltaTime)}.filter{case (_,t) => t>0}
   }
@@ -29,10 +31,6 @@ object Input {
   }
 
   def isActive(input: InputItem): Boolean = {
-    activeInput.contains(input) && !delayedInput.contains(input)
-  }
-
-  def isReleased(input: InputItem): Boolean = {
-    releasedInput.contains(input)
+    !delayedInput.contains(input)
   }
 }

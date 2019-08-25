@@ -2,10 +2,7 @@ package engine
 
 trait System
 {
-  def update(
-    world: World,
-    delta: Double,
-  ): Unit
+  def update(world: World, deltaTime: Long): Unit
 }
 
 

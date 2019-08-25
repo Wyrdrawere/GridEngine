@@ -1,8 +1,8 @@
 import java.nio.{ByteBuffer, IntBuffer}
 
-import deprecate.Input
 import drawables.Text
 import engine.Entity
+import engine.Event.KeyPressed
 import org.lwjgl.glfw.Callbacks._
 import org.lwjgl.glfw.GLFW._
 import org.lwjgl.glfw._
@@ -14,7 +14,9 @@ import org.lwjgl.opengl._
 import org.lwjgl.system.MemoryStack._
 import org.lwjgl.system.MemoryUtil._
 import render.Grid
+import systems.Input
 import util.{Config, InputItem, Vector2}
+import worlds.OverWorld
 
 object Window extends App {
   val window: Window = new Window()
@@ -27,6 +29,8 @@ class Window() {
   private var window: Long = 0L
   private var alContext: Long = 0L
   private var alDevice: Long = 0L
+
+  private var world = new OverWorld
 
   def run(): Unit = {
     initGL()
@@ -62,7 +66,6 @@ class Window() {
       (window: Long, key: Int, scancode: Int, action: Int, mods: Int) => keyCallback(window, key, scancode, action, mods))
 
     def cursorCallback(window: Long, xPos: Double, yPos: Double): Unit = {
-      Input.cursor = Vector2(xPos, yPos)
     }
 
     def mouseCallback(window: Long, button: Int, action: Int, mods: Int): Unit = {
@@ -139,17 +142,7 @@ class Window() {
 
     var t = Text("DON'T FEAR THE REAPER", Text.DarkGrayFont)
 
-    test.play()
-
-    val e = new Entity {}
-
-    e.attach(components.Health(15))
-    println(e.has(components.Health))
-    println(e.get(components.Health))
-    e.detach(components.Health)
-    println(e.has(components.Health))
-    println(e.get(components.Health))
-    e.attach(components.Health(-System.currentTimeMillis().toInt))
+    world.levelEntity()
 
     while ( {
       !glfwWindowShouldClose(window)
@@ -161,8 +154,7 @@ class Window() {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-        g.squareCells(5)
-        g.drawOnGrid(drawables.Sprite.basicBackground(12), Vector2(1), Vector2(2))
+        world.update(deltaTime)
 
         lastTime = thisTime
       }

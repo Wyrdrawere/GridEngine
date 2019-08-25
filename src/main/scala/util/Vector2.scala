@@ -15,6 +15,8 @@ case class Vector2(x: Float, y: Float) { //todo: refactor everything to use this
   def xi: Int = x.toInt
   def yi: Int = y.toInt
   def abs: Vector2 = Vector2(this.x.abs, this.y.abs)
+  def value: Float = Math.sqrt(this.x*this.x + this.y+this.y).toFloat
+  def normalized: Vector2 = this/this.value
 
   //todo: make all the things used to manipulate these into methods OR figure out implicitly translating tuples to Vector2s
 }

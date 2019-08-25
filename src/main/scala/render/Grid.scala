@@ -3,8 +3,9 @@ package render
 import util.Vector2
 
 class Grid
-(relativeSize: Vector2,
- relativePosition: Vector2
+(
+  relativeSize: Vector2 = Vector2(1),
+  relativePosition: Vector2 = Vector2(0)
 ) {
 
   var cells: Vector2 = Vector2(1)
@@ -26,7 +27,7 @@ class Grid
     }
   }
 
-  def drawGrid(drawables: Array[Array[Drawable]], layer: Layer = Layer.Background, offset: Vector2 = Vector2(0)): Unit = {
+  def drawGrid(drawables: Array[Array[Drawable]], offset: Vector2 = Vector2(0), layer: Layer = Layer.Background): Unit = {
     cells = Vector2(drawables.length-2, drawables(0).length-2)
     for(x <- drawables.indices; y <- drawables(x).indices) {
       drawOnGrid(drawables(x)(y), Vector2(1), Vector2(x-1,y-1)+offset, layer)

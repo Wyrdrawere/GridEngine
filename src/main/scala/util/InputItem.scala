@@ -32,6 +32,16 @@ object InputItem {
   case object Y extends InputItem
   case object Z extends InputItem
 
+  case object Num1 extends InputItem
+  case object Num2 extends InputItem
+  case object Num3 extends InputItem
+  case object Num4 extends InputItem
+  case object Num5 extends InputItem
+  case object Num6 extends InputItem
+  case object Num7 extends InputItem
+  case object Num8 extends InputItem
+  case object Num9 extends InputItem
+
   case object Enter extends InputItem
   case object Back extends InputItem
   case object UpArrow extends InputItem
@@ -82,6 +92,16 @@ object InputItem {
     case 263 => LeftArrow
     case 264 => DownArrow
     case 265 => UpArrow
+
+    case 321 => Num1
+    case 322 => Num2
+    case 323 => Num3
+    case 324 => Num4
+    case 325 => Num5
+    case 326 => Num6
+    case 327 => Num7
+    case 328 => Num8
+    case 329 => Num9
     case _ =>
       println(key)
       NoItem

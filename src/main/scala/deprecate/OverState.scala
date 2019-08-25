@@ -1,6 +1,7 @@
 package deprecate
 
 import deprecate.Scroller.Rest
+import systems.Input
 import util.InputItem.{LeftArrow, RightArrow}
 import util.{Config, Vector2}
 
@@ -18,14 +19,6 @@ class OverState extends State {
     pos = newPos
     scroller = newScroller
 
-    if(Input.isActive(LeftArrow)) {
-      Input.delay(LeftArrow, 0)
-      move(Vector2.Left)
-    }
-    if(Input.isActive(RightArrow)) {
-      Input.delay(RightArrow, 0)
-      move(Vector2.Right)
-    }
   }
 
   override protected def draw(grid: Grid): Unit = {
