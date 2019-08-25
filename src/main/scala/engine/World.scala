@@ -7,10 +7,10 @@ import scala.collection.View
 
 trait World {
 
-  val mainGrid: Grid = new Grid()
-
   type Mutation = (Long, World) => Unit
   type Listener = PartialFunction[Event, Mutation]
+
+  val mainGrid: Grid = new Grid()
 
   protected var entities: List[Entity] = List.empty
   private var events: List[Event] = List.empty
@@ -37,10 +37,9 @@ trait World {
 
   protected def systemsUpdate(deltaTime: Long): Unit
 
-  final protected def &(m1: Mutation, m2: Mutation): Mutation = {
+  final protected def &(ms: List[Mutation]): Mutation = {
     (l: Long, w: World) =>
-      m1(l,w)
-      m2(l,w)
+      ms.foreach(m => m(l,w))
   }
 
   private def debug: Listener = {
@@ -53,5 +52,9 @@ trait World {
 
   register(debug)
   register(default)
+
+}
+
+object World {
 
 }

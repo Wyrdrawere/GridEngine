@@ -26,7 +26,7 @@ object Input extends System {
     releasedInput = releasedInput + input
   }
 
-  def delay(input: InputItem, time: Long): Unit = {
+  def delay(input: InputItem, time: Long)(deltaTime: Long, world: World): Unit = {
     delayedInput = delayedInput.updated(input, time)
   }
 

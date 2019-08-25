@@ -1,6 +1,6 @@
 package systems
 
-import components.{Background, Position, Scroll}
+import components.{Background, Position, Scroll, Zoom}
 import engine.{System, World}
 import util.Vector2
 
@@ -11,11 +11,15 @@ object DrawLevel extends System {
         case Some(Scroll(p, m, d)) => d*p/m*(-1)
         case None => Vector2(0)
       }
+      val zoom = e.get(Zoom) match {
+        case Some(z) => z.value
+        case None => 5
+      }
       val pos = e.get(Position) match {
         case Some(Position(value)) => value
         case None => Vector2(0)
       }
-      val data = getSlice(bg.data, pos, Vector2(11), bg.blank)
+      val data = getSlice(bg.data, pos, Vector2(zoom*2+1), bg.blank)
         .map(x => x.map(y => bg.drawInfo(y)))
       world.mainGrid.drawGrid(data, offset)
     }))

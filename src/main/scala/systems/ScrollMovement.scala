@@ -1,8 +1,10 @@
 package systems
 
-import components.Scroll
+import components.{AnimatedSprite, Player, Position, Scroll}
 import engine.Event.{Move, RemoveComponent}
-import engine.{System, World}
+import engine.{Entity, System, World}
+import systems.SpriteAnimation.Walk
+import util.{Config, Vector2}
 
 object ScrollMovement extends System
 {
@@ -16,5 +18,19 @@ object ScrollMovement extends System
       println(s)
       Scroll(prog, s.max, s.direction)
     }))
+  }
+
+  def initMove(dir: Vector2)(deltaTime: Long, world: World): Unit = {
+      world.selectEntities(Position).view.foreach(e => {
+        if (!e.has(Scroll)) {
+          e.attach(Scroll(0, Config.scrollUnit, dir))
+        }
+      })
+  }
+
+  def move(entity: Entity, direction: Vector2)(deltaTime: Long, world: World): Unit = {
+      val e: Unit = entity.modify[Position](p => Position(p.value+direction))
+      println(entity.get(Position))
+      e
   }
 }
