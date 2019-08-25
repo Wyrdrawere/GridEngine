@@ -2,7 +2,7 @@ package systems
 
 import components.{Position, Scroll}
 import engine.Event.{Move, NewMove, NewRemoveComponent, RemoveComponent}
-import engine.{Entity, NewEntity, NewSystem, NewWorld, State, World}
+import engine.{NewEntity, NewSystem, NewWorld, State}
 import util.{Config, Vector2}
 
 object NewScroll extends NewSystem {

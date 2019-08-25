@@ -1,7 +1,6 @@
-package systems
+package deprecate
 
 import components.{Background, Zoom}
-import engine.{System, World}
 
 object ZoomSystem extends System {
   override def update(world: World, deltaTime: Long): Unit = ()

@@ -1,7 +1,7 @@
-package systems
+package deprecate
 
 import engine.Event.{KeyPressed, KeyReleased}
-import engine.{NewWorld, System, World}
+import engine.NewWorld
 import util.InputItem
 
 object Input extends System {

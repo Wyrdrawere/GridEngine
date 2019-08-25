@@ -1,7 +1,8 @@
 package systems
 
 import components.{Background, Position, Scroll, Zoom}
-import engine.{NewWorld, State, System, World}
+import deprecate.{System, World}
+import engine.{NewWorld, State}
 import render.Grid
 import util.Vector2
 

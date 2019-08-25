@@ -1,7 +1,6 @@
-package systems
+package deprecate
 
 import components.{AnimatedSprite, Player}
-import engine.{System, World}
 import util.Vector2
 
 object DrawSprite extends System {

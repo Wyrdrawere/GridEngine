@@ -2,7 +2,7 @@ package systems
 
 import components.{AnimatedSprite, Background, Player, Scroll}
 import engine.{NewSystem, NewWorld, State}
-import systems.SpriteAnimation.SpriteMode
+import deprecate.SpriteAnimation.SpriteMode
 
 object NewAnim extends NewSystem  {
   override def update(newWorld: NewWorld, state: State, deltaTime: Long): Unit = ()

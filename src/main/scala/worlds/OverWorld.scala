@@ -1,11 +1,10 @@
 package worlds
 
 import components.{AnimatedSprite, Background, Player, Position, Scroll, Zoom}
+import deprecate.{DrawLevel, DrawSprite, Entity, Input, ScrollMovement, SpriteAnimation, World, ZoomSystem}
 import drawables.Sprite
 import engine.Event.{KeyPressed, Move}
-import engine.{Entity, World}
-import systems.SpriteAnimation.{SpriteMode, Walk}
-import systems.{DrawLevel, DrawSprite, Input, ScrollMovement, SpriteAnimation, ZoomSystem}
+import deprecate.SpriteAnimation.{SpriteMode, Walk}
 import util.InputItem.{DownArrow, K, LeftArrow, Num1, Num2, Num3, Num4, Num5, Num6, Num7, Num8, Num9, RightArrow, S, UpArrow, W}
 import util.{Config, InputItem, Vector2}
 

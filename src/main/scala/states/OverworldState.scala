@@ -3,10 +3,10 @@ package states
 import components.{AnimatedSprite, Background, Player, Position, Scroll, Zoom}
 import drawables.Sprite
 import engine.Event.{KeyPressed, NewMove, NewRemoveComponent, RemoveComponent}
-import engine.{Entity, Event, NewEntity, NewWorld, State}
+import engine.{Event, NewEntity, NewWorld, State}
 import render.Grid
-import systems.{Input, NewAnim, NewDrawAnim, NewDrawLevel, NewInput, NewScroll, ScrollMovement, SpriteAnimation, ZoomSystem}
-import systems.SpriteAnimation.Walk
+import systems.{NewAnim, NewDrawAnim, NewDrawLevel, NewInput, NewScroll}
+import deprecate.SpriteAnimation.Walk
 import util.InputItem.{DownArrow, LeftArrow, Num1, Num2, Num3, Num4, Num5, Num6, Num7, Num8, Num9, RightArrow, S, UpArrow, W}
 import util.Vector2
 

@@ -1,8 +1,8 @@
-package systems
+package deprecate
 
 import components.{Background, Position, Scroll, Zoom}
-import engine.{System, World}
 import util.Vector2
+import render.Grid
 
 object DrawLevel extends System {
   override def update(world: World, deltaTime: Long): Unit = {

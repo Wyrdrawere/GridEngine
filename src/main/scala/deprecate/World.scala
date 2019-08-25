@@ -1,6 +1,7 @@
-package engine
+package deprecate
 
 import engine.Event.RemoveComponent
+import engine.{Component, ComponentKey, Event}
 import render.Grid
 
 import scala.collection.View

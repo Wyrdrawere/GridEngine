@@ -1,5 +1,6 @@
 package engine
 
+import deprecate.Entity
 import util.{InputItem, Vector2}
 
 sealed trait Event

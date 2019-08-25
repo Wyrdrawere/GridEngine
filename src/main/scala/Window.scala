@@ -1,7 +1,7 @@
 import java.nio.{ByteBuffer, IntBuffer}
 
 import drawables.Text
-import engine.{Entity, NewWorld}
+import engine.NewWorld
 import engine.Event.KeyPressed
 import org.lwjgl.glfw.Callbacks._
 import org.lwjgl.glfw.GLFW._
@@ -15,7 +15,7 @@ import org.lwjgl.system.MemoryStack._
 import org.lwjgl.system.MemoryUtil._
 import render.Grid
 import states.OverworldState
-import systems.{Input, NewInput}
+import systems.NewInput
 import util.{Config, InputItem, Vector2}
 import worlds.OverWorld
 

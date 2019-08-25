@@ -1,4 +1,6 @@
-package engine
+package deprecate
+
+import engine.{Component, ComponentKey}
 
 trait Entity
 {

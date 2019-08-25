@@ -1,9 +1,7 @@
-package systems
+package deprecate
 
-import components.{AnimatedSprite, Player, Position, Scroll}
+import components.{Position, Scroll}
 import engine.Event.{Move, RemoveComponent}
-import engine.{Entity, System, World}
-import systems.SpriteAnimation.Walk
 import util.{Config, Vector2}
 
 object ScrollMovement extends System

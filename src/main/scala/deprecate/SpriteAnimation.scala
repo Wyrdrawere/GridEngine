@@ -1,8 +1,7 @@
-package systems
+package deprecate
 
 import components.{AnimatedSprite, Background, Player, Scroll}
 import util.Vector2
-import engine.{System, World}
 
 object SpriteAnimation extends System {
 

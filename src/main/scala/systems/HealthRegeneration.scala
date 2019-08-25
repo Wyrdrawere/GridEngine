@@ -1,7 +1,7 @@
 package systems
 
 import components.Health
-import engine.{System, World}
+import deprecate.{System, World}
 
 object HealthRegeneration extends System
 {

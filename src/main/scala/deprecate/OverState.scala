@@ -1,7 +1,6 @@
 package deprecate
 
 import deprecate.Scroller.Rest
-import systems.Input
 import util.InputItem.{LeftArrow, RightArrow}
 import util.{Config, Vector2}
 
