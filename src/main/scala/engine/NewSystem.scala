@@ -1,6 +1,6 @@
 package engine
 
-trait newSystem {
+trait NewSystem {
 
   def update(newWorld: NewWorld, state: State, deltaTime: Long): Unit
 

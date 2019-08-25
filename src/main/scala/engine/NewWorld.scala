@@ -17,6 +17,7 @@ trait NewWorld {
   }
 
   def update(deltaTime: Long): Unit = {
+    states.head.update(this, deltaTime)
     val currentEvents = events.reverse
     events = List.empty
     for (event <- currentEvents) {
@@ -24,8 +25,8 @@ trait NewWorld {
     }
   }
 
-  def render(): Unit = {
-    states.foreach(_.render())
+  def render(deltaTime: Long): Unit = {
+    states.foreach(_.render(this, deltaTime))
   }
 
 

@@ -24,6 +24,8 @@ trait NewEntity {
     components.get(componentKey).map(_.asInstanceOf[C])
 
   def modify[C <: Component](f: C => C)(implicit componentKey: ComponentKey[C]): Unit = {
-    this.get(componentKey).foreach(f(_))
+    if(components.contains(componentKey)) {
+      components = components.updated(componentKey, f(components(componentKey).asInstanceOf[C]))
+    }
   }
 }

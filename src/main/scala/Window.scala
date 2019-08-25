@@ -1,7 +1,7 @@
 import java.nio.{ByteBuffer, IntBuffer}
 
 import drawables.Text
-import engine.Entity
+import engine.{Entity, NewWorld}
 import engine.Event.KeyPressed
 import org.lwjgl.glfw.Callbacks._
 import org.lwjgl.glfw.GLFW._
@@ -14,7 +14,8 @@ import org.lwjgl.opengl._
 import org.lwjgl.system.MemoryStack._
 import org.lwjgl.system.MemoryUtil._
 import render.Grid
-import systems.Input
+import states.OverworldState
+import systems.{Input, NewInput}
 import util.{Config, InputItem, Vector2}
 import worlds.OverWorld
 
@@ -30,7 +31,7 @@ class Window() {
   private var alContext: Long = 0L
   private var alDevice: Long = 0L
 
-  private var world = new OverWorld
+  private var world = new NewWorld {}
 
   def run(): Unit = {
     initGL()
@@ -70,9 +71,9 @@ class Window() {
 
     def mouseCallback(window: Long, button: Int, action: Int, mods: Int): Unit = {
       if (action == GLFW_PRESS) {
-        Input.add(InputItem.Mouse(button))
+        NewInput.add(InputItem.Mouse(button))
       } else if (action == GLFW_RELEASE) {
-        Input.remove(InputItem.Mouse(button))
+        NewInput.remove(InputItem.Mouse(button))
       }
     }
 
@@ -81,9 +82,9 @@ class Window() {
       if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
         glfwSetWindowShouldClose(window, true)
       } else if (action == GLFW_PRESS || action == GLFW_REPEAT) {
-        Input.add(InputItem.Key(key))
+        NewInput.add(InputItem.Key(key))
       } else if (action == GLFW_RELEASE) {
-        Input.remove(InputItem.Key(key))
+        NewInput.remove(InputItem.Key(key))
       }
     }
 
@@ -142,8 +143,7 @@ class Window() {
 
     var t = Text("DON'T FEAR THE REAPER", Text.DarkGrayFont)
 
-    world.levelEntity()
-    world.playerEntity(0)
+    world.push(new OverworldState)
 
     while ( {
       !glfwWindowShouldClose(window)
@@ -156,6 +156,7 @@ class Window() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
         world.update(deltaTime)
+        world.render(deltaTime)
 
         lastTime = thisTime
       }
