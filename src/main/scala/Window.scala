@@ -1,5 +1,6 @@
 import java.nio.{ByteBuffer, IntBuffer}
 
+import deprecate.OverWorld
 import drawables.Text
 import engine.NewWorld
 import engine.Event.KeyPressed
@@ -17,7 +18,6 @@ import render.Grid
 import states.OverworldState
 import systems.NewInput
 import util.{Config, InputItem, Vector2}
-import worlds.OverWorld
 
 object Window extends App {
   val window: Window = new Window()

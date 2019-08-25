@@ -1,12 +1,11 @@
-package worlds
+package deprecate
 
-import components.{AnimatedSprite, Background, Player, Position, Scroll, Zoom}
-import deprecate.{DrawLevel, DrawSprite, Entity, Input, ScrollMovement, SpriteAnimation, World, ZoomSystem}
+import components._
+import deprecate.SpriteAnimation.Walk
 import drawables.Sprite
 import engine.Event.{KeyPressed, Move}
-import deprecate.SpriteAnimation.{SpriteMode, Walk}
-import util.InputItem.{DownArrow, K, LeftArrow, Num1, Num2, Num3, Num4, Num5, Num6, Num7, Num8, Num9, RightArrow, S, UpArrow, W}
-import util.{Config, InputItem, Vector2}
+import util.InputItem._
+import util.Vector2
 
 class OverWorld extends World{
 
