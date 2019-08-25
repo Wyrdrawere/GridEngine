@@ -15,7 +15,6 @@ object ScrollMovement extends System
         world.emit(Move(e, s.direction))
         world.emit(RemoveComponent(e, Scroll))
       }
-      println(s)
       Scroll(prog, s.max, s.direction)
     }))
   }
@@ -29,8 +28,6 @@ object ScrollMovement extends System
   }
 
   def move(entity: Entity, direction: Vector2)(deltaTime: Long, world: World): Unit = {
-      val e: Unit = entity.modify[Position](p => Position(p.value+direction))
-      println(entity.get(Position))
-      e
+      entity.modify[Position](p => Position(p.value+direction))
   }
 }

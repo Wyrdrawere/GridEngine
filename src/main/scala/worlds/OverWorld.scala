@@ -18,7 +18,7 @@ class OverWorld extends World{
     case KeyPressed(key) => key match {
       case W => &(List(
         ZoomSystem.zoom(-1),
-        Input.delay(W, 300)))
+        Input.delay(W,300)))
       case S => &(List(
         ZoomSystem.zoom(1),
         Input.delay(S,300)))
@@ -48,8 +48,7 @@ class OverWorld extends World{
         ScrollMovement.initMove(Vector2.Left)))
       case Num5 => &(List(
         (l,w) => selectEntities(Background).view.foreach(b => b.modify[Position](p => if(!b.has(Scroll)) Position(Vector2(0)) else p)),
-        Input.delay(Num5, 500)
-      ))
+        Input.delay(Num5, 500)))
       case Num6 => &(List(
         SpriteAnimation.animatePlayer(Walk(Vector2.Right)),
         ScrollMovement.initMove(Vector2.Right)))
@@ -89,8 +88,8 @@ class OverWorld extends World{
       Map(
         Walk(Vector2.Up) -> List(27*job+2, 27*job+3),
         Walk(Vector2.Down) -> List(27*job, 27*job+1),
-        Walk(Vector2.Right) -> List(27*job+4, 27*job+5),
-        Walk(Vector2.Left) -> List(27*job+6, 27*job+7)
+        Walk(Vector2.Left) -> List(27*job+6, 27*job+7),
+        Walk(Vector2.Right) -> List(27*job+4, 27*job+5)
       ),
       27*job
     ))
