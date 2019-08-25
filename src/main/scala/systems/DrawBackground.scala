@@ -1,13 +1,13 @@
 package systems
 
 import components.{Background, Position, Scroll, Zoom}
-import deprecate.{System, World}
-import engine.{NewWorld, State}
+import engine.{System, World, State}
 import render.Grid
 import util.Vector2
 
-object NewDrawLevel extends System {
+object DrawBackground extends System {
 
+  override def update(newWorld: World, state: State, deltaTime: Long): Unit = ()
 
   def renderBackground(state: State): Unit = {
     state.selectEntities(Background).view.foreach(e => e.get(Background).foreach(bg => {
@@ -42,6 +42,4 @@ object NewDrawLevel extends System {
     }
     slice
   }
-
-  override def update(world: World, deltaTime: Long): Unit = ()
 }

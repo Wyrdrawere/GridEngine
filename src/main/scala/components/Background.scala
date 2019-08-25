@@ -1,7 +1,6 @@
 package components
 
-import engine.{Component, ComponentKey}
-import render.Drawable
+import engine.{Component, ComponentKey, Drawable}
 
 case class Background(data: Array[Array[Int]], drawInfo: Map[Int, Drawable], blank: Int) extends Component
 

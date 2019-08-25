@@ -6,7 +6,7 @@ import scala.collection.View
 
 trait State {
 
-  type Mutation = NewWorld => Unit
+  type Mutation = World => Unit
 
   final protected def &(ms: List[Mutation]): Mutation = {
     w => ms.foreach(_(w))
@@ -14,21 +14,21 @@ trait State {
 
 
 
-  protected var entities: List[NewEntity] = List.empty
+  protected var entities: List[Entity] = List.empty
   protected var _grid: Grid
 
   def grid: Grid = _grid
 
-  final def allEntities: List[NewEntity] = entities
+  final def allEntities: List[Entity] = entities
 
-  final def selectEntities[C <: Component](componentKey: ComponentKey[C]): View[NewEntity] = entities.view.filter(_.has(componentKey))
+  final def selectEntities[C <: Component](componentKey: ComponentKey[C]): View[Entity] = entities.view.filter(_.has(componentKey))
 
   def init(): Unit
 
   def mutate: PartialFunction[Event, Mutation]
 
-  def update(newWorld: NewWorld, deltaTime: Long): Unit
+  def update(newWorld: World, deltaTime: Long): Unit
 
-  def render(newWorld: NewWorld, deltaTime: Long): Unit
+  def render(newWorld: World, deltaTime: Long): Unit
 
 }

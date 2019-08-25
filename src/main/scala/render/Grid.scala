@@ -1,5 +1,6 @@
 package render
 
+import engine.Drawable
 import util.Vector2
 
 class Grid
@@ -23,7 +24,7 @@ class Grid
     val lower = Vector2(lowerX, lowerY)
     val upper = Vector2(upperX, upperY)
     if((lower.abs+upper.abs).x < 1 && (lower.abs+upper.abs).y < 1) {
-      drawable.drawRectanglePartialProto((size-lower.abs-upper.abs)*:gridUnit, relativePosition+(position-lower)*:gridUnit, layer, lower.abs, upper.abs)
+      drawable.drawRectanglePartial((size-lower.abs-upper.abs)*:gridUnit, relativePosition+(position-lower)*:gridUnit, layer, lower.abs, upper.abs)
     }
   }
 

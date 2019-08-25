@@ -1,13 +1,17 @@
 package systems
 
 import components.{AnimatedSprite, Background, Player, Scroll}
-import engine.{NewSystem, NewWorld, State}
-import deprecate.SpriteAnimation.SpriteMode
+import engine.{System, World, State}
+import util.Vector2
 
-object NewAnim extends NewSystem  {
-  override def update(newWorld: NewWorld, state: State, deltaTime: Long): Unit = ()
+object SpriteAnimation extends System  {
 
-  def animatePlayer(mode: SpriteMode, state: State)(world: NewWorld): Unit = {
+  sealed trait SpriteMode
+  case class Walk(direction: Vector2) extends SpriteMode
+
+  override def update(newWorld: World, state: State, deltaTime: Long): Unit = ()
+
+  def animatePlayer(mode: SpriteMode, state: State)(world: World): Unit = {
     if(!state.selectEntities(Background).view.map(_.has(Scroll)).head) {
       state.selectEntities(Player).view.foreach(_.modify[AnimatedSprite](sprite => {
         val nextMode = sprite.modeMap.get(mode) match {

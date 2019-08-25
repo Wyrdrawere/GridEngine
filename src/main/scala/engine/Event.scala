@@ -1,6 +1,5 @@
 package engine
 
-import deprecate.Entity
 import util.{InputItem, Vector2}
 
 sealed trait Event
@@ -8,7 +7,6 @@ sealed trait Event
 object Event {
 
   case class RemoveComponent[C <: Component](entity: Entity, componentKey: ComponentKey[C]) extends Event
-  case class NewRemoveComponent[C <: Component](entity: NewEntity, componentKey: ComponentKey[C]) extends Event
 
   case class KeyPressed(key: InputItem) extends Event
   case class KeyReleased(key: InputItem) extends Event
@@ -16,5 +14,4 @@ object Event {
   case class MouseReleased(button: InputItem) extends Event
 
   case class Move(entity: Entity, direction: Vector2) extends Event
-  case class NewMove(entity: NewEntity, direction: Vector2) extends Event
 }

@@ -2,10 +2,11 @@ package drawables
 
 import java.io.{File, FileInputStream}
 
+import engine.Drawable
 import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL11._
 import org.lwjgl.opengl.GL12._
-import render.{Drawable, Layer}
+import render.Layer
 import util.{PNGDecoder, Vector2} //todo: attempt to translate to scala
 
 case class Texture(id: Int) extends Drawable

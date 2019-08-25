@@ -1,6 +1,7 @@
 package drawables
 
-import render.{Drawable, Layer}
+import engine.Drawable
+import render.Layer
 import util.Vector2
 
 case class Text

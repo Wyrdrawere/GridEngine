@@ -1,6 +1,6 @@
 package engine
 
-trait NewEntity {
+trait Entity {
 
   private var components: Map[ComponentKey[_], Component] = Map.empty
 

@@ -1,7 +1,8 @@
 package drawables
 
+import engine.Drawable
 import org.lwjgl.opengl.GL11._
-import render.{Drawable, Layer}
+import render.Layer
 import util.Vector2
 
 case class Color

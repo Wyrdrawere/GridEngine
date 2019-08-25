@@ -1,6 +1,6 @@
 package engine
 
-trait NewWorld {
+trait World {
 
   private var events: List[Event] = List.empty
   private var states: List[State] = List.empty

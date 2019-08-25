@@ -1,8 +1,7 @@
 package components
 
-import engine.{Component, ComponentKey}
-import render.Drawable
-import deprecate.SpriteAnimation.SpriteMode
+import engine.{Component, ComponentKey, Drawable}
+import systems.SpriteAnimation.SpriteMode
 
 case class AnimatedSprite(spriteSheet: Map[Int, Drawable], modeMap: Map[SpriteMode, List[Int]], currentSprite: Int) extends Component
 

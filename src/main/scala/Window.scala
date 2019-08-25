@@ -1,8 +1,7 @@
 import java.nio.{ByteBuffer, IntBuffer}
 
-import deprecate.OverWorld
 import drawables.Text
-import engine.NewWorld
+import engine.World
 import engine.Event.KeyPressed
 import org.lwjgl.glfw.Callbacks._
 import org.lwjgl.glfw.GLFW._
@@ -16,7 +15,7 @@ import org.lwjgl.system.MemoryStack._
 import org.lwjgl.system.MemoryUtil._
 import render.Grid
 import states.OverworldState
-import systems.NewInput
+import systems.Input
 import util.{Config, InputItem, Vector2}
 
 object Window extends App {
@@ -31,7 +30,7 @@ class Window() {
   private var alContext: Long = 0L
   private var alDevice: Long = 0L
 
-  private var world = new NewWorld {}
+  private var world = new World {}
 
   def run(): Unit = {
     initGL()
@@ -71,9 +70,9 @@ class Window() {
 
     def mouseCallback(window: Long, button: Int, action: Int, mods: Int): Unit = {
       if (action == GLFW_PRESS) {
-        NewInput.add(InputItem.Mouse(button))
+        Input.add(InputItem.Mouse(button))
       } else if (action == GLFW_RELEASE) {
-        NewInput.remove(InputItem.Mouse(button))
+        Input.remove(InputItem.Mouse(button))
       }
     }
 
@@ -82,9 +81,9 @@ class Window() {
       if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
         glfwSetWindowShouldClose(window, true)
       } else if (action == GLFW_PRESS || action == GLFW_REPEAT) {
-        NewInput.add(InputItem.Key(key))
+        Input.add(InputItem.Key(key))
       } else if (action == GLFW_RELEASE) {
-        NewInput.remove(InputItem.Key(key))
+        Input.remove(InputItem.Key(key))
       }
     }
 

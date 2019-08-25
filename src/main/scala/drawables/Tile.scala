@@ -1,6 +1,7 @@
 package drawables
 
-import render.{Drawable, Layer}
+import engine.Drawable
+import render.Layer
 import util.Vector2
 
 case class Tile
@@ -13,9 +14,11 @@ case class Tile
     }
   }
 
-  override def drawRectanglePartial(size: Vector2, position: Vector2, offset: Vector2, edge: (Boolean, Boolean, Boolean)): Unit = {
+  override def drawRectanglePartial(size: Vector2, position: Vector2, layer: Layer, lowerOffset: Vector2, upperOffset: Vector2): Unit = {
     for (s <- content) {
-      s.drawRectanglePartial(size, position, offset, edge)
+      s.drawRectanglePartial(size, position, layer, lowerOffset, upperOffset)
     }
   }
+
+
 }

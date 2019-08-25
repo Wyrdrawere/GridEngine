@@ -1,16 +1,16 @@
 package systems
 
 import engine.Event.{KeyPressed, KeyReleased}
-import engine.{NewSystem, NewWorld, State}
+import engine.{System, World, State}
 import util.InputItem
 
-object NewInput extends NewSystem {
+object Input extends System {
 
   private var activeInput: Set[InputItem] = Set.empty
   private var releasedInput: Set[InputItem] = Set.empty
   private var delayedInput: Map[InputItem, Long] = Map.empty
 
-  override def update(newWorld: NewWorld, state: State, deltaTime: Long): Unit = {
+  override def update(newWorld: World, state: State, deltaTime: Long): Unit = {
     for(i <- activeInput) if(!delayedInput.contains(i)) newWorld.emit(KeyPressed(i))
     for(i <- releasedInput) newWorld.emit(KeyReleased(i))
     releasedInput = Set.empty
@@ -26,7 +26,7 @@ object NewInput extends NewSystem {
     releasedInput = releasedInput + input
   }
 
-  def delay(input: InputItem, time: Long)(newWorld: NewWorld): Unit = {
+  def delay(input: InputItem, time: Long)(newWorld: World): Unit = {
     delayedInput = delayedInput.updated(input, time)
   }
 
