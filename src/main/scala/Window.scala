@@ -1,6 +1,6 @@
 import java.nio.{ByteBuffer, IntBuffer}
 
-import drawables.Text
+import drawables.{Color, Text}
 import engine.World
 import engine.Event.KeyPressed
 import org.lwjgl.glfw.Callbacks._
@@ -13,8 +13,8 @@ import org.lwjgl.opengl.GL11._
 import org.lwjgl.opengl._
 import org.lwjgl.system.MemoryStack._
 import org.lwjgl.system.MemoryUtil._
-import render.Grid
-import states.OverworldState
+import render.{Grid, Layer}
+import states.{MainMenu, Overworld}
 import systems.Input
 import util.{Config, InputItem, Vector2}
 
@@ -139,10 +139,11 @@ class Window() {
    lazy val test2 = sound.Sound.get("src/resources/Sound/6 - (Don't Fear) The Reaper.ogg")
 
     val g = new Grid(Vector2(1),Vector2(0))
+    g.squareCells(16)
 
     var t = Text("DON'T FEAR THE REAPER", Text.DarkGrayFont)
 
-    world.push(new OverworldState)
+    world.push(new Overworld)
 
     while ( {
       !glfwWindowShouldClose(window)
@@ -155,7 +156,7 @@ class Window() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
         world.update(deltaTime)
-        world.render(deltaTime)
+        world.render()
 
         lastTime = thisTime
       }

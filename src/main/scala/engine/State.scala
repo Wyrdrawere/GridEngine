@@ -1,6 +1,8 @@
 package engine
 
+import engine.Event.{KeyPressed, KeyReleased, MousePressed, MouseReleased, RemoveComponent}
 import render.Grid
+import util.InputItem
 
 import scala.collection.View
 
@@ -19,13 +21,29 @@ trait State {
 
   final def allEntities: List[Entity] = entities
 
-  final def selectEntities[C <: Component](componentKey: ComponentKey[C]): View[Entity] = entities.view.filter(_.has(componentKey))
+  final def selectEntities[C <: Component](componentKey: ComponentKey[C]): View[Entity] = {
+    entities.view.filter(_.has(componentKey))
+  }
+
+  final def default: PartialFunction[Event, Mutation] = {
+    case RemoveComponent(entity, componentKey) => (w,s) => entity.detach(componentKey)
+    case KeyPressed(key) if inputPressed.isDefinedAt(key) => inputPressed(key)
+    case MousePressed(button) if inputPressed.isDefinedAt(button) => inputPressed(button)
+    case KeyReleased(key) if inputReleased.isDefinedAt(key) => inputReleased(key)
+    case MouseReleased(button) if inputReleased.isDefinedAt(button) => inputReleased(button)
+  }
+
+  protected def inputPressed: PartialFunction[InputItem, Mutation] = {case _ => (w,s) =>}
+
+  protected def inputReleased: PartialFunction[InputItem, Mutation] = {case _ => (w,s) =>}
 
   def init(): Unit
 
   def mutate: PartialFunction[Event, Mutation]
 
-  def update(newWorld: World, deltaTime: Long): Unit
+  def update(world: World, deltaTime: Long): Unit
+
+  def idleUpdate(world: World, deltaTime: Long): Unit = ()
 
   def render(): Unit
 

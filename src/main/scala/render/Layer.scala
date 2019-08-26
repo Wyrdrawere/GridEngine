@@ -6,6 +6,8 @@ sealed trait Layer {
 
 object Layer {
 
+  //todo: opengl immediate mode makes this impossible. Moving to modern opengl neccessary at some point
+
   object Background extends Layer {
     override val position: Double = 1
   }

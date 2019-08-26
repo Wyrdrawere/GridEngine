@@ -7,12 +7,12 @@ import util.{Config, Vector2}
 
 object ScrollMovement extends System {
 
-  override def update(newWorld: World, state: State, deltaTime: Long): Unit = {
+  override def update(World: World, state: State, deltaTime: Long): Unit = {
     state.allEntities.view.foreach(e => e.modify[Scroll](s => {
       val prog = s.progress + 1
       if(prog >= s.max) {
-        newWorld.emit(Move(e, s.direction))
-        newWorld.emit(RemoveComponent(e, Scroll))
+        World.emit(Move(e, s.direction))
+        World.emit(RemoveComponent(e, Scroll))
       }
       Scroll(prog, s.max, s.direction)
     }))

@@ -6,6 +6,8 @@ sealed trait Event
 
 object Event {
 
+  case object Identity extends Event
+
   case class RemoveComponent[C <: Component](entity: Entity, componentKey: ComponentKey[C]) extends Event
 
   case class KeyPressed(key: InputItem) extends Event

@@ -5,4 +5,5 @@ object Config {
   val windowSize: Vector2 = Vector2(800,800)
   val fps: Int = 60
   val scrollUnit = 16 //todo: find better name and better place (if scroll becomes part of Overworld, that might be the place)
+  val eventDebug = false
 }

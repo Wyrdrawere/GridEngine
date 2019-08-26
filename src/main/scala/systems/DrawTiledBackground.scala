@@ -5,7 +5,7 @@ import engine.{System, World, State}
 import render.Grid
 import util.Vector2
 
-object DrawBackground extends System {
+object DrawTiledBackground extends System {
 
   override def update(newWorld: World, state: State, deltaTime: Long): Unit = ()
 
