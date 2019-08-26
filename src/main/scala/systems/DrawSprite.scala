@@ -5,7 +5,9 @@ import engine.{System, World, State}
 import util.Vector2
 
 object DrawSprite extends System {
-  override def update(newWorld: World, state: State, deltaTime: Long): Unit = {
+  override def update(newWorld: World, state: State, deltaTime: Long): Unit = ()
+
+  def renderSprite(state: State): Unit = {
     state.selectEntities(AnimatedSprite).view.foreach(e => {
       if(e.has(Player)) {
         for (s <- e.get(AnimatedSprite)) state.grid.drawOnCenter(s.spriteSheet(s.currentSprite), Vector2(1))
@@ -14,4 +16,5 @@ object DrawSprite extends System {
       }
     })
   }
+
 }

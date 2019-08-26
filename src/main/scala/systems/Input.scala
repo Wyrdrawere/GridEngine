@@ -10,9 +10,9 @@ object Input extends System {
   private var releasedInput: Set[InputItem] = Set.empty
   private var delayedInput: Map[InputItem, Long] = Map.empty
 
-  override def update(newWorld: World, state: State, deltaTime: Long): Unit = {
-    for(i <- activeInput) if(!delayedInput.contains(i)) newWorld.emit(KeyPressed(i))
-    for(i <- releasedInput) newWorld.emit(KeyReleased(i))
+  override def update(World: World, state: State, deltaTime: Long): Unit = {
+    for(i <- activeInput) if(!delayedInput.contains(i)) World.emit(KeyPressed(i))
+    for(i <- releasedInput) World.emit(KeyReleased(i))
     releasedInput = Set.empty
     delayedInput = delayedInput.map{case (i,t:Long) => (i, t-deltaTime)}.filter{case (_,t) => t>0}
   }
@@ -26,7 +26,7 @@ object Input extends System {
     releasedInput = releasedInput + input
   }
 
-  def delay(input: InputItem, time: Long)(newWorld: World): Unit = {
+  def delay(input: InputItem, time: Long)(World: World, state: State): Unit = {
     delayedInput = delayedInput.updated(input, time)
   }
 

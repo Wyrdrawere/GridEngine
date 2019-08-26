@@ -11,7 +11,7 @@ object SpriteAnimation extends System  {
 
   override def update(newWorld: World, state: State, deltaTime: Long): Unit = ()
 
-  def animatePlayer(mode: SpriteMode, state: State)(world: World): Unit = {
+  def animatePlayer(mode: SpriteMode)(world: World, state: State): Unit = {
     if(!state.selectEntities(Background).view.map(_.has(Scroll)).head) {
       state.selectEntities(Player).view.foreach(_.modify[AnimatedSprite](sprite => {
         val nextMode = sprite.modeMap.get(mode) match {

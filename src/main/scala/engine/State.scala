@@ -6,13 +6,11 @@ import scala.collection.View
 
 trait State {
 
-  type Mutation = World => Unit
+  type Mutation = (World, State) => Unit
 
   final protected def &(ms: List[Mutation]): Mutation = {
-    w => ms.foreach(_(w))
+    (w,s) => ms.foreach(_(w,s))
   }
-
-
 
   protected var entities: List[Entity] = List.empty
   protected var _grid: Grid
@@ -29,6 +27,6 @@ trait State {
 
   def update(newWorld: World, deltaTime: Long): Unit
 
-  def render(newWorld: World, deltaTime: Long): Unit
+  def render(): Unit
 
 }

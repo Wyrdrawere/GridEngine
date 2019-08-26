@@ -21,12 +21,12 @@ trait World {
     val currentEvents = events.reverse
     events = List.empty
     for (event <- currentEvents) {
-      states.head.mutate(event)(this)
+      states.head.mutate(event)(this, states.head)
     }
   }
 
   def render(deltaTime: Long): Unit = {
-    states.foreach(_.render(this, deltaTime))
+    states.foreach(_.render())
   }
 
 

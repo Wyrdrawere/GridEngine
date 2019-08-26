@@ -12,52 +12,52 @@ import util.Vector2
 
 class OverworldState extends State {
 
-  override protected var _grid: Grid = new Grid
+  override protected var _grid: Grid = new Grid(Vector2(0.5f), Vector2(0.25f))
 
   override def init(): Unit = {
     levelEntity()
     playerEntity(0)
   }
 
-  override def mutate: PartialFunction[Event, World => Unit] = {
-    case RemoveComponent(entity, componentKey) => w => entity.detach(componentKey)
+  override def mutate: PartialFunction[Event, Mutation] = {
+    case RemoveComponent(entity, componentKey) => (w,s) => entity.detach(componentKey)
     case Move(entity, direction) => ScrollMovement.move(entity, direction)
     case KeyPressed(key) => key match {
       case UpArrow => &(List(
-        SpriteAnimation.animatePlayer(Walk(Vector2.Up), this),
-        ScrollMovement.initMove(Vector2.Up, this),
+        SpriteAnimation.animatePlayer(Walk(Vector2.Up)),
+        ScrollMovement.initMove(Vector2.Up),
         Input.delay(UpArrow, 500)))
       case DownArrow => &(List(
-        SpriteAnimation.animatePlayer(Walk(Vector2.Down), this),
-        ScrollMovement.initMove(Vector2.Down, this),
+        SpriteAnimation.animatePlayer(Walk(Vector2.Down)),
+        ScrollMovement.initMove(Vector2.Down),
         Input.delay(DownArrow, 500)))
       case LeftArrow => &(List(
-        SpriteAnimation.animatePlayer(Walk(Vector2.Left), this),
-        ScrollMovement.initMove(Vector2.Left, this),
+        SpriteAnimation.animatePlayer(Walk(Vector2.Left)),
+        ScrollMovement.initMove(Vector2.Left),
         Input.delay(LeftArrow, 500)))
       case RightArrow => &(List(
-        SpriteAnimation.animatePlayer(Walk(Vector2.Right), this),
-        ScrollMovement.initMove(Vector2.Right, this),
+        SpriteAnimation.animatePlayer(Walk(Vector2.Right)),
+        ScrollMovement.initMove(Vector2.Right),
         Input.delay(RightArrow, 500)))
-      case Num1 => ScrollMovement.initMove(Vector2.Left + Vector2.Down, this)
+      case Num1 => ScrollMovement.initMove(Vector2.Left + Vector2.Down)
       case Num2 => &(List(
-        SpriteAnimation.animatePlayer(Walk(Vector2.Down), this),
-        ScrollMovement.initMove(Vector2.Down, this)))
-      case Num3 => ScrollMovement.initMove(Vector2.Right + Vector2.Down, this)
+        SpriteAnimation.animatePlayer(Walk(Vector2.Down)),
+        ScrollMovement.initMove(Vector2.Down)))
+      case Num3 => ScrollMovement.initMove(Vector2.Right + Vector2.Down)
       case Num4 => &(List(
-        SpriteAnimation.animatePlayer(Walk(Vector2.Left), this),
-        ScrollMovement.initMove(Vector2.Left, this)))
+        SpriteAnimation.animatePlayer(Walk(Vector2.Left)),
+        ScrollMovement.initMove(Vector2.Left)))
       case Num6 => &(List(
-        SpriteAnimation.animatePlayer(Walk(Vector2.Right), this),
-        ScrollMovement.initMove(Vector2.Right, this)))
-      case Num7 => ScrollMovement.initMove(Vector2.Left + Vector2.Up, this)
+        SpriteAnimation.animatePlayer(Walk(Vector2.Right)),
+        ScrollMovement.initMove(Vector2.Right)))
+      case Num7 => ScrollMovement.initMove(Vector2.Left + Vector2.Up)
       case Num8 => &(List(
-        SpriteAnimation.animatePlayer(Walk(Vector2.Up), this),
-        ScrollMovement.initMove(Vector2.Up, this)))
-      case Num9 => ScrollMovement.initMove(Vector2.Right + Vector2.Up, this)
-      case _ => w =>
+        SpriteAnimation.animatePlayer(Walk(Vector2.Up)),
+        ScrollMovement.initMove(Vector2.Up)))
+      case Num9 => ScrollMovement.initMove(Vector2.Right + Vector2.Up)
+      case _ => (w,s) =>
     }
-    case _ => w =>
+    case _ => (w,s) =>
   }
 
   override def update(newWorld: World, deltaTime: Long): Unit = {
@@ -65,9 +65,9 @@ class OverworldState extends State {
     ScrollMovement.update(newWorld, this, deltaTime)
   }
 
-  override def render(newWorld: World, deltaTime: Long): Unit = {
+  override def render(): Unit = {
     DrawBackground.renderBackground(this)
-    DrawSprite.update(newWorld, this, deltaTime)
+    DrawSprite.renderSprite(this)
   }
 
 
