@@ -3,6 +3,7 @@ import java.nio.{ByteBuffer, IntBuffer}
 import drawables.{Color, Text}
 import engine.World
 import engine.Event.KeyPressed
+import engine.GlobalEvent.Push
 import org.lwjgl.glfw.Callbacks._
 import org.lwjgl.glfw.GLFW._
 import org.lwjgl.glfw._
@@ -143,7 +144,7 @@ class Window() {
 
     var t = Text("DON'T FEAR THE REAPER", Text.DarkGrayFont)
 
-    world.push(new Overworld)
+    world.emit(Push(new Overworld))
 
     while ( {
       !glfwWindowShouldClose(window)

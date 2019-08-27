@@ -11,8 +11,8 @@ object ScrollMovement extends System {
     state.allEntities.view.foreach(e => e.modify[Scroll](s => {
       val prog = s.progress + 1
       if(prog >= s.max) {
-        World.emit(Move(e, s.direction))
-        World.emit(RemoveComponent(e, Scroll))
+        World.emit(Move(e, s.direction), state)
+        World.emit(RemoveComponent(e, Scroll), state)
       }
       Scroll(prog, s.max, s.direction)
     }))

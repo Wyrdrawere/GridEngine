@@ -3,6 +3,7 @@ package states
 import components.{BackgroundColor, Position}
 import drawables.{Color, Text}
 import engine.Event.Identity
+import engine.GlobalEvent.Pop
 import engine.{Drawable, Entity, Event, State, World}
 import render.Grid
 import systems.{DrawMonocolorBackground, ImmediateMovement, Input, ScrollMovement}
@@ -22,7 +23,7 @@ class MainMenu(state: State) extends State {
 
   override protected def inputPressed: PartialFunction[InputItem, Mutation] = {
     case Back => (w,s) =>
-      w.pop()
+      w.emit(Pop)
   }
 
   override def update(world: World, deltaTime: Long): Unit = {

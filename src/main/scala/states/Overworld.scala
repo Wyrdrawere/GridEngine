@@ -3,6 +3,7 @@ package states
 import components.{AnimatedSprite, Background, Player, Position, Scroll, Zoom}
 import drawables.Sprite
 import engine.Event.{KeyPressed, Move, RemoveComponent}
+import engine.GlobalEvent.Push
 import engine.{Entity, Event, State, World}
 import render.Grid
 import systems.SpriteAnimation.Walk
@@ -59,7 +60,7 @@ class Overworld extends State {
       SpriteAnimation.animatePlayer(Walk(Vector2.Up)),
       ScrollMovement.initMove(Vector2.Up)))
     case Num9 => ScrollMovement.initMove(Vector2.Right + Vector2.Up)
-    case Space => (w,s) => w.push(new MainMenu(this))
+    case Space => (w,s) => w.emit(Push(new MainMenu(this)))
   }
 
   override def update(World: World, deltaTime: Long): Unit = {

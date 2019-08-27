@@ -11,8 +11,8 @@ object Input extends System {
   private var delayedInput: Map[InputItem, Long] = Map.empty
 
   override def update(World: World, state: State, deltaTime: Long): Unit = {
-    for(i <- activeInput) if(!delayedInput.contains(i)) World.emit(KeyPressed(i))
-    for(i <- releasedInput) World.emit(KeyReleased(i))
+    for(i <- activeInput) if(!delayedInput.contains(i)) World.emit(KeyPressed(i), state)
+    for(i <- releasedInput) World.emit(KeyReleased(i), state)
     releasedInput = Set.empty
     delayedInput = delayedInput.map{case (i,t:Long) => (i, t-deltaTime)}.filter{case (_,t) => t>0}
   }
