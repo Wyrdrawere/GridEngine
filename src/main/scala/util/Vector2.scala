@@ -17,6 +17,11 @@ case class Vector2(x: Float, y: Float) { //todo: refactor everything to use this
   def abs: Vector2 = Vector2(this.x.abs, this.y.abs)
   def value: Float = Math.sqrt(this.x*this.x + this.y+this.y).toFloat
   def normalized: Vector2 = this/this.value
+  def clamp(min: Vector2, max: Vector2): Vector2 = {
+    val clampX = if (this.x < min.x) min.x else if (this.x > max.x) max.x else this.x
+    val clampY = if (this.y < min.y) min.y else if (this.y > max.y) max.y else this.y
+    Vector2(clampX, clampY)
+  }
 
   //todo: make all the things used to manipulate these into methods OR figure out implicitly translating tuples to Vector2s
 }
