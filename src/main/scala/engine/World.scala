@@ -3,7 +3,7 @@ package engine
 import engine.GlobalEvent.{Pop, Push}
 import util.Config
 
-trait World {
+trait World { //todo: this could potentially be an object, would be an annoying refactoring, think it through first
 
   private var globalEvents: List[GlobalEvent] = List.empty
 
@@ -30,19 +30,29 @@ trait World {
 
   def update(deltaTime: Long): Unit = {
 
-    println(worldState)
+    //todo: rewrite to not use "keys". Remove debug prints at some point.
 
-    for (g <- globalEvents) g match {
+    if(Config.eventDebug) {println("worldstate: " + worldState)}
+
+    // non state-specific events
+    globalEvents.foreach{
       case Push(state) => push(state)
       case Pop => pop()
     }
     globalEvents = List.empty
 
+    // update for all existing states
     worldState.keys.foreach(_.idleUpdate(this, deltaTime))
+
+    // update for active state
     worldState.keys.head.update(this, deltaTime)
+
+    // event handling for all states
     worldState.foreach { case (state, events) =>
+      if(Config.eventDebug) {println("state: " + state)}
+      val pf = state.default orElse state.mutate
       events.reverse.foreach(e => {
-        val pf = state.default orElse state.mutate
+        if(Config.eventDebug) {println("event: " + e)}
         if (pf.isDefinedAt(e)) {
           pf(e)(this, state)
         }
@@ -51,8 +61,8 @@ trait World {
     }
   }
 
-  def render(): Unit = {
-    worldState.keys.toList.reverse.foreach(_.render())
+  def render(deltaTime: Long): Unit = {
+    worldState.keys.toList.reverse.foreach(_.render(this, deltaTime))
   }
 
 

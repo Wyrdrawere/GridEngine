@@ -68,12 +68,12 @@ class Overworld extends State {
     ScrollMovement.update(World, this, deltaTime)
   }
 
-  override def render(): Unit = {
-    DrawTiledBackground.renderBackground(this)
-    DrawSprite.renderSprite(this)
+  override def render(world: World, deltaTime: Long): Unit = {
+    DrawTiledBackground.update(world, this, deltaTime)
+    DrawSprite.update(world, this, deltaTime)
   }
 
-
+  //todo: (at some point) Entityfactory, these defs dont belong here
   private def levelEntity(): Unit = {
     val e = new Entity {}
     e.attach(Position(Vector2(0)))

@@ -90,18 +90,14 @@ class Window() {
 
     //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN)
 
+    // former try-finally-block
     val stack = stackPush
-    try {
-      val pWidth = stack.mallocInt(1)
-      val pHeight = stack.mallocInt(1)
-
-      glfwGetWindowSize(window, pWidth, pHeight)
-      val vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor)
-      glfwSetWindowPos(window, (vidmode.width - pWidth.get(0)) / 2, (vidmode.height - pHeight.get(0)) / 2)
-    }
-    finally {
-      if (stack != null) stack.close()
-    }
+    val pWidth = stack.mallocInt(1)
+    val pHeight = stack.mallocInt(1)
+    glfwGetWindowSize(window, pWidth, pHeight)
+    val vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor)
+    glfwSetWindowPos(window, (vidmode.width - pWidth.get(0)) / 2, (vidmode.height - pHeight.get(0)) / 2)
+    if (stack != null) stack.close()
 
     glfwMakeContextCurrent(window)
     glfwSwapInterval(1)
@@ -157,7 +153,7 @@ class Window() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
         world.update(deltaTime)
-        world.render()
+        world.render(deltaTime)
 
         lastTime = thisTime
       }

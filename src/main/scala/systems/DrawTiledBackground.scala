@@ -7,9 +7,7 @@ import util.Vector2
 
 object DrawTiledBackground extends System {
 
-  override def update(newWorld: World, state: State, deltaTime: Long): Unit = ()
-
-  def renderBackground(state: State): Unit = {
+  override def update(newWorld: World, state: State, deltaTime: Long): Unit = {
     state.selectEntities(Background).view.foreach(e => e.get(Background).foreach(bg => {
       val offset = e.get(Scroll) match {
         case Some(Scroll(p, m, d)) => d*p/m*(-1)

@@ -16,6 +16,7 @@ class Grid
     cells = Vector2(xAmount, xAmount * relativeSize.y / relativeSize.x)
   }
 
+  //todo: works for rectangles but other shapes should be no issue at this point. research into that.
   def drawOnGrid(drawable: Drawable, size: Vector2, position: Vector2, layer: Layer = Layer.CenterPlane): Unit = {
     val lowerX = if(position.x < 0) position.x else 0
     val lowerY = if(position.y < 0) position.y else 0

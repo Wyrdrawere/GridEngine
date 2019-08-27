@@ -30,8 +30,8 @@ class MainMenu(state: State) extends State {
     Input.update(world, this, deltaTime)
   }
 
-  override def render(): Unit = {
-    DrawMonocolorBackground.render(this)
+  override def render(world: World, deltaTime: Long): Unit = {
+    DrawMonocolorBackground.update(world, this, deltaTime)
   }
 
   private def backgroundEntity(): Unit = {

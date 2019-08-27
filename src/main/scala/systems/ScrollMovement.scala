@@ -21,7 +21,7 @@ object ScrollMovement extends System {
   def initMove(dir: Vector2)(World: World, state: State): Unit = {
     state.selectEntities(Position).view.foreach(e => {
       if (!e.has(Scroll)) {
-        e.attach(Scroll(0, Config.scrollUnit, dir))
+        e.attach(Scroll(0, Config.scrollUnit, dir)) // todo: replace Config.scrollunit with variable in this function
       }
     })
   }

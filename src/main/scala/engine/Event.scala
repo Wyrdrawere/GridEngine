@@ -3,6 +3,7 @@ package engine
 import util.{InputItem, Vector2}
 
 sealed trait Event
+//todo: decide on wheter this should be unsealed with its own package, like the rest, or stay like this
 
 object Event {
 

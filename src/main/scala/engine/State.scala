@@ -10,18 +10,19 @@ trait State {
 
   type Mutation = (World, State) => Unit
 
-  final protected def &(ms: List[Mutation]): Mutation = {
+  final protected def &(ms: List[Mutation]): Mutation = { // todo: make this work without List
     (w,s) => ms.foreach(_(w,s))
   }
 
   protected var entities: List[Entity] = List.empty
   protected var _grid: Grid
 
-  def grid: Grid = _grid
+  def grid: Grid = _grid // todo: figure out exact usage/need of grid and change this accordingly
 
   final def allEntities: List[Entity] = entities
 
   final def selectEntities[C <: Component](componentKey: ComponentKey[C]): View[Entity] = {
+    // todo: add functionality to select entities based on AND, OR and NOT
     entities.view.filter(_.has(componentKey))
   }
 
@@ -45,6 +46,6 @@ trait State {
 
   def idleUpdate(world: World, deltaTime: Long): Unit = ()
 
-  def render(): Unit
+  def render(world: World, deltaTime: Long): Unit
 
 }

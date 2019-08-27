@@ -1,5 +1,7 @@
 package util
 
+// todo: not a utility class, needs better place
+
 sealed trait InputItem
 
 object InputItem {

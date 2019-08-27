@@ -10,6 +10,7 @@ import org.lwjgl.stb.STBVorbis._
 import org.lwjgl.stb._
 import org.lwjgl.system.MemoryUtil._
 
+//todo: split this into trait and standard implementation, make package for the latter (think drawable)
 
 case class Sound(sourceId: Int, bufferId: Int) {
   def play(): Unit = {
