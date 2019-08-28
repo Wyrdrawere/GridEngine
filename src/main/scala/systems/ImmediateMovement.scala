@@ -13,6 +13,6 @@ object ImmediateMovement extends System {
   }
 
   def Move(entity: Entity, direction: Vector2, minPos: Vector2, maxPos: Vector2)(world: World, state: State): Unit = {
-
+    entity.modify[Position](p => Position((p.value + direction).clamp(minPos, maxPos)))
   }
 }

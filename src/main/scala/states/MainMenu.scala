@@ -22,15 +22,16 @@ class MainMenu(state: State) extends State {
   override def mutate: PartialFunction[Event, Mutation] = {case Identity => (w,s) =>}
 
   override protected def inputPressed: PartialFunction[InputItem, Mutation] = {
-    case Back => (w,s) =>
-      w.emit(Pop)
+    case Back => &(List(
+      (w,s) => w.emit(Pop),
       Input.delay(Back, 500)
-    case UpArrow =>
-      ImmediateMovement.Move(selectEntities(Cursor).head, Vector2.Up, Vector2(0), Vector2(0,0))
-      Input.delay(UpArrow, 500)
-    case DownArrow =>
-      ImmediateMovement.Move(selectEntities(Cursor).head, Vector2.Down, Vector2(0), Vector2(0,10))
-      Input.delay(DownArrow, 500)
+    ))
+    case UpArrow => &(List(
+      ImmediateMovement.Move(selectEntities(Cursor).head, Vector2.Down, Vector2(0), Vector2(0,10)),
+      Input.delay(UpArrow, 500)))
+    case DownArrow => &(List(
+      ImmediateMovement.Move(selectEntities(Cursor).head, Vector2.Up, Vector2(0), Vector2(0,10)),
+      Input.delay(DownArrow, 500)))
   }
 
   override def update(world: World, deltaTime: Long): Unit = {
@@ -39,6 +40,7 @@ class MainMenu(state: State) extends State {
 
   override def render(world: World, deltaTime: Long): Unit = {
     DrawMonocolorBackground.update(world, this, deltaTime)
+    selectEntities(Cursor).foreach(_.get(Position).foreach(println(_)))
   }
 
   private def backgroundEntity(): Unit = {
@@ -50,7 +52,7 @@ class MainMenu(state: State) extends State {
   private def cursorEntity(): Unit = {
     val e = new Entity {}
     e.attach(Position(Vector2(0)))
-    e.attach(Cursor)
+    e.attach(Cursor())
     entities = e +: entities
   }
 }
