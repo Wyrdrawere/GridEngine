@@ -2,7 +2,7 @@ package states
 
 import components.{AnimatedSprite, Background, Player, Position, Scroll, Zoom}
 import drawables.Sprite
-import engine.Event.{KeyPressed, Move, RemoveComponent}
+import engine.Event.{InitMove, KeyPressed, Move, RemoveComponent}
 import engine.GlobalEvent.Push
 import engine.{Entity, Event, State, World}
 import render.Grid
@@ -22,6 +22,10 @@ class Overworld extends State {
 
   override def mutate: PartialFunction[Event, Mutation] = {
     case Move(entity, direction) => ScrollMovement.move(entity, direction)
+    case InitMove(entity, direction) => &(List(
+      SpriteAnimation.animatePlayer(Walk(direction)),
+      ScrollMovement.initMove(entity, direction)
+      ))
   }
 
   override protected def inputPressed: PartialFunction[InputItem, Mutation] = {
@@ -29,43 +33,38 @@ class Overworld extends State {
       ImmediateMovement.Move(selectEntities(Background).head, Vector2.Left),
       Input.delay(A, 500)))
     case UpArrow => &(List(
-      SpriteAnimation.animatePlayer(Walk(Vector2.Up)),
-      ScrollMovement.initMove(Vector2.Up),
+      mutate(InitMove(selectEntities(Background).head, Vector2.Up)),
       Input.delay(UpArrow, 500)))
     case DownArrow => &(List(
-      SpriteAnimation.animatePlayer(Walk(Vector2.Down)),
-      ScrollMovement.initMove(Vector2.Down),
+      mutate(InitMove(selectEntities(Background).head, Vector2.Down)),
       Input.delay(DownArrow, 500)))
     case LeftArrow => &(List(
-      SpriteAnimation.animatePlayer(Walk(Vector2.Left)),
-      ScrollMovement.initMove(Vector2.Left),
+      mutate(InitMove(selectEntities(Background).head, Vector2.Left)),
       Input.delay(LeftArrow, 500)))
     case RightArrow => &(List(
-      SpriteAnimation.animatePlayer(Walk(Vector2.Right)),
-      ScrollMovement.initMove(Vector2.Right),
+      mutate(InitMove(selectEntities(Background).head, Vector2.Right)),
       Input.delay(RightArrow, 500)))
-    case Num1 => ScrollMovement.initMove(Vector2.Left + Vector2.Down)
+    case Num1 => mutate(InitMove(selectEntities(Background).head, Vector2.Down+Vector2.Left))
     case Num2 => &(List(
-      SpriteAnimation.animatePlayer(Walk(Vector2.Down)),
-      ScrollMovement.initMove(Vector2.Down)))
-    case Num3 => ScrollMovement.initMove(Vector2.Right + Vector2.Down)
+      mutate(InitMove(selectEntities(Background).head, Vector2.Down))))
+    case Num3 => mutate(InitMove(selectEntities(Background).head, Vector2.Down+Vector2.Right))
     case Num4 => &(List(
-      SpriteAnimation.animatePlayer(Walk(Vector2.Left)),
-      ScrollMovement.initMove(Vector2.Left)))
+      mutate(InitMove(selectEntities(Background).head, Vector2.Left))))
     case Num6 => &(List(
-      SpriteAnimation.animatePlayer(Walk(Vector2.Right)),
-      ScrollMovement.initMove(Vector2.Right)))
-    case Num7 => ScrollMovement.initMove(Vector2.Left + Vector2.Up)
+      mutate(InitMove(selectEntities(Background).head, Vector2.Right))))
+    case Num7 => mutate(InitMove(selectEntities(Background).head, Vector2.Up+Vector2.Left))
     case Num8 => &(List(
-      SpriteAnimation.animatePlayer(Walk(Vector2.Up)),
-      ScrollMovement.initMove(Vector2.Up)))
-    case Num9 => ScrollMovement.initMove(Vector2.Right + Vector2.Up)
+      mutate(InitMove(selectEntities(Background).head, Vector2.Up))))
+    case Num9 => mutate(InitMove(selectEntities(Background).head, Vector2.Up+Vector2.Right))
     case Space => (w,s) => w.emit(Push(new MainMenu(this)))
   }
 
-  override def update(World: World, deltaTime: Long): Unit = {
-    Input.update(World, this, deltaTime)
-    ScrollMovement.update(World, this, deltaTime)
+  override def idleUpdate(world: World, deltaTime: Long): Unit = {
+    ScrollMovement.update(world, this, deltaTime)
+  }
+
+  override def update(world: World, deltaTime: Long): Unit = {
+    Input.update(world, this, deltaTime)
   }
 
   override def render(world: World, deltaTime: Long): Unit = {

@@ -10,6 +10,7 @@ case class Text
   font: Map[Char, Sprite]
 ) extends Drawable
 {
+  // todo: y-size matters! rewrite to include it.
   override def drawRectangle(size: Vector2, position: Vector2, layer: Layer = Layer.CenterPlane): Unit = {
     val text = string.toCharArray.map(c => font(c))
     val charUnit = size.x/text.length

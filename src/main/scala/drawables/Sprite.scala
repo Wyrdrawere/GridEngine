@@ -82,6 +82,6 @@ object Sprite {
     spriteMap
   }
 
-  lazy val ff1_Spritesheet: Map[Int, Sprite] = Sprite.get("src/resources/output.Sprite/ff1-classes.png", Vector2(972,432), Vector2(36))
+  lazy val ff1_Spritesheet: Map[Int, Sprite] = Sprite.get("src/resources/Sprite/ff1-classes.png", Vector2(972,432), Vector2(36))
   lazy val basicBackground: Map[Int, Sprite] = Sprite.TextureToTileSet(Texture.get("src/resources/Tileset/basictiles.png"),Vector2(128,240), Vector2(16))
 }

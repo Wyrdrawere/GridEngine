@@ -6,6 +6,8 @@ import util.InputItem
 
 object Input extends System {
 
+  // todo: make delay only affect held keys, not repeated ones
+
   private var activeInput: Set[InputItem] = Set.empty
   private var releasedInput: Set[InputItem] = Set.empty
   private var delayedInput: Map[InputItem, Long] = Map.empty

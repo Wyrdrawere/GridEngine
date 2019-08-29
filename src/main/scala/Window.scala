@@ -132,10 +132,10 @@ class Window() {
     GL.createCapabilities
     glClearColor(1.0f, 1.0f, 1.0f, 0.0f)
 
-   lazy val test = sound.Sound.get("src/resources/Sound/REOL - No title.ogg")
-   lazy val test2 = sound.Sound.get("src/resources/Sound/6 - (Don't Fear) The Reaper.ogg")
+    lazy val test = sound.Sound.get("src/resources/Sound/REOL - No title.ogg")
+    lazy val test2 = sound.Sound.get("src/resources/Sound/6 - (Don't Fear) The Reaper.ogg")
 
-    val g = new Grid(Vector2(1),Vector2(0))
+    val g = new Grid(Vector2(1), Vector2(0))
     g.squareCells(16)
 
     var t = Text("DON'T FEAR THE REAPER", Text.DarkGrayFont)
