@@ -45,7 +45,8 @@ class MainMenu(affectedState: State) extends State {
 
           }))
         }))
-      }
+      },
+      Input.delay(Enter, 500)
     ))
     case UpArrow => &(List(
       ImmediateMovement.Move(selectEntities(Cursor).head, Vector2.Down, Vector2(0), Vector2(0, maxC)),

@@ -2,7 +2,7 @@ package states
 
 import components.{AnimatedSprite, Background, Player, Position, Scroll, Zoom}
 import drawables.Sprite
-import engine.Event.{InitMove, KeyPressed, Move, RemoveComponent}
+import engine.Event.{ChangeJob, InitMove, KeyPressed, Move, RemoveComponent}
 import engine.GlobalEvent.Push
 import engine.{Entity, Event, State, World}
 import render.Grid
@@ -26,6 +26,8 @@ class Overworld extends State {
       SpriteAnimation.animatePlayer(Walk(direction)),
       ScrollMovement.initMove(entity, direction)
       ))
+    case ChangeJob(job) => (w,s) =>
+      selectEntities(Player).foreach(_.modify[AnimatedSprite](a => Overworld.playerSprite(job)))
   }
 
   override protected def inputPressed: PartialFunction[InputItem, Mutation] = {

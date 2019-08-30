@@ -18,6 +18,7 @@ object Event {
 
   case class Move(entity: Entity, direction: Vector2) extends Event
   case class InitMove(entity: Entity, direction: Vector2) extends Event
+  case class ChangeJob(job: Int) extends Event
 
   case object ChangeMenu extends Event
 }
