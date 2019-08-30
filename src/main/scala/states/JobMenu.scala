@@ -17,7 +17,6 @@ class JobMenu(affectedState: State) extends State {
     backgroundEntity()
     cursorEntity()
     menuEntity()
-    println(maxItems)
   }
 
   private def maxItems: Vector2 = selectEntities(PanelMenu).head.get(PanelMenu) match {

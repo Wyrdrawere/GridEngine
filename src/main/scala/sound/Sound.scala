@@ -16,16 +16,20 @@ case class Sound(sourceId: Int, bufferId: Int) {
   def play(): Unit = {
     alSourcePlay(sourceId)
   }
+
   def playFrom(sec: Float): Unit = {
     alSourcef(sourceId, AL_SEC_OFFSET, sec)
     alSourcePlay(sourceId)
   }
+
   def pause(): Unit = {
     alSourcePause(sourceId)
   }
+
   def stop(): Unit = {
     alSourceStop(sourceId)
   }
+
   def delete(): Unit = {
     alDeleteSources(sourceId)
     alDeleteBuffers(bufferId)
