@@ -56,15 +56,15 @@ object Sound {
   private def load(path: String): Sound = {
     val buffer = alGenBuffers
     val source = alGenSources
-    try {
-      val info = STBVorbisInfo.malloc
-      try {
-        val pcm = readVorbis(path, 32 * 1024, info)
-        //copy to buffer
-        alBufferData(buffer, if (info.channels == 1) AL_FORMAT_MONO16
-        else AL_FORMAT_STEREO16, pcm, info.sample_rate)
-      } finally if (info != null) info.close()
-    }
+
+    // former nested try block
+    val info = STBVorbisInfo.malloc
+    val pcm = readVorbis(path, 32 * 1024, info)
+    //copy to buffer
+    alBufferData(buffer, if (info.channels == 1) AL_FORMAT_MONO16
+    else AL_FORMAT_STEREO16, pcm, info.sample_rate)
+    if (info != null) info.close()
+
     //set up source input
     alSourcei(source, AL_BUFFER, buffer)
     Sound(source, buffer)
