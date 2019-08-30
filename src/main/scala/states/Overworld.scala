@@ -1,13 +1,13 @@
 package states
 
-import components.{AnimatedSprite, Background, Player, Position, Scroll, Zoom}
+import components.{AnimatedSprite, Background, Player, Position, Zoom}
 import drawables.Sprite
-import engine.Event.{ChangeJob, InitMove, KeyPressed, Move, RemoveComponent}
+import engine.Event.{ChangeJob, InitMove, Move}
 import engine.GlobalEvent.Push
 import engine.{Entity, Event, State, World}
 import render.Grid
 import systems.SpriteAnimation.Walk
-import systems.{DrawSprite, DrawTiledBackground, ImmediateMovement, Input, ScrollMovement, SpriteAnimation}
+import systems.{DrawSprite, DrawTiledBackground, ImmediateMovement, Input, ScrollMovement, SpriteAnimation, ZoomSystem}
 import util.InputItem.{A, DownArrow, LeftArrow, Num1, Num2, Num3, Num4, Num5, Num6, Num7, Num8, Num9, RightArrow, S, Space, UpArrow, W}
 import util.{InputItem, Vector2}
 
@@ -31,9 +31,12 @@ class Overworld extends State {
   }
 
   override protected def inputPressed: PartialFunction[InputItem, Mutation] = {
-    case A => &(List(
-      ImmediateMovement.Move(selectEntities(Background).head, Vector2.Left),
-      Input.delay(A, 500)))
+    case W => &(List(
+      ZoomSystem.changeZoom(-1),
+      Input.delay(W, 300)))
+    case S => &(List(
+      ZoomSystem.changeZoom(1),
+      Input.delay(S, 300)))
     case UpArrow => &(List(
       mutate(InitMove(selectEntities(Background).head, Vector2.Up)),
       Input.delay(UpArrow, 500)))
@@ -52,6 +55,10 @@ class Overworld extends State {
     case Num3 => mutate(InitMove(selectEntities(Background).head, Vector2.Down+Vector2.Right))
     case Num4 => &(List(
       mutate(InitMove(selectEntities(Background).head, Vector2.Left))))
+    case Num5 => &(List(
+      (w,s) => selectEntities(Background).foreach(_.modify[Position](p => Position(Vector2(0)))),
+      Input.delay(Num5, 500)
+    ))
     case Num6 => &(List(
       mutate(InitMove(selectEntities(Background).head, Vector2.Right))))
     case Num7 => mutate(InitMove(selectEntities(Background).head, Vector2.Up+Vector2.Left))

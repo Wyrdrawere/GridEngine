@@ -6,7 +6,7 @@ import util.Vector2
 
 object ImmediateMovement extends System {
 
-  override def update(newWorld: World, state: State, deltaTime: Long): Unit = ()
+  override def update(world: World, state: State, deltaTime: Long): Unit = ()
 
   def Move(entity: Entity, direction: Vector2)(world: World, state: State): Unit = {
     entity.modify[Position](p => Position(p.value + direction))
